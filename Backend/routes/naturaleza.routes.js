@@ -12,8 +12,11 @@ router.get('/naturaleza', async (req, res) => {
 });
 
 router.post('/naturaleza', async (req, res) => {
+
   const { codigo, descripcion } = req.body;
+
   try {
+
     await pool.query(
       `
       INSERT INTO naturaleza
@@ -22,13 +25,29 @@ router.post('/naturaleza', async (req, res) => {
       `,
       [codigo, descripcion]
     );
+
     res.json({
-      message: 'naturaleza creada'
+      message: 'Naturaleza creada'
     });
+
   } catch (error) {
     console.error(error);
+    // UNIQUE
+    if (error.code === '23505') {
+      return res.status(400).json({
+        message: `El código ${codigo} ya existe`
+      });
+    }
+
+    // CHECK
+    if (error.code === '23514') {
+      return res.status(400).json({
+        message: 'El código debe tener 2 dígitos'
+      });
+    }
+
     res.status(500).json({
-      message: 'Error creando producto'
+      message: 'Error interno del servidor'
     });
   }
 });
