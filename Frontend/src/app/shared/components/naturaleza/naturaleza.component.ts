@@ -34,12 +34,13 @@ export class NaturalezaComponent {
   selected: any = {
     codigo: '',
     descripcion: '',
-     required: 'true'
+    required: 'true'
   };
   showAlert = false;
   alertVariant: 'success' | 'error' | 'warning' | 'info' = 'success';
   alertTitle = '';
   alertMessage = '';
+  codigoError = '';
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
   constructor(public modal: ModalService, private naturalezaService: NaturalezaService) { }
@@ -50,10 +51,12 @@ export class NaturalezaComponent {
   naturaleza: Naturaleza[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
-  closeModal() { this.isOpen = false; this.selected = {
-    codigo: '',
-    descripcion: ''
-  }; }
+  closeModal() {
+    this.isOpen = false; this.selected = {
+      codigo: '',
+      descripcion: ''
+    };
+  }
   currentPage = 1;
   itemsPerPage = 5;
   @Input() value: string = '';
@@ -76,10 +79,7 @@ export class NaturalezaComponent {
   }
 
   filterTable() {
-
     const term = this.searchTerm.trim().toLowerCase();
-
-    // Si el input está vacío
     if (!term) {
       this.filteredItems = [...this.naturaleza];
       return;
@@ -98,7 +98,6 @@ export class NaturalezaComponent {
     this.naturaleza =
       await this.naturalezaService.obtenerNaturaleza();
 
-    // cargar tabla completa inicialmente
     this.filteredItems = [...this.naturaleza];
   }
 
@@ -108,7 +107,7 @@ export class NaturalezaComponent {
       if (form.invalid) {
         return;
       }
-      
+
       this.naturalezaService.crearNaturaleza(this.selected)
         .subscribe({
           next: async () => {
@@ -118,10 +117,19 @@ export class NaturalezaComponent {
             this.showAlert = true;
             setTimeout(() => {
               this.showAlert = false;
-            }, 1000);
+            }, 3000);
             await this.cargarNaturaleza();
-
             this.closeModal();
+          },
+
+          error: (err) => {
+            this.alertVariant = 'error';
+            this.alertTitle = '';
+            this.alertMessage = err.error?.message || 'Ocurrió un error';
+            this.showAlert = true;
+            setTimeout(() => {
+              this.showAlert = false;
+            }, 3000);
           }
         });
     } else {
@@ -132,12 +140,12 @@ export class NaturalezaComponent {
         next: async () => {
           await this.cargarNaturaleza();
           this.alertVariant = 'success';
-          this.alertTitle = 'Bienvenido';
-          this.alertMessage = 'Inicio de sesión exitoso';
+          this.alertTitle = '';
+          this.alertMessage = 'Datos modificados';
           this.showAlert = true;
           setTimeout(() => {
             this.showAlert = false;
-          }, 1000);
+          }, 3000);
           this.closeModal();
         }
       });
@@ -151,7 +159,7 @@ export class NaturalezaComponent {
   }
 
   openCreateModal() {
-     this.formSubmitted = false;
+    this.formSubmitted = false;
     this.modo = 'crear';
     this.selected = {
       codigo: '',
@@ -165,5 +173,4 @@ export class NaturalezaComponent {
     this.selected = { ...item };
     this.isOpen = true;
   }
-
 }
