@@ -5,8 +5,8 @@ import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterVie
 import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
-import { NaturalezaService } from '../../../core/services/naturaleza.service';
-import { Naturaleza } from '../../../core/models/naturaleza.model';
+import { SublineaService } from '../../../core/services/sublinea.service';
+import { Sublinea } from '../../../core/models/sublinea.model';
 import { FormsModule } from '@angular/forms';
 import { AlertComponent } from '../ui/alert/alert.component';
 import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
@@ -18,7 +18,7 @@ export interface Option {
 }
 
 @Component({
-  selector: 'app-naturaleza',
+  selector: 'app-sublinea',
   imports: [
     CommonModule,
     ButtonComponent,
@@ -29,28 +29,25 @@ export interface Option {
     AutoFocusFirstDirective,
     AlertComponent
   ],
-  templateUrl: './naturaleza.component.html',
+  templateUrl: './sublinea.component.html',
   styles: ``
 })
 
-export class NaturalezaComponent {
+export class SublineaComponent {
   selected: any = {
     codigo: '',
     descripcion: '',
+    codigolinea: '',
     required: 'true'
   };
-  showAlert = false;
-  alertVariant: 'success' | 'error' | 'warning' | 'info' = 'success';
-  alertTitle = '';
-  alertMessage = '';
-  codigoError = '';
+
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
-  constructor(public modal: ModalService, private alertService: AlertService, private naturalezaService: NaturalezaService) { }
+  constructor(public modal: ModalService, private alertService: AlertService, private sublineaService: SublineaService) { }
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
-  filteredItems: Naturaleza[] = [];
-  naturaleza: Naturaleza[] = [];
+  filteredItems: Sublinea[] = [];
+  sublinea: Sublinea[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() {
@@ -68,7 +65,7 @@ export class NaturalezaComponent {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }
 
-  get currentItems(): Naturaleza[] {
+  get currentItems(): Sublinea[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredItems.slice(start, start + this.itemsPerPage);
   }
@@ -82,24 +79,24 @@ export class NaturalezaComponent {
   filterTable() {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
-      this.filteredItems = [...this.naturaleza];
+      this.filteredItems = [...this.sublinea];
       return;
     }
 
-    this.filteredItems = this.naturaleza.filter(item =>
+    this.filteredItems = this.sublinea.filter(item =>
       item.codigo?.toLowerCase().includes(term) ||
       item.descripcion?.toLowerCase().includes(term)
     );
   }
   async ngOnInit() {
-    await this.cargarNaturaleza();
+    await this.cargarSublinea();
   }
 
-  async cargarNaturaleza() {
-    this.naturaleza =
-      await this.naturalezaService.obtenerNaturaleza();
+  async cargarSublinea() {
+    this.sublinea =
+      await this.sublineaService.obtenerSublinea();
 
-    this.filteredItems = [...this.naturaleza];
+    this.filteredItems = [...this.sublinea];
   }
 
   async handleSave(form: any) {
@@ -109,11 +106,11 @@ export class NaturalezaComponent {
         return;
       }
 
-      this.naturalezaService.crearNaturaleza(this.selected)
+      this.sublineaService.crearSublinea(this.selected)
         .subscribe({
           next: async () => {
             this.alertService.success('Datos guardados');
-            await this.cargarNaturaleza();
+            await this.cargarSublinea();
             this.closeModal();
           },
 
@@ -124,12 +121,12 @@ export class NaturalezaComponent {
           }
         });
     } else {
-      this.naturalezaService.actualizarNaturaleza(
+      this.sublineaService.actualizarSublinea(
         this.selected.id,
         this.selected
       ).subscribe({
         next: async () => {
-          await this.cargarNaturaleza();
+          await this.cargarSublinea();
           this.alertService.success('Datos modificados');
           this.closeModal();
         }

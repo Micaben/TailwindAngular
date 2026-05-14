@@ -4,12 +4,13 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { FormElementsComponent } from './pages/forms/form-elements/form-elements.component';
 import { BlankComponent } from './pages/blank/blank.component';
 import { NaturalezaComponent } from './shared/components/naturaleza/naturaleza.component';
+import { LineaComponent } from './shared/components/linea/linea.component';
+import { SublineaComponent } from './shared/components/sublinea/sublinea.component';
+import { UnidadMedidaComponent } from './shared/components/unidadmedida/unidadmedida.component';
 import { ProductosComponent } from './shared/components/productos/productos.component';
 import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
-import { LineChartComponent } from './pages/charts/line-chart/line-chart.component';
-import { BarChartComponent } from './pages/charts/bar-chart/bar-chart.component';
 import { AlertsComponent } from './pages/ui-elements/alerts/alerts.component';
 import { AvatarElementComponent } from './pages/ui-elements/avatar-element/avatar-element.component';
 import { BadgesComponent } from './pages/ui-elements/badges/badges.component';
@@ -35,6 +36,21 @@ export const routes: Routes = [
       {
         path: 'naturaleza',
         component: NaturalezaComponent,
+        title: 'Angular Naturaleza Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'linea',
+        component: LineaComponent,
+        title: 'Angular Naturaleza Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'sublinea',
+        component: SublineaComponent,
+        title: 'Angular Naturaleza Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'unidadmedida',
+        component: UnidadMedidaComponent,
         title: 'Angular Naturaleza Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
@@ -75,16 +91,6 @@ export const routes: Routes = [
         path: 'invoice',
         component: InvoicesComponent,
         title: 'Angular Invoice Details Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
-      {
-        path: 'line-chart',
-        component: LineChartComponent,
-        title: 'Angular Line Chart Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
-      {
-        path: 'bar-chart',
-        component: BarChartComponent,
-        title: 'Angular Bar Chart Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'alerts',

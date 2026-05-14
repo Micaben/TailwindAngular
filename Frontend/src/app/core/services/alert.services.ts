@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 
-export interface Alert {
-  type: 'success' | 'error' | 'warning';
+export interface AlertData {
+  variant: 'success' | 'error' | 'warning' | 'info';
+  title?: string;
   message: string;
-  show: boolean;
 }
 
 @Injectable({
@@ -12,23 +12,42 @@ export interface Alert {
 })
 export class AlertService {
 
-  private alertSubject = new BehaviorSubject<Alert | null>(null);
+  private alertSubject =
+    new Subject<AlertData | null>();
 
-  alert$ = this.alertSubject.asObservable();
+  alertState$ =
+    this.alertSubject.asObservable();
 
-  show(type: Alert['type'], message: string) {
+  show(
+    variant: 'success' | 'error' | 'warning' | 'info',
+    message: string,
+    title: string = ''
+  ) {
+
     this.alertSubject.next({
-      type,
-      message,
-      show: true
+      variant,
+      title,
+      message
     });
 
     setTimeout(() => {
-      this.clear();
+      this.alertSubject.next(null);
     }, 3000);
   }
 
-  clear() {
-    this.alertSubject.next(null);
+  success(message: string) {
+    this.show('success', message);
+  }
+
+  error(message: string) {
+    this.show('error', message);
+  }
+
+  warning(message: string) {
+    this.show('warning', message);
+  }
+
+  info(message: string) {
+    this.show('info', message);
   }
 }
