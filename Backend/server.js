@@ -4,7 +4,6 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-
 const app = express();
 const SECRET = 'mi_clave_secreta';
 app.use(cors());
@@ -13,7 +12,6 @@ app.use(express.json());
 // LOGIN
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const result = await pool.query(
       'SELECT * FROM users WHERE email = $1',
@@ -24,9 +22,7 @@ app.post('/login', async (req, res) => {
     }
 
     const user = result.rows[0];
-
     const validPassword = await bcrypt.compare(password, user.password);
-
     if (!validPassword) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
@@ -59,9 +55,25 @@ app.post('/login', async (req, res) => {
 const productosRoutes = require('./routes/productos.routes');
 app.use(productosRoutes);
 
-//naturaleza 
+//NATURALEZA 
 const naturalezaRoutes = require('./routes/naturaleza.routes');
 app.use(naturalezaRoutes);
+
+//LINEA
+const lineaRoutes = require('./routes/linea.routes');
+app.use(lineaRoutes);
+
+//SUBLINEA
+const sublineaRoutes = require('./routes/sublinea.routes');
+app.use(sublineaRoutes);
+
+//UNIDAD DE MEDIDA
+const unidadmedidaRoutes = require('./routes/unidadmedida.routes');
+app.use(unidadmedidaRoutes);
+
+//COLOR
+const colorRoutes = require('./routes/color.routes');
+app.use(colorRoutes);
 
 
 // SERVIDOR FUNCIONANDO CORRECTAMENTE DEBE MOSTRAR EL MENSAJE API FUNCIONANDO
