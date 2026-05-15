@@ -10,7 +10,7 @@ import { TableDropdownComponent } from '../common/table-dropdown/table-dropdown.
 import { BadgeComponent } from '../ui/badge/badge.component';
 import { ProductosService } from '../../../core/services/productos.service';
 import { Productos } from '../../../core/models/productos.model';
-
+import { NaturalezaService } from '../../../core/services/naturaleza.service';
 export interface Option {
   value: string;
   label: string;
@@ -38,7 +38,7 @@ export class ProductosComponent {
     codigo: '',
     descripcion: ''
   };
-  constructor(public modal: ModalService, private productosService: ProductosService) { }
+  constructor(public modal: ModalService, private naturalezaService: NaturalezaService, private productosService: ProductosService) { }
 
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   productos: Productos[] = [];
@@ -90,6 +90,7 @@ export class ProductosComponent {
 
   async ngOnInit() {
     this.productos = await this.productosService.obtenerProductos();
+     await this.cargarNaturaleza();
     console.log(this.productos);
   }
 
@@ -108,6 +109,16 @@ export class ProductosComponent {
       console.error(err);
     }
   });
+
+}
+async cargarNaturaleza() {
+
+  const data = await this.naturalezaService.obtenerNaturaleza();
+
+  this.options = data.map((item: any) => ({
+    value: item.codigo,
+    label: item.descripcion
+  }));
 
 }
 }

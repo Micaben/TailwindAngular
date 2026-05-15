@@ -12,11 +12,13 @@ export class ProductosService {
   private API_URL = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
-  async obtenerProductos() {
-    return await firstValueFrom(
-      this.http.get<any[]>(`${this.API_URL}/productos`)
-    );
-  }
+  obtenerProductos() {
+      return firstValueFrom(
+        this.http.get<Productos[]>(
+          `${this.API_URL}/productos`
+        )
+      );
+    }
 
   toggleEstado(id: number) {
     return this.http.put(
