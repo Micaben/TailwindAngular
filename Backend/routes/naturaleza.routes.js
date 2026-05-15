@@ -4,7 +4,7 @@ const pool = require('../db');
 
 router.get('/naturaleza', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM naturaleza');
+    const result = await pool.query('SELECT * FROM naturaleza order by codigo asc');
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ message: 'Error naturaleza' });
