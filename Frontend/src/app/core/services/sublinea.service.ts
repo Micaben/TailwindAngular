@@ -33,4 +33,10 @@ export class SublineaService {
       data
     );
   }
+
+getSublineasByLinea(lineaId: string) {
+  return this.http.get<any[]>(
+    `http://localhost:3000/sublinea?linea=${lineaId}`
+  );
+}
 }

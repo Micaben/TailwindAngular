@@ -5,8 +5,8 @@ import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterVie
 import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
-import { NaturalezaService } from '../../../core/services/naturaleza.service';
-import { Naturaleza } from '../../../core/models/naturaleza.model';
+import { ColorService } from '../../../core/services/color.service';
+import { Color } from '../../../core/models/color.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
@@ -17,7 +17,7 @@ export interface Option {
 }
 
 @Component({
-  selector: 'app-naturaleza',
+  selector: 'app-color',
   imports: [
     CommonModule,
     ButtonComponent,
@@ -27,28 +27,23 @@ export interface Option {
     FormsModule,
     AutoFocusFirstDirective,
   ],
-  templateUrl: './naturaleza.component.html',
+  templateUrl: './color.component.html',
   styles: ``
 })
 
-export class NaturalezaComponent {
+export class ColorComponent {
   selected: any = {
     codigo: '',
     descripcion: '',
     required: 'true'
   };
-  showAlert = false;
-  alertVariant: 'success' | 'error' | 'warning' | 'info' = 'success';
-  alertTitle = '';
-  alertMessage = '';
-  codigoError = '';
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
-  constructor(public modal: ModalService, private alertService: AlertService, private naturalezaService: NaturalezaService) { }
+  constructor(public modal: ModalService, private alertService: AlertService, private colorService: ColorService) { }
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
-  filteredItems: Naturaleza[] = [];
-  naturaleza: Naturaleza[] = [];
+  filteredItems: Color[] = [];
+  color: Color[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() {
@@ -66,7 +61,7 @@ export class NaturalezaComponent {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }
 
-  get currentItems(): Naturaleza[] {
+  get currentItems(): Color[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredItems.slice(start, start + this.itemsPerPage);
   }
@@ -80,24 +75,24 @@ export class NaturalezaComponent {
   filterTable() {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
-      this.filteredItems = [...this.naturaleza];
+      this.filteredItems = [...this.color];
       return;
     }
 
-    this.filteredItems = this.naturaleza.filter(item =>
+    this.filteredItems = this.color.filter(item =>
       item.codigo?.toLowerCase().includes(term) ||
       item.descripcion?.toLowerCase().includes(term)
     );
   }
+
   async ngOnInit() {
-    await this.cargarNaturaleza();
+    await this.cargarColor();
   }
 
-  async cargarNaturaleza() {
-    this.naturaleza =
-      await this.naturalezaService.obtenerNaturaleza();
-
-    this.filteredItems = [...this.naturaleza];
+  async cargarColor() {
+    this.color =
+      await this.colorService.obtenerColor();
+    this.filteredItems = [...this.color];
   }
 
   async handleSave(form: any) {
@@ -107,11 +102,11 @@ export class NaturalezaComponent {
         return;
       }
 
-      this.naturalezaService.crearNaturaleza(this.selected)
+      this.colorService.crearColor(this.selected)
         .subscribe({
           next: async () => {
             this.alertService.success('Datos guardados');
-            await this.cargarNaturaleza();
+            await this.cargarColor();
             this.closeModal();
           },
 
@@ -122,12 +117,12 @@ export class NaturalezaComponent {
           }
         });
     } else {
-      this.naturalezaService.actualizarNaturaleza(
+      this.colorService.actualizarColor(
         this.selected.id,
         this.selected
       ).subscribe({
         next: async () => {
-          await this.cargarNaturaleza();
+          await this.cargarColor();
           this.alertService.success('Datos modificados');
           this.closeModal();
         }

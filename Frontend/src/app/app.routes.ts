@@ -7,11 +7,11 @@ import { NaturalezaComponent } from './shared/components/naturaleza/naturaleza.c
 import { LineaComponent } from './shared/components/linea/linea.component';
 import { SublineaComponent } from './shared/components/sublinea/sublinea.component';
 import { UnidadMedidaComponent } from './shared/components/unidadmedida/unidadmedida.component';
+import { ColorComponent } from './shared/components/color/color.component';
 import { ProductosComponent } from './shared/components/productos/productos.component';
 import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
-import { AlertsComponent } from './pages/ui-elements/alerts/alerts.component';
 import { AvatarElementComponent } from './pages/ui-elements/avatar-element/avatar-element.component';
 import { BadgesComponent } from './pages/ui-elements/badges/badges.component';
 import { ButtonsComponent } from './pages/ui-elements/buttons/buttons.component';
@@ -41,7 +41,7 @@ export const routes: Routes = [
       {
         path: 'linea',
         component: LineaComponent,
-        title: 'Angular Naturaleza Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title: 'Angular Linea Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'sublinea',
@@ -51,7 +51,12 @@ export const routes: Routes = [
       {
         path: 'unidadmedida',
         component: UnidadMedidaComponent,
-        title: 'Angular Naturaleza Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title: 'Angular Unidad de Medida Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'color',
+        component: ColorComponent,
+        title: 'Angular Color Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'productos',
@@ -91,11 +96,6 @@ export const routes: Routes = [
         path: 'invoice',
         component: InvoicesComponent,
         title: 'Angular Invoice Details Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
-      {
-        path: 'alerts',
-        component: AlertsComponent,
-        title: 'Angular Alerts Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'avatars',

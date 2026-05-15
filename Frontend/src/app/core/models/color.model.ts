@@ -1,6 +1,5 @@
-export interface Sublinea{
+export interface Color{
   id?: number;
   codigo: string;
   descripcion: string;
-  lineadescripcion : string
 }

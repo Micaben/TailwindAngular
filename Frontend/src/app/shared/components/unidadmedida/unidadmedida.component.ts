@@ -8,7 +8,6 @@ import { ModalComponent } from '../ui/modal/modal.component';
 import { UnidadMedidaService } from '../../../core/services/unidadmedida.service';
 import { UnidadMedida } from '../../../core/models/unidadmedida.model';
 import { FormsModule } from '@angular/forms';
-import { AlertComponent } from '../ui/alert/alert.component';
 import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
 
@@ -27,7 +26,6 @@ export interface Option {
     PageBreadcrumbComponent,
     FormsModule,
     AutoFocusFirstDirective,
-    AlertComponent
   ],
   templateUrl: './unidadmedida.component.html',
   styles: ``

@@ -6,24 +6,26 @@ import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
 import { FormsModule } from '@angular/forms';
-import { TableDropdownComponent } from '../common/table-dropdown/table-dropdown.component';
 import { BadgeComponent } from '../ui/badge/badge.component';
 import { ProductosService } from '../../../core/services/productos.service';
 import { Productos } from '../../../core/models/productos.model';
 import { NaturalezaService } from '../../../core/services/naturaleza.service';
+import { LineaService } from '../../../core/services/linea.service';
+import { SublineaService } from '../../../core/services/sublinea.service';
+import { UnidadMedidaService } from '../../../core/services/unidadmedida.service';
+import { ColorService } from '../../../core/services/color.service';
+
 export interface Option {
   value: string;
   label: string;
 }
 
-
 @Component({
-  selector: 'app-basic-table-three',
+  selector: 'app-productos',
   imports: [
     CommonModule,
     ButtonComponent,
     InputFieldComponent,
-    TableDropdownComponent,
     BadgeComponent,
     ModalComponent,
     FormsModule,
@@ -36,11 +38,20 @@ export interface Option {
 export class ProductosComponent {
   selected: any = {
     codigo: '',
-    descripcion: ''
+    descripcion: '',
+    naturaleza: '',
+    linea: '',
+    sublinea: '',
+    unidadmedida: '',
+    color: '',
+    proveedor: ''
   };
-  constructor(public modal: ModalService, private naturalezaService: NaturalezaService, private productosService: ProductosService) { }
-
+  constructor(public modal: ModalService, private naturalezaService: NaturalezaService, private lineaService: LineaService, private sublineaService: SublineaService, private unidadmedidaService: UnidadMedidaService, private colorService: ColorService, private productosService: ProductosService) { }
+  modo: 'crear' | 'editar' = 'crear';
+  formSubmitted = false;
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
+  searchTerm: string = '';
+  filteredItems: Productos[] = [];
   productos: Productos[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
@@ -49,7 +60,12 @@ export class ProductosComponent {
   itemsPerPage = 5;
   @Input() value: string = '';
   @Output() valueChange = new EventEmitter<string>();
-  @Input() options: Option[] = [];
+  @Input() naturalezaoptions: Option[] = [];
+  @Input() lineaoptions: Option[] = [];
+  @Input() sublineaoptions: Option[] = [];
+  @Input() unidadmedidaoptions: Option[] = [];
+  @Input() coloroptions: Option[] = [];
+  @Input() proveedoroptions: Option[] = [];
   get totalPages(): number {
     return Math.ceil(this.productos.length / this.itemsPerPage);
   }
@@ -66,7 +82,6 @@ export class ProductosComponent {
   }
 
   handleSave() {
-    // Handle save logic here
     console.log('Saving changes...');
     this.modal.closeModal();
   }
@@ -90,35 +105,91 @@ export class ProductosComponent {
 
   async ngOnInit() {
     this.productos = await this.productosService.obtenerProductos();
-     await this.cargarNaturaleza();
+    await this.cargarNaturaleza();
+    await this.cargarLinea();
+    await this.cargarUnidadmedida();
+    await this.cargarColor();
     console.log(this.productos);
   }
 
-  openEditModal(item: any) {
-    this.selected = item;
+  openCreateModal() {
+    this.formSubmitted = false;
+    this.modo = 'crear';
+    this.selected = {
+      codigo: '',
+      descripcion: '',
+      linea: ''
+    };
+    this.value = '';
     this.isOpen = true;
   }
 
+  openEditModal(item: any) {
+    this.modo = 'editar';
+    this.selected = { ...item };
+    this.value = String(item.codigolinea);
+    this.selected.linea = String(item.codigolinea);
+    this.isOpen = true;
+  }
+
+  onLineaChange(event: any) {
+    const lineaId = event.target.value;
+    this.selected.sublinea = null;
+    this.sublineaoptions = [];
+    this.cargarSublinea(lineaId);
+  }
+
   cambiarEstado(item: any) {
+    this.productosService.toggleEstado(item.id).subscribe({
+      next: (res: any) => {
+        item.estado = res.estado; // actualiza UI sin recargar
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
 
-  this.productosService.toggleEstado(item.id).subscribe({
-    next: (res: any) => {
-      item.estado = res.estado; // actualiza UI sin recargar
-    },
-    error: (err) => {
-      console.error(err);
-    }
-  });
+  async cargarNaturaleza() {
+    const data = await this.naturalezaService.obtenerNaturaleza();
+    this.naturalezaoptions = data.map((item: any) => ({
+      value: item.codigo,
+      label: item.descripcion
+    }));
+  }
 
-}
-async cargarNaturaleza() {
+  async cargarLinea() {
+    const data = await this.lineaService.obtenerLinea();
+    this.lineaoptions = data.map((item: any) => ({
+      value: item.codigo,
+      label: item.descripcion
+    }));
+  }
 
-  const data = await this.naturalezaService.obtenerNaturaleza();
+  cargarSublinea(lineaId: string) {    
+    this.sublineaoptions = [];
+    this.sublineaService.getSublineasByLinea(lineaId)
+      .subscribe((data: any[]) => {
+        this.sublineaoptions = data.map((item: any) => ({
+          value: item.codigo,
+          label: item.descripcion
+        }));
+      });
+  }
 
-  this.options = data.map((item: any) => ({
-    value: item.codigo,
-    label: item.descripcion
-  }));
+  async cargarUnidadmedida() {
+    const data = await this.unidadmedidaService.obtenerUnidadMedida();
+    this.unidadmedidaoptions = data.map((item: any) => ({
+      value: item.codigo,
+      label: item.descripcion
+    }));
+  }
 
-}
+  async cargarColor() {
+    const data = await this.colorService.obtenerColor();
+    this.coloroptions = data.map((item: any) => ({
+      value: item.codigo,
+      label: item.descripcion
+    }));
+  }
 }

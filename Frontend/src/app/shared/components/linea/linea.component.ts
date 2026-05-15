@@ -8,7 +8,6 @@ import { ModalComponent } from '../ui/modal/modal.component';
 import { LineaService } from '../../../core/services/linea.service';
 import { Linea } from '../../../core/models/linea.model';
 import { FormsModule } from '@angular/forms';
-import { AlertComponent } from '../ui/alert/alert.component';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
 
@@ -27,7 +26,6 @@ export interface Option {
     PageBreadcrumbComponent,
     FormsModule,
     AutoFocusFirstDirective,
-    AlertComponent
   ],
   templateUrl: './linea.component.html',
   styles: ``
@@ -37,7 +35,6 @@ export class LineaComponent {
   selected: any = {
     codigo: '',
     descripcion: '',
-    codigosublinea:'',
     required: 'true'
   };
   modo: 'crear' | 'editar' = 'crear';
@@ -95,7 +92,6 @@ export class LineaComponent {
   async cargarLinea() {
     this.linea =
       await this.lineaService.obtenerLinea();
-
     this.filteredItems = [...this.linea];
   }
 

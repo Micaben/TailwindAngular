@@ -34,6 +34,7 @@ export class AppSidebarComponent {
         { name: "Linea", path: "/linea", pro: false },
         { name: "Sublinea", path: "/sublinea", pro: false },
         { name: "Unidad de Medida", path: "/unidadmedida", pro: false },
+        { name: "Color", path: "/color", pro: false },
         { name: "Productos", path: "/productos", pro: false },
         { name: "Clientes", path: "/error-404", pro: false },
         { name: "Proveedores", path: "/error-404", pro: false },

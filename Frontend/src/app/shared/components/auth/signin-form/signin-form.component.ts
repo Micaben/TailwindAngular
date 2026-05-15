@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.services';
-import { AlertComponent } from '../../ui/alert/alert.component';
+import { AlertService } from '../../../../core/services/alert.services';
 
 @Component({
   selector: 'app-signin-form',
@@ -21,7 +21,6 @@ import { AlertComponent } from '../../ui/alert/alert.component';
     InputFieldComponent,
     RouterModule,
     FormsModule,
-    AlertComponent
   ],
   templateUrl: './signin-form.component.html',
   styles: ``
@@ -31,7 +30,7 @@ export class SigninFormComponent {
   alertVariant: 'success' | 'error' | 'warning' | 'info' = 'success';
   alertTitle = '';
   alertMessage = '';
-  constructor(private http: HttpClient, private router: Router, private auth: AuthService) { }
+  constructor(private http: HttpClient, private alertService: AlertService, private router: Router, private auth: AuthService) { }
   showPassword = false;
   isChecked = false;
   email = '';
@@ -50,28 +49,12 @@ export class SigninFormComponent {
     this.auth.login(data).subscribe({
       next: (res) => {
         console.log('LOGIN OK:', res);
-        this.alertVariant = 'success';
-        this.alertTitle = 'Bienvenido';
-        this.alertMessage = 'Inicio de sesión exitoso';
-        this.showAlert = true;
-        setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 1000);
+        this.alertService.success('Bienvenido');
       },
 
       error: (err) => {
-
         console.error(err);
-        this.alertVariant = 'error';
-        this.alertTitle = 'Error';
-        this.alertMessage =
-          err?.error?.message ||
-          err?.error ||
-          'Credenciales incorrectas';
-        this.showAlert = true;
-        setTimeout(() => {
-          this.showAlert = false;
-        }, 1000);
+        this.alertService.error('Credenciales incorrectas');
       }
     });
   }
