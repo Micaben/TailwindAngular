@@ -21,7 +21,7 @@ export interface Option {
 }
 
 @Component({
-  selector: 'app-productos',
+  selector: 'app-clientes',
   imports: [
     CommonModule,
     ButtonComponent,
@@ -31,11 +31,11 @@ export interface Option {
     FormsModule,
     PageBreadcrumbComponent,
   ],
-  templateUrl: './productos.component.html',
+  templateUrl: './clientes.component.html',
   styles: ``
 })
 
-export class ProductosComponent {
+export class ClientesComponent {
   selected: any = {
     codigo: '',
     descripcion: '',

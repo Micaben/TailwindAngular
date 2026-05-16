@@ -1,36 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-import {  AlertService,  AlertData } from './core/services/alert.services';
-
+import { AlertService } from './core/services/alert.services';
 import { AlertComponent } from './shared/components/ui/alert/alert.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-
   imports: [
     RouterModule,
-    AlertComponent
+    AlertComponent,
+    AsyncPipe
   ],
-
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-
+  private alertService = inject(AlertService);
   title = 'Angular Ecommerce Dashboard | TailAdmin';
+  alert$ = this.alertService.alertState$;
 
-  alert: AlertData | null = null;
-
-  constructor(
-    private alertService: AlertService
-  ) {
-
-    this.alertService.alertState$
-      .subscribe(alert => {
-
-        this.alert = alert;
-      });
-  }
 }

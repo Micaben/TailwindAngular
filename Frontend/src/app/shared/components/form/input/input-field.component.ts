@@ -30,6 +30,7 @@ import { SimpleChanges } from '@angular/core';
         (blur)="onBlur()"
         [step]="step"
         [ngClass]="inputClasses"
+        (click)="openPicker($event)"
         [class.border-red-500]="shouldShowError"
         [class.border-gray-300]="!shouldShowError"        
       />
@@ -59,11 +60,10 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   @Input() className: string = '';
   @Output() valueChange = new EventEmitter<string | number>();
   @Input() required: boolean = false;
-  value: any = '';
   touched = false;
   onChange: any = () => { };
   onTouched: any = () => { };
-
+  @Input() value: any = '';
   validate(control: AbstractControl): ValidationErrors | null {
     if (this.required && !this.value) {
       return { required: true };
@@ -77,6 +77,11 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
     this.touched = false;
   }
 
+  openPicker(event: any) {
+    if (event.target.showPicker) {
+      event.target.showPicker();
+    }
+  }
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
@@ -134,5 +139,5 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
     }
     return '';
   }
-  
+
 }

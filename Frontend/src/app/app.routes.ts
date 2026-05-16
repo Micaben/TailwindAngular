@@ -9,14 +9,12 @@ import { SublineaComponent } from './shared/components/sublinea/sublinea.compone
 import { UnidadMedidaComponent } from './shared/components/unidadmedida/unidadmedida.component';
 import { ColorComponent } from './shared/components/color/color.component';
 import { ProductosComponent } from './shared/components/productos/productos.component';
+import { ClientesComponent } from './shared/components/clientes/clientes.component';
+import { ProveedoresComponent } from './shared/components/proveedores/proveedores.component';
 import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
-import { AvatarElementComponent } from './pages/ui-elements/avatar-element/avatar-element.component';
 import { BadgesComponent } from './pages/ui-elements/badges/badges.component';
-import { ButtonsComponent } from './pages/ui-elements/buttons/buttons.component';
-import { ImagesComponent } from './pages/ui-elements/images/images.component';
-import { VideosComponent } from './pages/ui-elements/videos/videos.component';
 import { SignInComponent } from './pages/auth-pages/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/auth-pages/sign-up/sign-up.component';
 import { CalenderComponent } from './pages/calender/calender.component';
@@ -64,6 +62,16 @@ export const routes: Routes = [
         title: 'Angular Productos Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
+        path: 'clientes',
+        component: ClientesComponent,
+        title: 'Angular Clientes Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'proveedores',
+        component: ProveedoresComponent,
+        title: 'Angular Proveedores Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
         path: 'dashboard',
         component: EcommerceComponent,
        
@@ -98,29 +106,9 @@ export const routes: Routes = [
         title: 'Angular Invoice Details Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
-        path: 'avatars',
-        component: AvatarElementComponent,
-        title: 'Angular Avatars Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
-      {
         path: 'badge',
         component: BadgesComponent,
         title: 'Angular Badges Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
-      {
-        path: 'buttons',
-        component: ButtonsComponent,
-        title: 'Angular Buttons Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
-      {
-        path: 'images',
-        component: ImagesComponent,
-        title: 'Angular Images Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
-      {
-        path: 'videos',
-        component: VideosComponent,
-        title: 'Angular Videos Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
     ]
   },

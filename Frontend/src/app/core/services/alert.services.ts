@@ -11,7 +11,7 @@ export interface AlertData {
   providedIn: 'root'
 })
 export class AlertService {
-
+  private timeoutId: any;
   private alertSubject =
     new Subject<AlertData | null>();
 
@@ -24,13 +24,15 @@ export class AlertService {
     title: string = ''
   ) {
 
+    clearTimeout(this.timeoutId);
+
     this.alertSubject.next({
       variant,
       title,
       message
     });
 
-    setTimeout(() => {
+    this.timeoutId = setTimeout(() => {
       this.alertSubject.next(null);
     }, 3000);
   }

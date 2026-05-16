@@ -1,19 +1,15 @@
 <router-outlet></router-outlet>
 
-@if(alert){
+@if (alert$ | async; as alert) {
+  <div class="fixed inset-0 z-[9999] flex items-center justify-center">
+    <div class="w-full max-w-md px-4">
 
-<div class="fixed inset-0 z-[9999] flex items-center justify-center">
+      <app-alert
+        [variant]="alert.variant"
+        [title]="alert.title || ''"
+        [message]="alert.message">
+      </app-alert>
 
-  <div class="w-full max-w-md px-4">
-
-    <app-alert
-      [variant]="alert.variant"
-      [title]="alert.title || ''"
-      [message]="alert.message">
-    </app-alert>
-
+    </div>
   </div>
-
-</div>
-
 }
