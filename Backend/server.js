@@ -75,6 +75,17 @@ app.use(unidadmedidaRoutes);
 const colorRoutes = require('./routes/color.routes');
 app.use(colorRoutes);
 
+//PROVEEDORES
+const proveedoresRoutes = require('./routes/proveedores.routes');
+app.use(proveedoresRoutes);
+
+//TIPO PERSONA
+const tipopersonaRoutes = require('./routes/tablas.routes');
+app.use(tipopersonaRoutes);
+
+//TIPO PERSONA
+const tipodocumentoRoutes = require('./routes/tablas.routes');
+app.use(tipodocumentoRoutes);
 
 // SERVIDOR FUNCIONANDO CORRECTAMENTE DEBE MOSTRAR EL MENSAJE API FUNCIONANDO
 app.listen(3000, () => {
