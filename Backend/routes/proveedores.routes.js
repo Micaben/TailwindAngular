@@ -2,24 +2,25 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
-router.get('/proveedores', async (req, res) => {
+router.get('/proveedor', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM proveedores order by codigo asc');
+    const result = await pool.query('SELECT * FROM proveedores order by ruc asc');
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ message: 'Error proveedores' });
   }
 });
 
-router.post('/proveedores', async (req, res) => {
-  const { codigo, descripcion } = req.body;
+router.post('/proveedor', async (req, res) => {
+  const { tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado } = req.body;
   try {
     await pool.query(
-      `INSERT INTO proveedores (codigo, descripcion) VALUES ($1, $2) `,
-      [codigo, descripcion]
+      `INSERT INTO proveedores (tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno,
+       nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+      [tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado]
     );
     res.json({
-      message: 'proveedores creada'
+      message: 'proveedores creado'
     });
 
   } catch (error) {
@@ -44,20 +45,19 @@ router.post('/proveedores', async (req, res) => {
   }
 });
 
-router.put('/proveedores/:id', async (req, res) => {
+router.put('/proveedor/:id', async (req, res) => {
   const { id } = req.params;
-  const {
-    descripcion
-  } = req.body;
+  const { tipo_documento, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado  } = req.body;
 
   try {
     await pool.query(
       `
       UPDATE proveedores
-      SET descripcion = $1
-      WHERE id = $2
+      SET tipo_documento=$1, tipo_persona=$2, nombres=$3, apellido_paterno=$4, apellido_materno=$5, nombre_comercial=$6,
+      razon_social=$7, direccion=$8 , nombre_contacto=$9 , telefono= $10, pais=$11, estado=$12
+      WHERE id = $13
       `,
-      [descripcion, id]
+      [tipo_documento, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado, id]
     );
 
     res.json({
