@@ -24,7 +24,7 @@
         <form>
           <div class="relative">
             <div class="flex items-center gap-5">
-              <app-button (click)="openModal()" size="sm" variant="primary" [startIcon]="boxIcon">
+              <app-button (click)="openCreateModal()" size="sm" variant="primary" [startIcon]="boxIcon">
                 Nuevo
               </app-button>
             </div>
@@ -47,7 +47,7 @@
               <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
                 Estado</th>
               <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
-                Action</th>
+                Acciòn</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 dark:divide-white/[0.05]">
@@ -60,17 +60,12 @@
               </td>
               <td class="px-4 py-4 text-center align-middle">
                 <span class="font-medium text-gray-700 text-theme-sm dark:text-gray-300">
-                  {{ item.razonsocial }}
+                  {{ item.razon_social }}
                 </span>
               </td>
               <td class="px-4 py-4 text-center align-middle">
                 <span class="font-medium text-gray-700 text-theme-sm dark:text-gray-300">
                   {{ item.direccion }}
-                </span>
-              </td>
-              <td class="px-4 py-4 text-center align-middle">
-                <span class="font-medium text-gray-700 text-theme-sm dark:text-gray-300">
-                  {{ item.telefono }}
                 </span>
               </td>
               <td class="px-4 py-4 text-center align-middle">
@@ -145,8 +140,8 @@
 </div>
 
 <!-- Modal -->
-<app-modal [isOpen]="isOpen" (close)="closeModal()" className="w-full max-w-4xl p-4">
-  <div
+<app-modal [isOpen]="isOpen" *ngIf="isOpen" (close)="closeModal()" className="w-full max-w-4xl p-4">
+  <div appAutoFocusFirst
     class="no-scrollbar relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
     <div class="px-2">
       <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
@@ -155,14 +150,14 @@
       <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
         Ingresa o cambia los datos para tener la informacion actualizada.
       </p>
-      <form class="flex flex-col flex-1 overflow-hidden" (ngSubmit)="handleSave()">
+      <form class="flex flex-col flex-1 overflow-hidden" #form="ngForm" (ngSubmit)="handleSave(form)">
         <div class="space-y-5">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
               <label class="mb-2 block text-sm font-medium">
                 Tipo Documento
               </label>
-              <select [(ngModel)]="selected.tipodocumento" name="tipodocumento"
+              <select [(ngModel)]="selected.tipo_documento" name="tipo_documento"
                 class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
                 <option value="" disabled>Seleccione una opción</option>
                 @for (option of tipodocumentooptions; track $index) {
@@ -176,13 +171,13 @@
               <label class="mb-2 block text-sm font-medium">
                 Numero
               </label>
-              <app-input-field type="text" [(ngModel)]="selected.ruc" name="ruc"></app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.ruc" name="ruc" [required]="true" [disabled]="modo === 'editar'"></app-input-field>
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
                 Tipo Persona
               </label>
-              <select [(ngModel)]="selected.tipopersona" name="tipopersona"
+              <select [(ngModel)]="selected.tipo_persona" name="tipo_persona"
                 class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
                 <option value="" disabled>Seleccione una opción</option>
                 @for (option of tipopersonaoptions; track $index) {
@@ -198,106 +193,99 @@
               <label class="mb-2 block text-sm font-medium">
                 Nombres
               </label>
-              <app-input-field type="text"></app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.nombres" name="nombres"></app-input-field>
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
                 Apellido Paterno
               </label>
-              <app-input-field type="text"></app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.apellido_paterno"
+                name="apellido_paterno"></app-input-field>
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
                 Apellido Materno
               </label>
-              <app-input-field type="text"></app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.apellido_materno"
+                name="apellido_materno"></app-input-field>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-5">            
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
             <div class="md:col-span-4">
               <label class="mb-2 block text-sm font-medium">
                 Nombre Comercial
               </label>
-              <app-input-field type="text" name=""></app-input-field>
+              <app-input-field [(ngModel)]="selected.nombre_comercial" name="nombre_comercial"></app-input-field>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-5">            
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
             <div class="md:col-span-4">
               <label class="mb-2 block text-sm font-medium">
                 Razon Social
               </label>
-              <app-input-field type="text" name=""></app-input-field>
+              <app-input-field [(ngModel)]="selected.razon_social" name="razon_social"
+                [required]="true"></app-input-field>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+              <div class="md:col-span-4 w-full">
+                <label class="mb-2 block text-sm font-medium">
+                  Dirección
+                </label>
+                <app-input-field [(ngModel)]="selected.direccion" name="direccion"></app-input-field>
+              </div>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-5">            
-            <div class="md:col-span-4">
-              <label class="mb-2 block text-sm font-medium">
-                Dirección
-              </label>
-              <app-input-field type="text" name=""></app-input-field>
-            </div>
-          </div>
-          
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            
             <div>
               <label class="mb-2 block text-sm font-medium">
                 Nombre de Contacto
               </label>
-              <app-input-field type="text"></app-input-field>
+              <app-input-field [(ngModel)]="selected.nombre_contacto" name="nombre_contacto"></app-input-field>
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
                 Telefono
               </label>
-              <app-input-field type="text"></app-input-field>
+              <app-input-field [(ngModel)]="selected.telefono" name="telefono"></app-input-field>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium">
+                Pais
+              </label>
+              <app-input-field [(ngModel)]="selected.pais" name="pais"></app-input-field>
             </div>
           </div>
           <!-- CHECKBOX -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div>
-              <label class="flex items-center gap-3">
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Activo
-                </span>
-                <div class="relative">
-                  <input type="checkbox" class="peer sr-only" checked />
-                  <div
-                    class="h-6 w-11 rounded-full bg-gray-300 transition-colors peer-checked:bg-brand-500 dark:bg-gray-700">
-                  </div>
-                  <div
-                    class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5">
-                  </div>
-                </div>
-              </label>
-            </div>
-            <div class="md:col-span-2">
-              <label class="flex items-center gap-3">
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Ag. Retención
-                </span>
-                <div class="relative">
-                  <input type="checkbox" class="peer sr-only" />
-                  <div
-                    class="h-6 w-11 rounded-full bg-gray-300 transition-colors peer-checked:bg-brand-500 dark:bg-gray-700">
-                  </div>
-                  <div
-                    class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5">
-                  </div>
-                </div>
-              </label>
-            </div>
-          </div>
+  <div>
+    <label class="flex items-center gap-3">
+      <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+        Activo
+      </span>
+
+      <div class="relative">
+        <input type="checkbox" class="peer sr-only" [(ngModel)]="selected.estado" name="estado"/>
+        <div
+          class="h-6 w-11 rounded-full bg-gray-300 transition-colors peer-checked:bg-brand-500 dark:bg-gray-700">
         </div>
 
-        <!-- FOOTER -->
-        <div class="mt-8 flex flex-col-reverse sm:flex-row justify-end gap-3">
-          <button type="button" (click)="closeModal()" class="rounded-lg border px-5 py-2">
-            Cancelar
-          </button>
-          <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
-            Guardar
-          </button>
+        <div
+          class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5">
+        </div>
+      </div>
+    </label>
+  </div>
+</div>
+
+          <!-- FOOTER -->
+          <div class="mt-8 flex flex-col-reverse sm:flex-row justify-end gap-3">
+            <button type="button" (click)="closeModal()" class="rounded-lg border px-5 py-2">
+              Cancelar
+            </button>
+            <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
+              Guardar
+            </button>
+          </div>
         </div>
       </form>
     </div>

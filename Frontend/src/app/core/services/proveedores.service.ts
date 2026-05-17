@@ -15,10 +15,24 @@ export class ProveedoresService {
   obtenerProveedor() {
       return firstValueFrom(
         this.http.get<Proveedores[]>(
-          `${this.API_URL}/productos`
+          `${this.API_URL}/proveedor`
         )
       );
     }
+
+  crearProveedor(data: any) {
+    return this.http.post(
+      'http://localhost:3000/proveedor',
+      data
+    );
+  }
+
+  actualizarProveedor(id: number, data: any) {
+    return this.http.put(
+      `http://localhost:3000/proveedor/${id}`,
+      data
+    );
+  }
 
   toggleEstado(id: number) {
     return this.http.put(

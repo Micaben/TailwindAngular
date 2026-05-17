@@ -34,9 +34,9 @@ export class SublineaService {
     );
   }
 
-getSublineasByLinea(lineaId: string) {
-  return this.http.get<any[]>(
-    `http://localhost:3000/sublinea?linea=${lineaId}`
-  );
-}
+  async getSublineasByLinea(lineaId: string) {
+    return await firstValueFrom(
+      this.http.get<any[]>(`${this.apiUrl}/${lineaId}`)
+    );
+  }
 }

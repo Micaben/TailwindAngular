@@ -55,8 +55,6 @@ export class SublineaComponent {
   @Input() value: string = '';
   @Output() valueChange = new EventEmitter<string>();
   @Input() options: Option[] = [];
-  @Input() className: string = '';
-  @Input() placeholder: string = 'Seleccione';
   get totalPages(): number {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }

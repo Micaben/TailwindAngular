@@ -10,6 +10,8 @@ import { BadgeComponent } from '../ui/badge/badge.component';
 import { Proveedores } from '../../../core/models/proveedores.model';
 import { ProveedoresService } from '../../../core/services/proveedores.service';
 import { TablasService } from '../../../core/services/tablas.service';
+import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
+import { AlertService } from '../../../core/services/alert.services';
 
 export interface Option {
   value: string;
@@ -24,6 +26,7 @@ export interface Option {
     InputFieldComponent,
     BadgeComponent,
     ModalComponent,
+    AutoFocusFirstDirective,
     FormsModule,
     PageBreadcrumbComponent,
   ],
@@ -33,23 +36,28 @@ export interface Option {
 
 export class ProveedoresComponent {
   selected: any = {
+    tipo_documento: '',
     ruc: '',
-    razonocial: '',
+    tipo_persona: '',
+    nombres: '',
+    apellido_paterno: '',
+    apellido_materno: '',
+    nombre_comercial: '',
+    razon_social: '',
     direccion: '',
+    nombre_contacto: '',
     telefono: '',
-    tipopersona: '',
-    tipodocumento: '',
     pais: '',
-    correo: ''
+    estado: true,
+    required: 'true'
   };
-  constructor(public modal: ModalService, private tablasService: TablasService, private proveedoresService: ProveedoresService) { }
+  constructor(public modal: ModalService, private alertService: AlertService, private tablasService: TablasService, private proveedoresService: ProveedoresService) { }
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
   filteredItems: Proveedores[] = [];
   proveedores: Proveedores[] = [];
-  today: string = new Date().toISOString().split('T')[0];
   isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
@@ -59,16 +67,13 @@ export class ProveedoresComponent {
   @Output() valueChange = new EventEmitter<string>();
   @Input() tipopersonaoptions: Option[] = [];
   @Input() tipodocumentooptions: Option[] = [];
-  @Input() type: string = 'text';
-  expirationDate: string = '';
-  @Input() placeholder?: string;
   get totalPages(): number {
-    return Math.ceil(this.proveedores.length / this.itemsPerPage);
+    return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }
 
   get currentItems(): Proveedores[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.proveedores.slice(start, start + this.itemsPerPage);
+    return this.filteredItems.slice(start, start + this.itemsPerPage);
   }
 
   goToPage(page: number) {
@@ -77,9 +82,64 @@ export class ProveedoresComponent {
     }
   }
 
-  handleSave() {
-    console.log('Saving changes...');
-    this.modal.closeModal();
+  filterTable() {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      this.filteredItems = [...this.proveedores];
+      return;
+    }
+
+    this.filteredItems = this.proveedores.filter(item =>
+      item.ruc?.toLowerCase().includes(term) ||
+      item.razon_social?.toLowerCase().includes(term)
+    );
+  }
+
+  async ngOnInit() {
+    await this.cargarProveedor();
+    await this.cargarTipodocumento();
+    await this.cargarTipopersona();
+    const today = new Date();
+
+    today.setDate(today.getDate() + 30);
+  }
+
+  async cargarProveedor() {
+    this.proveedores = await this.proveedoresService.obtenerProveedor();
+    this.filteredItems = [...this.proveedores];
+  }
+
+  async handleSave(form: any) {
+    this.formSubmitted = true;
+    if (this.modo === 'crear') {
+      if (form.invalid) {
+        return;
+      }
+      this.proveedoresService.crearProveedor(this.selected)
+        .subscribe({
+          next: async () => {
+            await this.cargarProveedor();
+            this.alertService.success('Datos guardados');
+
+          },
+          error: (err) => {
+            this.alertService.error(
+              err.error?.message || 'Ocurrió un error'
+            );
+          }
+        });
+    } else {
+      this.proveedoresService.actualizarProveedor(
+        this.selected.id,
+        this.selected
+      ).subscribe({
+        next: async () => {
+          this.alertService.success('Datos modificados');
+          await this.cargarProveedor();
+
+        }
+      });
+    }
   }
 
   onChange(event: Event) {
@@ -99,35 +159,30 @@ export class ProveedoresComponent {
     return 'error';
   }
 
-  async ngOnInit() {
-    this.proveedores = await this.proveedoresService.obtenerProveedor();
-    await this.cargarTipodocumento();
-    await this.cargarTipopersona();
-    console.log(this.cargarTipopersona);
-    const today = new Date();
-
-    today.setDate(today.getDate() + 30);
-
-    this.expirationDate = today.toISOString().split('T')[0];
-  }
-
   openCreateModal() {
     this.formSubmitted = false;
     this.modo = 'crear';
     this.selected = {
-      codigo: '',
-      descripcion: '',
-      linea: ''
+      tipo_documento: '',
+      ruc: '',
+      tipo_persona: '',
+      nombres: '',
+      apellido_paterno: '',
+      apellido_materno: '',
+      nombre_comercial: '',
+      razon_social: '',
+      direccion: '',
+      nombre_contacto: '',
+      telefono: '',
+      pais: '',
+      estado: true
     };
-    this.value = '';
     this.isOpen = true;
   }
 
   openEditModal(item: any) {
     this.modo = 'editar';
     this.selected = { ...item };
-    this.value = String(item.codigolinea);
-    this.selected.linea = String(item.codigolinea);
     this.isOpen = true;
   }
 
