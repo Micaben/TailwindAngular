@@ -3,4 +3,5 @@ export interface Sublinea{
   codigo: string;
   descripcion: string;
   lineadescripcion : string
+  codigolinea: string
 }

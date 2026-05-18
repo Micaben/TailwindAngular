@@ -26,4 +26,18 @@ export class ProductosService {
       {}
     );
   }
+
+  crearProducto(data: any) {
+    return this.http.post(
+      'http://localhost:3000/productos',
+      data
+    );
+  }
+
+  actualizarProducto(id: number, data: any) {
+    return this.http.put(
+      `http://localhost:3000/productos/${id}`,
+      data
+    );
+  }
 }

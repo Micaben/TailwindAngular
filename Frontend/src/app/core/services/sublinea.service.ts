@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Sublinea } from '../../core/models/sublinea.model';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,13 @@ export class SublineaService {
   }
 
   async getSublineasByLinea(lineaId: string) {
+    const params = new HttpParams()
+      .set('linea', lineaId);
     return await firstValueFrom(
-      this.http.get<any[]>(`${this.apiUrl}/${lineaId}`)
+      this.http.get<any[]>(
+        `${this.API_URL}/sublinea`,
+        { params }
+      )
     );
   }
 }

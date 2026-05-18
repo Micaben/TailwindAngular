@@ -109,10 +109,7 @@ export class ClientesComponent {
 
   async ngOnInit() {
     this.productos = await this.productosService.obtenerProductos();
-    await this.cargarNaturaleza();
-    await this.cargarLinea();
-    await this.cargarUnidadmedida();
-    await this.cargarColor();
+
     console.log(this.productos);
     const today = new Date();
 
@@ -141,64 +138,4 @@ export class ClientesComponent {
     this.isOpen = true;
   }
 
-  onLineaChange(event: any) {
-    const lineaId = event.target.value;
-    this.selected.sublinea = null;
-    this.sublineaoptions = [];
-    this.cargarSublinea(lineaId);
-  }
-
-  cambiarEstado(item: any) {
-    this.productosService.toggleEstado(item.id).subscribe({
-      next: (res: any) => {
-        item.estado = res.estado; // actualiza UI sin recargar
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
-  }
-
-  async cargarNaturaleza() {
-    const data = await this.naturalezaService.obtenerNaturaleza();
-    this.naturalezaoptions = data.map((item: any) => ({
-      value: item.codigo,
-      label: item.descripcion
-    }));
-  }
-
-  async cargarLinea() {
-    const data = await this.lineaService.obtenerLinea();
-    this.lineaoptions = data.map((item: any) => ({
-      value: item.codigo,
-      label: item.descripcion
-    }));
-  }
-
-  cargarSublinea(lineaId: string) {
-    this.sublineaoptions = [];
-    this.sublineaService.getSublineasByLinea(lineaId)
-      .subscribe((data: any[]) => {
-        this.sublineaoptions = data.map((item: any) => ({
-          value: item.codigo,
-          label: item.descripcion
-        }));
-      });
-  }
-
-  async cargarUnidadmedida() {
-    const data = await this.unidadmedidaService.obtenerUnidadMedida();
-    this.unidadmedidaoptions = data.map((item: any) => ({
-      value: item.codigo,
-      label: item.descripcion
-    }));
-  }
-
-  async cargarColor() {
-    const data = await this.colorService.obtenerColor();
-    this.coloroptions = data.map((item: any) => ({
-      value: item.codigo,
-      label: item.descripcion
-    }));
-  }
 }
