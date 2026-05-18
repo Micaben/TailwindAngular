@@ -50,9 +50,7 @@ router.post('/linea', async (req, res) => {
 
 router.put('/linea/:id', async (req, res) => {
   const { id } = req.params;
-  const {
-    descripcion
-  } = req.body;
+  const { descripcion } = req.body;
 
   try {
     await pool.query(
