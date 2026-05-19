@@ -79,6 +79,10 @@ app.use(colorRoutes);
 const proveedoresRoutes = require('./routes/proveedores.routes');
 app.use(proveedoresRoutes);
 
+//CLIENTES
+const clientesRoutes = require('./routes/clientes.routes');
+app.use(clientesRoutes);
+
 //TIPO PERSONA
 const tipopersonaRoutes = require('./routes/tablas.routes');
 app.use(tipopersonaRoutes);
@@ -86,6 +90,26 @@ app.use(tipopersonaRoutes);
 //TIPO PERSONA
 const tipodocumentoRoutes = require('./routes/tablas.routes');
 app.use(tipodocumentoRoutes);
+
+//TIPO MONEDA
+const monedaRoutes = require('./routes/tablas.routes');
+app.use(monedaRoutes);
+
+//CONDICION DE VENTA
+const condicionRoutes = require('./routes/condicion.routes');
+app.use(condicionRoutes);
+
+//VENDEDOR
+const vendedorRoutes = require('./routes/vendedor.routes');
+app.use(vendedorRoutes);
+
+//CONCEPTO
+const conceptoRoutes = require('./routes/concepto.routes');
+app.use(conceptoRoutes);
+
+//ALMACENES
+const almacenesRoutes = require('./routes/almacenes.routes');
+app.use(almacenesRoutes);
 
 // SERVIDOR FUNCIONANDO CORRECTAMENTE DEBE MOSTRAR EL MENSAJE API FUNCIONANDO
 app.listen(3000, () => {
