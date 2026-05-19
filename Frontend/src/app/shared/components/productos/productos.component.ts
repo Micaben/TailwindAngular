@@ -17,8 +17,7 @@ import { UnidadMedidaService } from '../../../core/services/unidadmedida.service
 import { ColorService } from '../../../core/services/color.service';
 import { AlertService } from '../../../core/services/alert.services';
 
-
-interface ProductoForm {
+interface Formulario {
   id?: number;
   naturaleza: string;
   linea: string;
@@ -48,7 +47,7 @@ interface Option {
   label: string;
 }
 
-const EMPTY_PRODUCTO_FORM: ProductoForm = {
+const EMPTY_FORM: Formulario = {
   id: undefined,
   naturaleza: '',
   linea: '',
@@ -88,7 +87,7 @@ const EMPTY_PRODUCTO_FORM: ProductoForm = {
 })
 
 export class ProductosComponent implements OnInit {
-  selected: ProductoForm = { ...EMPTY_PRODUCTO_FORM };
+  selected: Formulario = { ...EMPTY_FORM };
   filteredItems: Productos[] = [];
   productos: Productos[] = [];
   naturalezaoptions: Option[] = [];
@@ -164,7 +163,7 @@ export class ProductosComponent implements OnInit {
         );
 
         this.closeModal();
-        this.selected = { ...EMPTY_PRODUCTO_FORM };
+        this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },
 
@@ -190,7 +189,7 @@ export class ProductosComponent implements OnInit {
   openCreateModal() {
     this.formSubmitted = false;
     this.modo = 'crear';
-    this.selected = { ...EMPTY_PRODUCTO_FORM };
+    this.selected = { ...EMPTY_FORM };
     this.isOpen = true;
   }
 

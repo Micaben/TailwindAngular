@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Tipopersona } from '../models/tipopersona.model';
 import { Tipodocumento } from '../models/tipodocumento.model';
+import { Moneda } from '../models/moneda.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,14 @@ export class TablasService {
     return firstValueFrom(
       this.http.get<Tipodocumento[]>(
         `${this.API_URL}/tipo_documento`
+      )
+    );
+  }
+
+  obtenerMoneda() {
+    return firstValueFrom(
+      this.http.get<Moneda[]>(
+        `${this.API_URL}/moneda`
       )
     );
   }

@@ -4,9 +4,10 @@ import { InputFieldComponent } from '../form/input/input-field.component';
 import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterViewInit } from '@angular/core';
 import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
+import { BadgeComponent } from '../ui/badge/badge.component';
 import { ModalComponent } from '../ui/modal/modal.component';
-import { LineaService } from '../../../core/services/linea.service';
-import { Linea } from '../../../core/models/linea.model';
+import { VendedorService } from '../../../core/services/vendedor.service';
+import { Vendedor } from '../../../core/models/vendedor.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
@@ -14,7 +15,11 @@ import { AlertService } from '../../../core/services/alert.services';
 interface Formulario {
   id?: number;
   codigo: string;
-  descripcion: string;
+  nombres: string;
+  direccion: string;
+  telefono: string;
+  correo: string;
+  estado: boolean;
 }
 
 interface Option {
@@ -25,33 +30,38 @@ interface Option {
 const EMPTY_FORM: Formulario = {
   id: undefined,
   codigo: '',
-  descripcion: '',
+  nombres: '',
+  direccion: '',
+  telefono: '',
+  correo: '',
+  estado: true,
 };
 
 @Component({
-  selector: 'app-linea',
+  selector: 'app-vendedor',
   imports: [
     CommonModule,
     ButtonComponent,
     InputFieldComponent,
+    BadgeComponent,
     ModalComponent,
     PageBreadcrumbComponent,
     FormsModule,
     AutoFocusFirstDirective,
   ],
-  templateUrl: './linea.component.html',
+  templateUrl: './vendedor.component.html',
   styles: ``
 })
 
-export class LineaComponent {
+export class VendedorComponent {
   selected: Formulario = { ...EMPTY_FORM };
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
-  constructor(public modal: ModalService, private alertService: AlertService, private lineaService: LineaService) { }
+  constructor(public modal: ModalService, private alertService: AlertService, private vendedorService: VendedorService) { }
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
-  filteredItems: Linea[] = [];
-  linea: Linea[] = [];
+  filteredItems: Vendedor[] = [];
+  vendedor: Vendedor[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
@@ -62,7 +72,7 @@ export class LineaComponent {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }
 
-  get currentItems(): Linea[] {
+  get currentItems(): Vendedor[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredItems.slice(start, start + this.itemsPerPage);
   }
@@ -76,26 +86,20 @@ export class LineaComponent {
   filterTable() {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
-      this.filteredItems = [...this.linea];
+      this.filteredItems = [...this.vendedor];
       return;
     }
 
-    this.filteredItems = this.linea.filter(item =>
+    this.filteredItems = this.vendedor.filter(item =>
       item.codigo?.toLowerCase().includes(term) ||
-      item.descripcion?.toLowerCase().includes(term)
+      item.nombres?.toLowerCase().includes(term)
     );
   }
 
-  /*async cargarLinea() {
-    this.linea =
-      await this.lineaService.obtenerLinea();
-    this.filteredItems = [...this.linea];
-  }*/
-
-  async cargarLinea() {
+  async cargarVendedor() {
     try {
-      this.linea = await this.lineaService.obtenerLinea();
-      this.filteredItems = [...this.linea];
+      this.vendedor = await this.vendedorService.obtenerVendedor();
+      this.filteredItems = [...this.vendedor];
     } catch (error) {
       this.alertService.error('Error cargando productos');
     }
@@ -115,15 +119,15 @@ export class LineaComponent {
     console.log(payload);
     const request =
       this.modo === 'crear'
-        ? this.lineaService.crearLinea(payload)
-        : this.lineaService.actualizarLinea(
+        ? this.vendedorService.crearVendedor(payload)
+        : this.vendedorService.actualizarVendedor(
           this.selected.id!,
           payload
         );
 
     request.subscribe({
       next: async () => {
-        await this.cargarLinea();
+        await this.cargarVendedor();
 
         this.alertService.success(
           this.modo === 'crear'
@@ -146,7 +150,7 @@ export class LineaComponent {
 
   async ngOnInit(): Promise<void> {
     await Promise.all([
-      this.cargarLinea()
+      this.cargarVendedor()
     ]);
   }
 
@@ -157,14 +161,29 @@ export class LineaComponent {
     this.isOpen = true;
   }
 
-  async openEditModal(item: Linea) {
+  async openEditModal(item: Vendedor) {
     this.formSubmitted = false;
     this.modo = 'editar';
     this.selected = {
       id: item.id,
       codigo: item.codigo || '',
-      descripcion: item.descripcion || '',
+      nombres: item.nombres || '',
+      direccion: item.direccion || '',
+      telefono: item.telefono || '',
+      correo: item.correo || '',
+      estado: item.estado || true,
     };
     this.isOpen = true;
+  }
+
+  getBadgeColor(estado: any): 'success' | 'warning' | 'error' {
+    const value = String(estado).toLowerCase();
+    if (value === 'true' || value === 'activo' || value === 'active') {
+      return 'success';
+    }
+    if (value === 'pendiente' || value === 'pending') {
+      return 'warning';
+    }
+    return 'error';
   }
 }

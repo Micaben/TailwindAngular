@@ -9,8 +9,12 @@ import { SublineaComponent } from './shared/components/sublinea/sublinea.compone
 import { UnidadMedidaComponent } from './shared/components/unidadmedida/unidadmedida.component';
 import { ColorComponent } from './shared/components/color/color.component';
 import { ProductosComponent } from './shared/components/productos/productos.component';
+import { AlmacenesComponent } from './shared/components/almacenes/almacenes.component';
 import { ClientesComponent } from './shared/components/clientes/clientes.component';
 import { ProveedoresComponent } from './shared/components/proveedores/proveedores.component';
+import { VendedorComponent } from './shared/components/vendedor/vendedor.component';
+import { CondicionComponent } from './shared/components/condicion/condicion.component';
+import { ConceptoComponent } from './shared/components/concepto/concepto.component';
 import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
@@ -31,6 +35,11 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: 'almacenes',
+        component: AlmacenesComponent,
+        title: 'Angular Almacenes Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
       {
         path: 'naturaleza',
         component: NaturalezaComponent,
@@ -70,6 +79,21 @@ export const routes: Routes = [
         path: 'proveedores',
         component: ProveedoresComponent,
         title: 'Angular Proveedores Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'vendedor',
+        component: VendedorComponent,
+        title: 'Angular Vendedor Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'condicion',
+        component: CondicionComponent,
+        title: 'Angular Condicion Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'concepto',
+        component: ConceptoComponent,
+        title: 'Angular Concepto Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'dashboard',

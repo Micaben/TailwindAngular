@@ -1,7 +1,7 @@
 import { PageBreadcrumbComponent } from '../common/page-breadcrumb/page-breadcrumb.component';
 import { CommonModule } from '@angular/common';
 import { InputFieldComponent } from '../form/input/input-field.component';
-import { Component, Input, Output, EventEmitter, } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, } from '@angular/core';
 import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
@@ -13,10 +13,45 @@ import { TablasService } from '../../../core/services/tablas.service';
 import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
 
+interface Formulario {
+  id?: number;
+  tipo_documento: string,
+  ruc: string,
+  tipo_persona: string,
+  nombres: string,
+  apellido_paterno: string,
+  apellido_materno: string,
+  nombre_comercial: string,
+  razon_social: string,
+  direccion: string,
+  nombre_contacto: string,
+  telefono: string,
+  pais: string,
+  estado: boolean,
+
+}
+
 export interface Option {
   value: string;
   label: string;
 }
+
+const EMPTY_FORM: Formulario = {
+  id: undefined,
+  tipo_documento: '',
+  ruc: '',
+  tipo_persona: '',
+  nombres: '',
+  apellido_paterno: '',
+  apellido_materno: '',
+  nombre_comercial: '',
+  razon_social: '',
+  direccion: '',
+  nombre_contacto: '',
+  telefono: '',
+  pais: '',
+  estado: true,
+};
 
 @Component({
   selector: 'app-proveedores',
@@ -34,23 +69,8 @@ export interface Option {
   styles: ``
 })
 
-export class ProveedoresComponent {
-  selected: any = {
-    tipo_documento: '',
-    ruc: '',
-    tipo_persona: '',
-    nombres: '',
-    apellido_paterno: '',
-    apellido_materno: '',
-    nombre_comercial: '',
-    razon_social: '',
-    direccion: '',
-    nombre_contacto: '',
-    telefono: '',
-    pais: '',
-    estado: true,
-    required: 'true'
-  };
+export class ProveedoresComponent implements OnInit {
+  selected: Formulario = { ...EMPTY_FORM };
   constructor(public modal: ModalService, private alertService: AlertService, private tablasService: TablasService, private proveedoresService: ProveedoresService) { }
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
@@ -58,15 +78,14 @@ export class ProveedoresComponent {
   searchTerm: string = '';
   filteredItems: Proveedores[] = [];
   proveedores: Proveedores[] = [];
+  @Input() tipopersonaoptions: Option[] = [];
+  @Input() tipodocumentooptions: Option[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
   currentPage = 1;
   itemsPerPage = 5;
-  @Input() value: string = '';
-  @Output() valueChange = new EventEmitter<string>();
-  @Input() tipopersonaoptions: Option[] = [];
-  @Input() tipodocumentooptions: Option[] = [];
+
   get totalPages(): number {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }
@@ -95,58 +114,96 @@ export class ProveedoresComponent {
     );
   }
 
-  async ngOnInit() {
-    await this.cargarProveedor();
-    await this.cargarTipodocumento();
-    await this.cargarTipopersona();
-    const today = new Date();
+  async handleSave(form: any) {
+    this.formSubmitted = true;
 
-    today.setDate(today.getDate() + 30);
+    if (form.invalid) {
+      return;
+    }
+    const payload = {
+      ...this.selected,
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+      //fechaFin: this.selected.fechaFin || null,
+    };
+    console.log(payload);
+    const request =
+      this.modo === 'crear'
+        ? this.proveedoresService.crearProveedor(payload)
+        : this.proveedoresService.actualizarProveedor(
+          this.selected.id!,
+          payload
+        );
+
+    request.subscribe({
+      next: async () => {
+        await this.cargarProveedor();
+
+        this.alertService.success(
+          this.modo === 'crear'
+            ? 'Datos guardados'
+            : 'Datos modificados'
+        );
+
+        this.closeModal();
+        this.selected = { ...EMPTY_FORM };
+        this.formSubmitted = false;
+      },
+
+      error: (err) => {
+        this.alertService.error(
+          err.error?.message || 'Ocurrió un error'
+        );
+      }
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    await Promise.all([
+      this.cargarTipopersona(),
+      this.cargarTipodocumento(),
+      this.cargarProveedor()
+    ]);
   }
 
   async cargarProveedor() {
-    this.proveedores = await this.proveedoresService.obtenerProveedor();
-    this.filteredItems = [...this.proveedores];
-  }
-
-  async handleSave(form: any) {
-    this.formSubmitted = true;
-    if (this.modo === 'crear') {
-      if (form.invalid) {
-        return;
-      }
-      this.proveedoresService.crearProveedor(this.selected)
-        .subscribe({
-          next: async () => {
-            await this.cargarProveedor();
-            this.alertService.success('Datos guardados');
-
-          },
-          error: (err) => {
-            this.alertService.error(
-              err.error?.message || 'Ocurrió un error'
-            );
-          }
-        });
-    } else {
-      this.proveedoresService.actualizarProveedor(
-        this.selected.id,
-        this.selected
-      ).subscribe({
-        next: async () => {
-          this.alertService.success('Datos modificados');
-          await this.cargarProveedor();
-
-        }
-      });
+    try {
+      this.proveedores = await this.proveedoresService.obtenerProveedor();
+      this.filteredItems = [...this.proveedores];
+    } catch (error) {
+      this.alertService.error('Error cargando productos');
     }
   }
 
-  onChange(event: Event) {
+  mapOptions<T>(data: T[], valueKey: keyof T, labelKey: keyof T): Option[] {
+    return data.map(item => ({
+      value: String(item[valueKey]),
+      label: String(item[labelKey])
+    }));
+  }
+
+  async cargarTipopersona() {
+    const data = await this.tablasService.obtenerTipopersona();
+    this.tipopersonaoptions = this.mapOptions(
+      data,
+      'codigo',
+      'descripcion'
+    );
+  }
+
+  async cargarTipodocumento() {
+    const data = await this.tablasService.obtenerTipodocumento();
+    this.tipodocumentooptions = this.mapOptions(
+      data,
+      'codigo',
+      'descripcion'
+    );
+  }
+
+  /*onChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
     this.value = value;
     this.valueChange.emit(value);
-  }
+  }*/
 
   getBadgeColor(estado: any): 'success' | 'warning' | 'error' {
     const value = String(estado).toLowerCase();
@@ -162,27 +219,29 @@ export class ProveedoresComponent {
   openCreateModal() {
     this.formSubmitted = false;
     this.modo = 'crear';
-    this.selected = {
-      tipo_documento: '',
-      ruc: '',
-      tipo_persona: '',
-      nombres: '',
-      apellido_paterno: '',
-      apellido_materno: '',
-      nombre_comercial: '',
-      razon_social: '',
-      direccion: '',
-      nombre_contacto: '',
-      telefono: '',
-      pais: '',
-      estado: true
-    };
+    this.selected = { ...EMPTY_FORM };
     this.isOpen = true;
   }
 
-  openEditModal(item: any) {
+  async openEditModal(item: Proveedores) {
+    this.formSubmitted = false;
     this.modo = 'editar';
-    this.selected = { ...item };
+    this.selected = {
+      id: item.id,
+      tipo_documento: item.tipo_documento || '',
+      ruc: item.ruc || '',
+      tipo_persona: item.tipo_persona || '',
+      nombres: item.nombres || '',
+      apellido_paterno: item.apellido_paterno || '',
+      apellido_materno: item.apellido_materno || '',
+      nombre_comercial: item.nombre_comercial || '',
+      razon_social: item.razon_social || '',
+      direccion: item.direccion || '',
+      nombre_contacto: item.nombre_contacto || '',
+      telefono: item.telefono || '',
+      pais: item.pais || '',
+      estado: item.estado ?? true
+    };
     this.isOpen = true;
   }
 
@@ -197,19 +256,5 @@ export class ProveedoresComponent {
     });
   }
 
-  async cargarTipopersona() {
-    const data = await this.tablasService.obtenerTipopersona();
-    this.tipopersonaoptions = data.map((item: any) => ({
-      value: item.codigo,
-      label: item.descripcion
-    }));
-  }
 
-  async cargarTipodocumento() {
-    const data = await this.tablasService.obtenerTipodocumento();
-    this.tipodocumentooptions = data.map((item: any) => ({
-      value: item.codigo,
-      label: item.descripcion
-    }));
-  }
 }

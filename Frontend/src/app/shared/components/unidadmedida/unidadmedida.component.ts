@@ -11,10 +11,22 @@ import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
 
-export interface Option {
+interface Formulario {
+  id?: number;
+  codigo: string;
+  descripcion: string;
+}
+
+interface Option {
   value: string;
   label: string;
 }
+
+const EMPTY_FORM: Formulario = {
+  id: undefined,
+  codigo: '',
+  descripcion: '',
+};
 
 @Component({
   selector: 'app-unidadmedida',
@@ -32,12 +44,7 @@ export interface Option {
 })
 
 export class UnidadMedidaComponent {
-  selected: any = {
-    codigo: '',
-    descripcion: '',
-    required: 'true'
-  };
-
+  selected: Formulario = { ...EMPTY_FORM };
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
   constructor(public modal: ModalService, private alertService: AlertService, private unidadmedidaService: UnidadMedidaService) { }
@@ -47,16 +54,9 @@ export class UnidadMedidaComponent {
   unidadmedida: UnidadMedida[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
-  closeModal() {
-    this.isOpen = false; this.selected = {
-      codigo: '',
-      descripcion: ''
-    };
-  }
+  closeModal() { this.isOpen = false; }
   currentPage = 1;
   itemsPerPage = 5;
-  @Input() value: string = '';
-  @Output() valueChange = new EventEmitter<string>();
   @Input() options: Option[] = [];
   get totalPages(): number {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
@@ -85,71 +85,80 @@ export class UnidadMedidaComponent {
       item.descripcion?.toLowerCase().includes(term)
     );
   }
-  async ngOnInit() {
-    await this.cargarUnidadMedida();
-  }
 
   async cargarUnidadMedida() {
-    this.unidadmedida =
-      await this.unidadmedidaService.obtenerUnidadMedida();
-
-    this.filteredItems = [...this.unidadmedida];
-  }
-
-  async handleSave(form: any) {
-    this.formSubmitted = true;
-    if (this.modo === 'crear') {
-      if (form.invalid) {
-        return;
-      }
-
-      this.unidadmedidaService.crearUnidadMedida(this.selected)
-        .subscribe({
-          next: async () => {
-            this.alertService.success('Datos guardados');
-            await this.cargarUnidadMedida();
-            this.closeModal();
-          },
-
-          error: (err) => {
-            this.alertService.error(
-              err.error?.message || 'Ocurrió un error'
-            );
-          }
-        });
-    } else {
-      this.unidadmedidaService.actualizarUnidadMedida(
-        this.selected.id,
-        this.selected
-      ).subscribe({
-        next: async () => {
-          await this.cargarUnidadMedida();
-          this.alertService.success('Datos modificados');
-          this.closeModal();
-        }
-      });
+    try {
+      this.unidadmedida = await this.unidadmedidaService.obtenerUnidadMedida();
+      this.filteredItems = [...this.unidadmedida];
+    } catch (error) {
+      this.alertService.error('Error cargando productos');
     }
   }
 
-  onChange(event: Event) {
-    const value = (event.target as HTMLSelectElement).value;
-    this.value = value;
-    this.valueChange.emit(value);
+    async handleSave(form: any) {
+    this.formSubmitted = true;
+
+    if (form.invalid) {
+      return;
+    }
+    const payload = {
+      ...this.selected,
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+      //fechaFin: this.selected.fechaFin || null,
+    };
+    console.log(payload);
+    const request =
+      this.modo === 'crear'
+        ? this.unidadmedidaService.crearUnidadMedida(payload)
+        : this.unidadmedidaService.actualizarUnidadMedida(
+          this.selected.id!,
+          payload
+        );
+
+    request.subscribe({
+      next: async () => {
+        await this.cargarUnidadMedida();
+
+        this.alertService.success(
+          this.modo === 'crear'
+            ? 'Datos guardados'
+            : 'Datos modificados'
+        );
+
+        this.closeModal();
+        this.selected = { ...EMPTY_FORM };
+        this.formSubmitted = false;
+      },
+
+      error: (err) => {
+        this.alertService.error(
+          err.error?.message || 'Ocurrió un error'
+        );
+      }
+    });
   }
+
+  async ngOnInit(): Promise<void> {
+    await Promise.all([
+      this.cargarUnidadMedida()
+    ]);
+  }  
 
   openCreateModal() {
-    this.formSubmitted = false;
-    this.modo = 'crear';
-    this.selected = {
-      codigo: '',
-      descripcion: ''
-    };
-    this.isOpen = true;
-  }
-
-  openEditModal(item: any) {
-    this.modo = 'editar';
-    this.selected = { ...item };
-    this.isOpen = true;
-  }
+      this.formSubmitted = false;
+      this.modo = 'crear';
+      this.selected = { ...EMPTY_FORM };
+      this.isOpen = true;
+    }
+  
+    async openEditModal(item: UnidadMedida) {
+      this.formSubmitted = false;
+      this.modo = 'editar';
+      this.selected = {
+        id: item.id,
+        codigo: item.codigo || '',
+        descripcion: item.descripcion || '',
+      };
+      this.isOpen = true;
+    }
 }

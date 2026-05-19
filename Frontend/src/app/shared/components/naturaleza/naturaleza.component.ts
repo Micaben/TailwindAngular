@@ -11,10 +11,22 @@ import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
 
-export interface Option {
+interface Formulario {
+  id?: number;
+  codigo: string;
+  descripcion: string;
+}
+
+interface Option {
   value: string;
   label: string;
 }
+
+const EMPTY_FORM: Formulario = {
+  id: undefined,
+  codigo: '',
+  descripcion: '',
+};
 
 @Component({
   selector: 'app-naturaleza',
@@ -32,16 +44,7 @@ export interface Option {
 })
 
 export class NaturalezaComponent {
-  selected: any = {
-    codigo: '',
-    descripcion: '',
-    required: 'true'
-  };
-  showAlert = false;
-  alertVariant: 'success' | 'error' | 'warning' | 'info' = 'success';
-  alertTitle = '';
-  alertMessage = '';
-  codigoError = '';
+  selected: Formulario = { ...EMPTY_FORM };
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
   constructor(public modal: ModalService, private alertService: AlertService, private naturalezaService: NaturalezaService) { }
@@ -51,16 +54,9 @@ export class NaturalezaComponent {
   naturaleza: Naturaleza[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
-  closeModal() {
-    this.isOpen = false; this.selected = {
-      codigo: '',
-      descripcion: ''
-    };
-  }
+  closeModal() { this.isOpen = false; }
   currentPage = 1;
   itemsPerPage = 5;
-  @Input() value: string = '';
-  @Output() valueChange = new EventEmitter<string>();
   @Input() options: Option[] = [];
   get totalPages(): number {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
@@ -89,71 +85,80 @@ export class NaturalezaComponent {
       item.descripcion?.toLowerCase().includes(term)
     );
   }
-  async ngOnInit() {
-    await this.cargarNaturaleza();
-  }
 
-  async cargarNaturaleza() {
-    this.naturaleza =
-      await this.naturalezaService.obtenerNaturaleza();
-
-    this.filteredItems = [...this.naturaleza];
-  }
-
-  async handleSave(form: any) {
-    this.formSubmitted = true;
-    if (this.modo === 'crear') {
+  async cargarUnidadMedida() {
+      try {
+        this.naturaleza = await this.naturalezaService.obtenerNaturaleza();
+        this.filteredItems = [...this.naturaleza];
+      } catch (error) {
+        this.alertService.error('Error cargando productos');
+      }
+    }
+  
+      async handleSave(form: any) {
+      this.formSubmitted = true;
+  
       if (form.invalid) {
         return;
       }
-
-      this.naturalezaService.crearNaturaleza(this.selected)
-        .subscribe({
-          next: async () => {
-            this.alertService.success('Datos guardados');
-            await this.cargarNaturaleza();
-            this.closeModal();
-          },
-
-          error: (err) => {
-            this.alertService.error(
-              err.error?.message || 'Ocurrió un error'
-            );
-          }
-        });
-    } else {
-      this.naturalezaService.actualizarNaturaleza(
-        this.selected.id,
-        this.selected
-      ).subscribe({
+      const payload = {
+        ...this.selected,
+        //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+        //fechaFin: this.selected.fechaFin || null,
+      };
+      console.log(payload);
+      const request =
+        this.modo === 'crear'
+          ? this.naturalezaService.crearNaturaleza(payload)
+          : this.naturalezaService.actualizarNaturaleza(
+            this.selected.id!,
+            payload
+          );
+  
+      request.subscribe({
         next: async () => {
-          await this.cargarNaturaleza();
-          this.alertService.success('Datos modificados');
+          await this.cargarUnidadMedida();
+  
+          this.alertService.success(
+            this.modo === 'crear'
+              ? 'Datos guardados'
+              : 'Datos modificados'
+          );
+  
           this.closeModal();
+          this.selected = { ...EMPTY_FORM };
+          this.formSubmitted = false;
+        },
+  
+        error: (err) => {
+          this.alertService.error(
+            err.error?.message || 'Ocurrió un error'
+          );
         }
       });
     }
-  }
-
-  onChange(event: Event) {
-    const value = (event.target as HTMLSelectElement).value;
-    this.value = value;
-    this.valueChange.emit(value);
-  }
-
-  openCreateModal() {
-    this.formSubmitted = false;
-    this.modo = 'crear';
-    this.selected = {
-      codigo: '',
-      descripcion: ''
-    };
-    this.isOpen = true;
-  }
-
-  openEditModal(item: any) {
-    this.modo = 'editar';
-    this.selected = { ...item };
-    this.isOpen = true;
-  }
+  
+    async ngOnInit(): Promise<void> {
+      await Promise.all([
+        this.cargarUnidadMedida()
+      ]);
+    }  
+  
+    openCreateModal() {
+        this.formSubmitted = false;
+        this.modo = 'crear';
+        this.selected = { ...EMPTY_FORM };
+        this.isOpen = true;
+      }
+    
+      async openEditModal(item: Naturaleza) {
+        this.formSubmitted = false;
+        this.modo = 'editar';
+        this.selected = {
+          id: item.id,
+          codigo: item.codigo || '',
+          descripcion: item.descripcion || '',
+        };
+        this.isOpen = true;
+      }
 }

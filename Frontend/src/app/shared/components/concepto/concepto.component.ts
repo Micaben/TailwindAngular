@@ -5,8 +5,8 @@ import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterVie
 import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
-import { LineaService } from '../../../core/services/linea.service';
-import { Linea } from '../../../core/models/linea.model';
+import { ConceptoService } from '../../../core/services/concepto.services';
+import { Concepto } from '../../../core/models/concepto.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
@@ -26,10 +26,11 @@ const EMPTY_FORM: Formulario = {
   id: undefined,
   codigo: '',
   descripcion: '',
+
 };
 
 @Component({
-  selector: 'app-linea',
+  selector: 'app-concepto',
   imports: [
     CommonModule,
     ButtonComponent,
@@ -39,19 +40,19 @@ const EMPTY_FORM: Formulario = {
     FormsModule,
     AutoFocusFirstDirective,
   ],
-  templateUrl: './linea.component.html',
+  templateUrl: './concepto.component.html',
   styles: ``
 })
 
-export class LineaComponent {
+export class ConceptoComponent {
   selected: Formulario = { ...EMPTY_FORM };
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
-  constructor(public modal: ModalService, private alertService: AlertService, private lineaService: LineaService) { }
+  constructor(public modal: ModalService, private alertService: AlertService, private conceptoService: ConceptoService) { }
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
-  filteredItems: Linea[] = [];
-  linea: Linea[] = [];
+  filteredItems: Concepto[] = [];
+  concepto: Concepto[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
@@ -62,7 +63,7 @@ export class LineaComponent {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }
 
-  get currentItems(): Linea[] {
+  get currentItems(): Concepto[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredItems.slice(start, start + this.itemsPerPage);
   }
@@ -76,26 +77,26 @@ export class LineaComponent {
   filterTable() {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
-      this.filteredItems = [...this.linea];
+      this.filteredItems = [...this.concepto];
       return;
     }
 
-    this.filteredItems = this.linea.filter(item =>
+    this.filteredItems = this.concepto.filter(item =>
       item.codigo?.toLowerCase().includes(term) ||
       item.descripcion?.toLowerCase().includes(term)
     );
   }
 
-  /*async cargarLinea() {
-    this.linea =
-      await this.lineaService.obtenerLinea();
-    this.filteredItems = [...this.linea];
+  /*async cargarConcepto() {
+    this.concepto =
+      await this.conceptoService.obtenerLinea();
+    this.filteredItems = [...this.concepto];
   }*/
 
-  async cargarLinea() {
+  async cargarConcepto() {
     try {
-      this.linea = await this.lineaService.obtenerLinea();
-      this.filteredItems = [...this.linea];
+      this.concepto = await this.conceptoService.obtenerConcepto();
+      this.filteredItems = [...this.concepto];
     } catch (error) {
       this.alertService.error('Error cargando productos');
     }
@@ -115,15 +116,15 @@ export class LineaComponent {
     console.log(payload);
     const request =
       this.modo === 'crear'
-        ? this.lineaService.crearLinea(payload)
-        : this.lineaService.actualizarLinea(
+        ? this.conceptoService.crearConcepto(payload)
+        : this.conceptoService.actualizarConcepto(
           this.selected.id!,
           payload
         );
 
     request.subscribe({
       next: async () => {
-        await this.cargarLinea();
+        await this.cargarConcepto();
 
         this.alertService.success(
           this.modo === 'crear'
@@ -146,7 +147,7 @@ export class LineaComponent {
 
   async ngOnInit(): Promise<void> {
     await Promise.all([
-      this.cargarLinea()
+      this.cargarConcepto()
     ]);
   }
 
@@ -157,7 +158,7 @@ export class LineaComponent {
     this.isOpen = true;
   }
 
-  async openEditModal(item: Linea) {
+  async openEditModal(item: Concepto) {
     this.formSubmitted = false;
     this.modo = 'editar';
     this.selected = {
