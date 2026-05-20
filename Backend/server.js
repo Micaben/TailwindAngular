@@ -111,6 +111,14 @@ app.use(conceptoRoutes);
 const almacenesRoutes = require('./routes/almacenes.routes');
 app.use(almacenesRoutes);
 
+//EMPRESA DE TRANSPORTE
+const empresa_transporteRoutes = require('./routes/empresa_transporte.routes');
+app.use(empresa_transporteRoutes);
+
+//TRANSPORTISTA
+const transportistaRoutes = require('./routes/transportista.routes');
+app.use(transportistaRoutes);
+
 // SERVIDOR FUNCIONANDO CORRECTAMENTE DEBE MOSTRAR EL MENSAJE API FUNCIONANDO
 app.listen(3000, () => {
   console.log('Backend corriendo en http://localhost:3000');

@@ -19,18 +19,34 @@ router.post('/sublinea', async (req, res) => {
 
   } catch (error) {
     console.error(error);
+     console.error('FULL ERROR:', error);
+
+  return res
+    .status(400)
+    .setHeader('Content-Type', 'application/json')
+    .json({
+      message: error.detail || error.message
+    });
     // UNIQUE
     if (error.code === '23505') {
-      return res.status(400).json({
-        message: `El código ${codigo} ya existe`
-      });
+        console.error(error);
+
+  return res
+    .status(400)
+    .json({
+      message: error.detail || error.message
+    });
     }
 
     // CHECK
     if (error.code === '23514') {
-      return res.status(400).json({
-        message: 'El código debe tener 2 dígitos'
-      });
+        console.error(error);
+
+  return res
+    .status(400)
+    .json({
+      message: error.detail || error.message
+    });
     }
 
     res.status(500).json({

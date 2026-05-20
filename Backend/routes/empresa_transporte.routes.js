@@ -2,24 +2,24 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
-router.get('/almacenes', async (req, res) => {
+router.get('/empresa_transporte', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM almacenes order by codigo asc');
+    const result = await pool.query('SELECT * FROM empresa_transporte order by ruc asc');
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: 'Error almacenes' });
+    res.status(500).json({ message: 'Error en obtener datos' });
   }
 });
 
-router.post('/almacenes', async (req, res) => {
-  const { codigo, descripcion, direccion, telefono, encargado } = req.body;
+router.post('/empresa_transporte', async (req, res) => {
+  const { ruc, razon_social } = req.body;
   try {
     await pool.query(
-      `INSERT INTO almacenes (codigo, descripcion, direccion, telefono, encargado) VALUES ($1, $2, $3, $4, $5) `,
-      [codigo, descripcion, direccion, telefono, encargado]
+      `INSERT INTO empresa_transporte (ruc, razon_social) VALUES ($1, $2) `,
+      [ruc, razon_social]
     );
     res.json({
-      message: 'almacen creado'
+      message: 'empresa creado'
     });
 
   } catch (error) {
@@ -44,18 +44,18 @@ router.post('/almacenes', async (req, res) => {
   }
 });
 
-router.put('/almacenes/:id', async (req, res) => {
+router.put('/empresa_transporte/:id', async (req, res) => {
   const { id } = req.params;
-  const { descripcion, direccion, telefono, encargado } = req.body;
+  const { razon_social} = req.body;
 
   try {
     await pool.query(
       `
-      UPDATE almacenes
-      SET descripcion = $1, direccion= $2, telefono= $3, encargado= $4
+      UPDATE empresa_transporte
+      SET razon_social = $1
       WHERE id = $5
       `,
-      [descripcion, direccion, telefono, encargado, id ]
+      [razon_social, id ]
     );
 
     res.json({
