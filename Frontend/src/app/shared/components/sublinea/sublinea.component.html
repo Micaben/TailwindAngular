@@ -154,8 +154,13 @@
               <label class="mb-2 block text-sm font-medium">
                 Linea
               </label>
-              <select [(ngModel)]="selected.linea" name="linea" 
-                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
+              <select [(ngModel)]="selected.linea" name="linea" required #linea="ngModel" [ngClass]="{
+                    'border-red-500 focus:border-red-500 focus:ring-red-500/20':
+                      linea.invalid && (linea.touched || formSubmitted),
+
+                    'border-gray-300 dark:border-gray-700':
+                      !(linea.invalid && (linea.touched || formSubmitted))
+                  }" class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
                 <option value="" disabled>Seleccione una opción</option>
                 @for (option of options; track $index) {
                 <option [value]="option.value">
@@ -163,19 +168,26 @@
                 </option>
                 }
               </select>
+              @if (linea.invalid && (linea.touched || formSubmitted)) {
+              <p class="mt-1 text-xs text-red-500">
+                Este campo es obligatorio
+              </p>
+              }
             </div>
             <div class="md:col-span-1">
               <label class="mb-2 block text-sm font-medium">
                 Código
               </label>
               <app-input-field [(ngModel)]="selected.codigo" name="codigo" [disabled]="modo === 'editar'"
-                [required]="true"></app-input-field>
+                [submitted]="formSubmitted" [required]="true" pattern="^[0-9]*$" [minLength]="2"
+                [maxLength]="4"></app-input-field>
             </div>
             <div class="md:col-span-3">
               <label class="mb-2 block text-sm font-medium">
                 Descripción
               </label>
-              <app-input-field [(ngModel)]="selected.descripcion" name="descripcion" [required]="true">
+              <app-input-field [(ngModel)]="selected.descripcion" name="descripcion" [required]="true"
+                [submitted]="formSubmitted">
               </app-input-field>
             </div>
           </div>
@@ -186,8 +198,7 @@
           <button type="button" (click)="closeModal()" class="rounded-lg border px-5 py-2">
             Cancelar
           </button>
-          <button type="submit" [disabled]="form.invalid"
-            class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
+          <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
             Guardar
           </button>
         </div>

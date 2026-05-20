@@ -41,11 +41,14 @@
               <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
                 Código
               </th>
-              <th class="w-[65%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
-                Descripción
+              <th class="w-[25%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
+                Nombre
               </th>
-              <th class="w-[65%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
-                Plazo
+              <th class="w-[35%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
+                Dirección
+              </th>
+              <th class="w-[25%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
+                Telefono
               </th>
               <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
                 Acción
@@ -67,7 +70,12 @@
               </td>
               <td class="px-4 py-4 text-center align-middle">
                 <div class="line-clamp-2">
-                  {{ item.descripcion }}
+                  {{ item.direccion }}
+                </div>
+              </td>
+              <td class="px-4 py-4 text-center align-middle">
+                <div class="line-clamp-2">
+                  {{ item.telefono }}
                 </div>
               </td>
               <td class="px-4 py-4 text-center align-middle">
@@ -154,13 +162,13 @@
               <label class="mb-2 block text-sm font-medium">
                 Código
               </label>
-              <app-input-field [(ngModel)]="selected.codigo" name="codigo" [disabled]="modo === 'editar'" [required]="true"></app-input-field>
+              <app-input-field [(ngModel)]="selected.codigo" name="codigo" [disabled]="modo === 'editar'" [required]="true" pattern="^[0-9]*$" [minLength]="2" [maxLength]="4" [submitted]="formSubmitted"></app-input-field>
             </div>
             <div class="md:col-span-3">
               <label class="mb-2 block text-sm font-medium">
                 Descripción
               </label>
-              <app-input-field [(ngModel)]="selected.descripcion" name="descripcion" [required]="true">
+              <app-input-field [(ngModel)]="selected.descripcion" name="descripcion" [required]="true" [submitted]="formSubmitted">
               </app-input-field>
             </div>
           </div>
@@ -193,8 +201,7 @@
           <button type="button" (click)="closeModal()" class="rounded-lg border px-5 py-2">
             Cancelar
           </button>
-          <button type="submit" [disabled]="form.invalid"
-            class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
+          <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
             Guardar
           </button>
         </div>

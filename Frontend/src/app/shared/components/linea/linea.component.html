@@ -129,7 +129,7 @@
 </div>
 
 <!-- Modal -->
-<app-modal [isOpen]="isOpen" *ngIf="isOpen" (close)="closeModal()" className="w-full max-w-4xl p-4">  
+<app-modal [isOpen]="isOpen" (close)="closeModal()" className="w-full max-w-4xl p-4">  
   <div appAutoFocusFirst
     class="no-scrollbar relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
     <div class="px-2">
@@ -146,15 +146,15 @@
               <label class="mb-2 block text-sm font-medium">
                 Código
               </label>
-              <app-input-field [(ngModel)]="selected.codigo" name="codigo" [disabled]="modo === 'editar'"
-                [required]="true"></app-input-field>
+              <app-input-field [(ngModel)]="selected.codigo" name="codigo" [disabled]="modo === 'editar'" 
+                [required]="true" pattern="^[0-9]*$" [minLength]="2" [maxLength]="4" [submitted]="formSubmitted"></app-input-field>
             </div>
 
             <div class="md:col-span-3">
               <label class="mb-2 block text-sm font-medium">
                 Descripción
               </label>
-              <app-input-field [(ngModel)]="selected.descripcion" name="descripcion" [required]="true">
+              <app-input-field [(ngModel)]="selected.descripcion" name="descripcion" [required]="true"  [submitted]="formSubmitted">
               </app-input-field>
             </div>
           </div>
@@ -165,8 +165,7 @@
           <button type="button" (click)="closeModal()" class="rounded-lg border px-5 py-2">
             Cancelar
           </button>
-          <button type="submit" [disabled]="form.invalid"
-            class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
+          <button type="submit"class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
             Guardar
           </button>
         </div>

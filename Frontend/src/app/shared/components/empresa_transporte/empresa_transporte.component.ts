@@ -1,40 +1,35 @@
 import { PageBreadcrumbComponent } from '../common/page-breadcrumb/page-breadcrumb.component';
 import { CommonModule } from '@angular/common';
 import { InputFieldComponent } from '../form/input/input-field.component';
-import { Component, Input, Output, OnInit, EventEmitter, ElementRef, viewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterViewInit } from '@angular/core';
 import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
-import { SublineaService } from '../../../core/services/sublinea.service';
-import { Sublinea } from '../../../core/models/sublinea.model';
+import { Empresa_transporteService } from '../../../core/services/empresa_transporte.services';
+import { Empresa_transporte } from '../../../core/models/empresa_transporte.model';
 import { FormsModule } from '@angular/forms';
-import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
+import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
-import { LineaService } from '../../../core/services/linea.service';
 
-import { ErrorHandlerService } from '../../../core/services/error-handler.service';
-
-interface SublineaForm {
+interface Formulario {
   id?: number;
-  codigo: string;
-  descripcion: string;
-  linea: string;
+  ruc: string;
+  razon_social: string;
 }
 
-export interface Option {
+interface Option {
   value: string;
   label: string;
 }
 
-const EMPTY_FORM: SublineaForm = {
+const EMPTY_FORM: Formulario = {
   id: undefined,
-  codigo: '',
-  descripcion: '',
-  linea: '',
-}
+  ruc: '',
+  razon_social: '',
+};
 
 @Component({
-  selector: 'app-sublinea',
+  selector: 'app-empresa_transporte',
   imports: [
     CommonModule,
     ButtonComponent,
@@ -44,31 +39,30 @@ const EMPTY_FORM: SublineaForm = {
     FormsModule,
     AutoFocusFirstDirective,
   ],
-  templateUrl: './sublinea.component.html',
+  templateUrl: './empresa_transporte.component.html',
   styles: ``
 })
 
-export class SublineaComponent implements OnInit {
-  selected: SublineaForm = { ...EMPTY_FORM };
-  filteredItems: Sublinea[] = [];
-  sublinea: Sublinea[] = [];
-  options: Option[] = [];
+export class Empresa_transporteComponent {
+  selected: Formulario = { ...EMPTY_FORM };
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
-  isOpen = false;
-  currentPage = 1;
-  itemsPerPage = 5;
-  constructor(public modal: ModalService, private alertService: AlertService, private errorHandler: ErrorHandlerService, private lineaService: LineaService, private sublineaService: SublineaService) { }
+  constructor(public modal: ModalService, private alertService: AlertService, private empresa_transporteService: Empresa_transporteService) { }
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
+  filteredItems: Empresa_transporte[] = [];
+  empresa_transporte: Empresa_transporte[] = [];
+  isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
-
+  currentPage = 1;
+  itemsPerPage = 5;
+  @Input() options: Option[] = [];
   get totalPages(): number {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }
 
-  get currentItems(): Sublinea[] {
+  get currentItems(): Empresa_transporte[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredItems.slice(start, start + this.itemsPerPage);
   }
@@ -82,27 +76,20 @@ export class SublineaComponent implements OnInit {
   filterTable() {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
-      this.filteredItems = [...this.sublinea];
+      this.filteredItems = [...this.empresa_transporte];
       return;
     }
 
-    this.filteredItems = this.sublinea.filter(item =>
-      item.codigo?.toLowerCase().includes(term) ||
-      item.descripcion?.toLowerCase().includes(term)
+    this.filteredItems = this.empresa_transporte.filter(item =>
+      item.ruc?.toLowerCase().includes(term) ||
+      item.razon_social?.toLowerCase().includes(term)
     );
   }
 
-  async ngOnInit(): Promise<void> {
-    await Promise.all([
-      this.cargarSublinea(),
-      this.cargarLinea(),
-    ]);
-  }
-
-  async cargarSublinea() {
+  async cargarEmpresa_transporte() {
     try {
-      this.sublinea = await this.sublineaService.obtenerSublinea();
-      this.filteredItems = [...this.sublinea];
+      this.empresa_transporte = await this.empresa_transporteService.obtenerEmpresa_transporte();
+      this.filteredItems = [...this.empresa_transporte];
     } catch (error) {
       this.alertService.error('Error cargando productos');
     }
@@ -122,15 +109,15 @@ export class SublineaComponent implements OnInit {
     console.log(payload);
     const request =
       this.modo === 'crear'
-        ? this.sublineaService.crearSublinea(payload)
-        : this.sublineaService.actualizarSublinea(
+        ? this.empresa_transporteService.crearEmpresa_transporte(payload)
+        : this.empresa_transporteService.actualizarEmpresa_transporte(
           this.selected.id!,
           payload
         );
 
     request.subscribe({
       next: async () => {
-        await this.cargarSublinea();
+        await this.cargarEmpresa_transporte();
 
         this.alertService.success(
           this.modo === 'crear'
@@ -144,16 +131,17 @@ export class SublineaComponent implements OnInit {
       },
 
       error: (err) => {
-        console.log('err.error:', err.error);
-
-        const message =
-          typeof err.error === 'string'
-            ? err.error
-            : err.error?.message;
-
-        this.alertService.error(message || 'Error');
+        this.alertService.error(
+          err.error?.message || 'Ocurrió un error'
+        );
       }
     });
+  }
+
+  async ngOnInit(): Promise<void> {
+    await Promise.all([
+      this.cargarEmpresa_transporte()
+    ]);
   }
 
   openCreateModal() {
@@ -163,33 +151,14 @@ export class SublineaComponent implements OnInit {
     this.isOpen = true;
   }
 
-  async openEditModal(item: Sublinea) {
+  async openEditModal(item: Empresa_transporte) {
     this.formSubmitted = false;
     this.modo = 'editar';
-
     this.selected = {
       id: item.id,
-      codigo: item.codigo || '',
-      descripcion: item.descripcion || '',
-      linea: item.codigolinea || '',
+      ruc: item.ruc || '',
+      razon_social: item.razon_social || '',
     };
-    console.log(item.codigolinea)
     this.isOpen = true;
-  }
-
-  mapOptions<T>(data: T[], valueKey: keyof T, labelKey: keyof T): Option[] {
-    return data.map(item => ({
-      value: String(item[valueKey]),
-      label: String(item[labelKey])
-    }));
-  }
-
-  async cargarLinea() {
-    const data = await this.lineaService.obtenerLinea();
-    this.options = this.mapOptions(
-      data,
-      'codigo',
-      'descripcion'
-    );
   }
 }

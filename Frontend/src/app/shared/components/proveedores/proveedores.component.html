@@ -171,8 +171,8 @@
               <label class="mb-2 block text-sm font-medium">
                 Numero
               </label>
-              <app-input-field type="text" [(ngModel)]="selected.ruc" name="ruc" [required]="true"
-                [disabled]="modo === 'editar'"></app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.ruc" name="ruc" [required]="true" [minLength]="8" [maxLength]="11" 
+                [disabled]="modo === 'editar'" [submitted]="formSubmitted"></app-input-field>
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
@@ -224,7 +224,7 @@
               <label class="mb-2 block text-sm font-medium">
                 Razon Social
               </label>
-              <app-input-field [(ngModel)]="selected.razon_social" name="razon_social"
+              <app-input-field [(ngModel)]="selected.razon_social" name="razon_social" [submitted]="formSubmitted"
                 [required]="true"></app-input-field>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
@@ -232,7 +232,7 @@
                 <label class="mb-2 block text-sm font-medium">
                   Dirección
                 </label>
-                <app-input-field [(ngModel)]="selected.direccion" name="direccion"></app-input-field>
+                <app-input-field [(ngModel)]="selected.direccion" name="direccion" [submitted]="formSubmitted"></app-input-field>
               </div>
             </div>
           </div>

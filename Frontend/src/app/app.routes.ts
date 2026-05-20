@@ -10,9 +10,11 @@ import { UnidadMedidaComponent } from './shared/components/unidadmedida/unidadme
 import { ColorComponent } from './shared/components/color/color.component';
 import { ProductosComponent } from './shared/components/productos/productos.component';
 import { AlmacenesComponent } from './shared/components/almacenes/almacenes.component';
+import { Empresa_transporteComponent } from './shared/components/empresa_transporte/empresa_transporte.component';
 import { ClientesComponent } from './shared/components/clientes/clientes.component';
 import { ProveedoresComponent } from './shared/components/proveedores/proveedores.component';
 import { VendedorComponent } from './shared/components/vendedor/vendedor.component';
+import { TransportistaComponent } from './shared/components/transportista/transportista.component';
 import { CondicionComponent } from './shared/components/condicion/condicion.component';
 import { ConceptoComponent } from './shared/components/concepto/concepto.component';
 import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
@@ -38,6 +40,16 @@ export const routes: Routes = [
       {
         path: 'almacenes',
         component: AlmacenesComponent,
+        title: 'Angular Almacenes Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'empresa_transporte',
+        component: Empresa_transporteComponent,
+        title: 'Angular Almacenes Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'transportista',
+        component: TransportistaComponent,
         title: 'Angular Almacenes Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {

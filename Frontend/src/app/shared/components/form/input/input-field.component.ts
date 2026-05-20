@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, forwardRef, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { SimpleChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-input-field',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -23,16 +24,21 @@ import { SimpleChanges } from '@angular/core';
     <div class="w-full">
       <input
         [type]="type"
+        [name]="name"
+        [id]="id"
         [placeholder]="placeholder"
         [value]="value"
         [disabled]="disabled"
+        [step]="step"
+        [attr.pattern]="pattern"
+        [attr.maxlength]="maxLength"
+        [attr.minlength]="minLength"
         (input)="onInput($event)"
         (blur)="onBlur()"
-        [step]="step"
         [ngClass]="inputClasses"
         (click)="openPicker($event)"
         [class.border-red-500]="shouldShowError"
-        [class.border-gray-300]="!shouldShowError"        
+        [class.border-gray-300]="!shouldShowError"       
       />
 
       @if (shouldShowError) {
@@ -57,21 +63,49 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   @Input() success: boolean = false;
   @Input() error: boolean = false;
   @Input() hint?: string;
+  @Input() submitted = false;
   @Input() className: string = '';
   @Output() valueChange = new EventEmitter<string | number>();
   @Input() required: boolean = false;
+  @Input() pattern?: string;
+  @Input() maxLength?: number;
+  @Input() minLength?: number;
+  @Input() onlyNumbers: boolean = false;
   touched = false;
   onChange: any = () => { };
   onTouched: any = () => { };
   @Input() value: any = '';
+
   validate(control: AbstractControl): ValidationErrors | null {
-    if (this.required && !this.value) {
+
+    const value = control.value;
+
+    if (this.required && (!value && value !== 0)) {
       return { required: true };
     }
+
+    if (this.minLength && value?.length < this.minLength) {
+      return {
+        minlength: {
+          requiredLength: this.minLength,
+          actualLength: value?.length || 0
+        }
+      };
+    }
+
+    if (this.maxLength && value?.length > this.maxLength) {
+      return {
+        maxlength: {
+          requiredLength: this.maxLength,
+          actualLength: value?.length || 0
+        }
+      };
+    }
+
     return null;
   }
-  onValidatorChange: any = () => { };
 
+  onValidatorChange: any = () => { };
   writeValue(value: any): void {
     this.value = value;
     this.touched = false;
@@ -119,8 +153,19 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   }
 
   onInput(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
+    let value = (event.target as HTMLInputElement).value;
+    // Solo números
+    if (this.onlyNumbers) {
+      value = value.replace(/[^0-9]/g, '');
+    }
+
+    // Máximo de caracteres
+    if (this.maxLength) {
+      value = value.slice(0, this.maxLength);
+    }
+
     this.value = value;
+    (event.target as HTMLInputElement).value = value;
     this.onChange(value);
   }
 
@@ -130,13 +175,48 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   }
 
   get shouldShowError(): boolean {
-    return this.required && this.touched && !this.value;
+
+    const value = this.value ?? '';
+
+    const empty = value === '';
+
+    const hasMinLengthError =
+      this.minLength !== undefined &&
+      value.length < this.minLength;
+
+    const hasMaxLengthError =
+      this.maxLength !== undefined &&
+      value.length > this.maxLength;
+
+    return (
+      (this.touched || this.submitted) &&
+      (
+        (this.required && empty) ||
+        hasMinLengthError ||
+        hasMaxLengthError
+      )
+    );
   }
 
   get errorMessage(): string {
-    if (this.required && !this.value) {
+
+    const empty =
+      this.value === null ||
+      this.value === undefined ||
+      this.value === '';
+
+    if (this.required && empty) {
       return 'Este campo es obligatorio';
     }
+
+    if (this.minLength && this.value?.length < this.minLength) {
+      return `Debe tener mínimo ${this.minLength} caracteres`;
+    }
+
+    if (this.maxLength && this.value?.length > this.maxLength) {
+      return `Debe tener máximo ${this.maxLength} caracteres`;
+    }
+
     return '';
   }
 

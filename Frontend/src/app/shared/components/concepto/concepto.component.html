@@ -155,20 +155,20 @@
                 Código
               </label>
               <app-input-field [(ngModel)]="selected.codigo" name="codigo" [disabled]="modo === 'editar'"
-                [required]="true"></app-input-field>
+                [required]="true" pattern="^[0-9]*$" [minLength]="2" [maxLength]="4" [submitted]="formSubmitted"></app-input-field>
             </div>
             <div class="md:col-span-3">
               <label class="mb-2 block text-sm font-medium">
                 Descripción
               </label>
-              <app-input-field [(ngModel)]="selected.descripcion" name="descripcion" [required]="true">
+              <app-input-field [(ngModel)]="selected.descripcion" name="descripcion" [required]="true" [submitted]="formSubmitted">
               </app-input-field>
             </div>
             <div class="md:col-span-3">
               <label class="mb-2 block text-sm font-medium">
                 Plazo(dias)
               </label>
-              <app-input-field [(ngModel)]="selected.descripcion" name="descripciono" [required]="true">
+              <app-input-field [(ngModel)]="selected.descripcion" name="descripcion" [required]="true" [submitted]="formSubmitted">
               </app-input-field>
             </div>
           </div>
@@ -179,8 +179,7 @@
           <button type="button" (click)="closeModal()" class="rounded-lg border px-5 py-2">
             Cancelar
           </button>
-          <button type="submit" [disabled]="form.invalid"
-            class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
+          <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
             Guardar
           </button>
         </div>

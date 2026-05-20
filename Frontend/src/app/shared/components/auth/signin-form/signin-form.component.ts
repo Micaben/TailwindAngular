@@ -50,6 +50,7 @@ export class SigninFormComponent {
       next: (res) => {
         console.log('LOGIN OK:', res);
         this.alertService.success('Bienvenido');
+         this.router.navigate(['/dashboard']);
       },
 
       error: (err) => {

@@ -1,5 +1,5 @@
 <div>
-  <app-page-breadcrumb pageTitle="Productos" />
+  <app-page-breadcrumb pageTitle="Transportistas" />
   <div class="rounded-2xl border border-gray-200 bg-white pt-4 dark:border-white/[0.05] dark:bg-white/[0.03]">
     <div class="flex flex-col gap-2 px-5 mb-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
       <div>
@@ -38,18 +38,18 @@
         <table class="min-w-full table-fixed">
           <thead class="border-gray-100 border-y dark:border-white/[0.05]">
             <tr>
+              <th class="w-[25%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
+                Nombres</th>
               <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
-                Codigo</th>
+                Licencia</th>
+              <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
+                Unidad </th>
+              <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
+                Placa</th>
               <th class="w-[35%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
-                Descripcion</th>
+                Empresa de Tr.</th>
               <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
-                Linea</th>
-              <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
-                Cantidad</th>
-              <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
-                Estado</th>
-              <th class="w-[15%] px-4 py-4 text-center font-semibold text-gray-600 text-theme-sm dark:text-gray-300">
-                Action</th>
+                Acciòn</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 dark:divide-white/[0.05]">
@@ -57,22 +57,27 @@
             <tr class="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
               <td class="px-4 py-4 text-center align-middle">
                 <span class="font-medium text-gray-700 text-theme-sm dark:text-gray-300">
-                  {{ item.codigo }}
+                  {{ item.nombres }} {{ item.apellido_paterno}} {{ item.apellido_materno }}
                 </span>
               </td>
               <td class="px-4 py-4 text-center align-middle">
                 <span class="font-medium text-gray-700 text-theme-sm dark:text-gray-300">
-                  {{ item.descripcion }}
+                  {{ item.licencia }}
                 </span>
               </td>
               <td class="px-4 py-4 text-center align-middle">
                 <span class="font-medium text-gray-700 text-theme-sm dark:text-gray-300">
-                  {{ item.linea }}
+                  {{ item.unidad }}
                 </span>
               </td>
               <td class="px-4 py-4 text-center align-middle">
                 <span class="font-medium text-gray-700 text-theme-sm dark:text-gray-300">
-                  {{ item.sublinea }}
+                  {{ item.placa }}
+                </span>
+              </td>
+              <td class="px-4 py-4 text-center align-middle">
+                <span class="font-medium text-gray-700 text-theme-sm dark:text-gray-300">
+                  {{ item.empresa_transporte }}
                 </span>
               </td>
               <td class="px-4 py-4 text-center align-middle">
@@ -148,187 +153,92 @@
 
 <!-- Modal -->
 <app-modal [isOpen]="isOpen" (close)="closeModal()" className="w-full max-w-4xl p-4">
-  <div
+  <div appAutoFocusFirst
     class="no-scrollbar relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
     <div class="px-2">
       <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-        Producto
+        Transportista
       </h4>
       <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
         Ingresa o cambia los datos para tener la informacion actualizada.
       </p>
-       <form class="flex flex-col flex-1 overflow-hidden" #form="ngForm" (ngSubmit)="handleSave(form)">
+      <form class="flex flex-col flex-1 overflow-hidden" #form="ngForm" (ngSubmit)="handleSave(form)">
         <div class="space-y-5">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
               <label class="mb-2 block text-sm font-medium">
-                Naturaleza
+                Nombres
               </label>
-              <select [(ngModel)]="selected.naturaleza" name="naturaleza" required
-                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
-                <option value="" disabled>Seleccione una opción</option>
-                @for (option of naturalezaoptions; track $index) {
-                <option [value]="option.value">
-                  {{ option.label }}
-                </option>
-                }
-              </select>
+              <app-input-field type="text" [(ngModel)]="selected.nombres" pattern="^[0-9]*$" name="nombres" [required]="true" [submitted]="formSubmitted" ></app-input-field>
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
-                Linea
+                Apellido Paterno
               </label>
-              <select [(ngModel)]="selected.linea" (change)="onLineaChange()" name="linea" required  #lineaCtrl="ngModel"
-                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
-                
-                <option value="" disabled>Seleccione una opción</option>
-                @for (option of lineaoptions; track $index) {
-                <option [value]="option.value">
-                  {{ option.label }}
-                </option>
-                }
-              </select>
+              <app-input-field type="text" [(ngModel)]="selected.apellido_paterno" pattern="^[0-9]*$" name="apellido_paterno" [required]="true" [submitted]="formSubmitted"></app-input-field>
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
-                Sublinea
+                Apellido Materno
               </label>
-              <select [(ngModel)]="selected.sublinea" name="sublinea" required
-                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
-                <option value="" disabled>Seleccione una opción</option>
-                @for (option of sublineaoptions; track $index) {
-                <option [value]="option.value">
-                  {{ option.label }}
-                </option>
-                }
-              </select>
+              <app-input-field type="text" [(ngModel)]="selected.apellido_materno" pattern="^[0-9]*$" name="apellido_materno" [required]="true" [submitted]="formSubmitted"></app-input-field>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div>
+              <label class="mb-2 block text-sm font-medium">
+                Tipo Documento
+              </label>
+              <select [(ngModel)]="selected.tipo_documento" name="tipo_documento" 
+                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
+                <option value="" disabled>Seleccione una opción</option>
+                @for (option of tipodocumentooptions; track $index) {
+                <option [value]="option.value">
+                  {{ option.label }}
+                </option>
+                }
+              </select>
+            </div>
+        
             <div class="md:col-span-1">
               <label class="mb-2 block text-sm font-medium">
-                Código
+                Numero
               </label>
-              <app-input-field type="text" [(ngModel)]="selected.codigo" name="codigo" [required]="true" [submitted]="formSubmitted"></app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.dni" name="dni" [required]="true"  [minLength]="8" [maxLength]="9" [submitted]="formSubmitted"
+                [disabled]="modo === 'editar'"></app-input-field>
             </div>
-            <div class="md:col-span-3">
+            <div class="md:col-span-1">
               <label class="mb-2 block text-sm font-medium">
-                Descripción
+                Licencia
               </label>
-              <app-input-field type="text" [(ngModel)]="selected.descripcion" name="descripcion" [required]="true" [submitted]="formSubmitted"></app-input-field>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Unidad de Medida
-              </label>
-              <select [(ngModel)]="selected.unidad_medida" name="unidad_medida" [required]="true"
-                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
-                <option value="" disabled>Seleccione una opción</option>
-
-                @for (option of unidadmedidaoptions; track $index) {
-                <option [value]="option.value">
-                  {{ option.label }}
-                </option>
-                }
-              </select>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Color
-              </label>
-              <div class="relative">
-              <select [(ngModel)]="selected.color" name="color"
-                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
-                <option value="" disabled>Seleccione una opción</option>
-
-                @for (option of coloroptions; track $index) {
-                <option [value]="option.value">
-                  {{ option.label }}
-                </option>
-                }
-              </select>
-              </div>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Peso (KG)
-              </label>
-              <app-input-field type="text" [(ngModel)]="selected.peso" name="peso"></app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.licencia" name="licencia" [required]="true" [submitted]="formSubmitted"
+                [disabled]="modo === 'editar'"></app-input-field>
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
               <label class="mb-2 block text-sm font-medium">
-                Código de barras
+                Unidad
               </label>
-              <app-input-field type="text" [(ngModel)]="selected.codigo_barras" name="codigo_barras"></app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.unidad" name="unidad"></app-input-field>
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
-                Numero de serie
+                Placa
               </label>
-              <app-input-field type="text" [(ngModel)]="selected.numero_serie" name="numero_serie"></app-input-field>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Numero de lote
-              </label>
-              <app-input-field type="text" [(ngModel)]="selected.numero_lote" name="numero_lote"></app-input-field>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Código SUNAT
-              </label>
-              <app-input-field type="text" [(ngModel)]="selected.codigo_sunat" name="codigo_sunat"></app-input-field>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Codigo GTIN
-              </label>
-              <app-input-field type="text" [(ngModel)]="selected.codigo_gtin" name="codigo_gtin"></app-input-field>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Principio Activo
-              </label>
-              <app-input-field type="text" [(ngModel)]="selected.principio" name="principio"></app-input-field>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Marca
-              </label>
-              <app-input-field type="text" [(ngModel)]="selected.marca" name="marca"></app-input-field>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Procedencia
-              </label>
-              <app-input-field type="text" [(ngModel)]="selected.procedencia" name="procedencia"></app-input-field>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">
-                Fecha de vencimiento
-              </label>
-              <app-input-field type="date" [(ngModel)]="selected.fecha_vencimiento" name="fecha_vencimiento">
-              </app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.placa" name="placa" [required]="true" [submitted]="formSubmitted"></app-input-field>
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
             <div class="md:col-span-3">
               <label class="mb-2 block text-sm font-medium">
-                Proveedor
+                Empresa de Transporte
               </label>
-              <select [(ngModel)]="selected.proveedor" name="proveedor" (ngModelChange)="onProveedorChange($event)"
+              <select [(ngModel)]="selected.empresa_transporte" name="empresa_transporte" (ngModelChange)="onProveedorChange($event)"
                 class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
                 <option value="" disabled>Seleccione una opción</option>
 
-                @for (option of proveedoroptions; track $index) {
+                @for (option of empresa_transporteoptions; track $index) {
                 <option [value]="option.value">
                   {{ option.label }}
                 </option>
@@ -339,9 +249,9 @@
               <label class="mb-2 block text-sm font-medium">
                 RUC
               </label>
-              <app-input-field type="text" [(ngModel)]="selected.proveedor" name="proveedor_ruc"></app-input-field>
+              <app-input-field type="text" [(ngModel)]="selected.empresa_transporte" name="empresa_transporte_ruc" [disabled]="true" [required]="true" [submitted]="formSubmitted"></app-input-field>
             </div>            
-          </div>
+          </div>                
           <!-- CHECKBOX -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
@@ -349,27 +259,13 @@
                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Activo
                 </span>
+
                 <div class="relative">
-                  <input type="checkbox" class="peer sr-only" checked />
+                  <input type="checkbox" class="peer sr-only" [(ngModel)]="selected.estado" name="estado" />
                   <div
                     class="h-6 w-11 rounded-full bg-gray-300 transition-colors peer-checked:bg-brand-500 dark:bg-gray-700">
                   </div>
-                  <div
-                    class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5">
-                  </div>
-                </div>
-              </label>
-            </div>
-            <div class="md:col-span-2">
-              <label class="flex items-center gap-3">
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Afecto
-                </span>
-                <div class="relative">
-                  <input type="checkbox" class="peer sr-only" />
-                  <div
-                    class="h-6 w-11 rounded-full bg-gray-300 transition-colors peer-checked:bg-brand-500 dark:bg-gray-700">
-                  </div>
+
                   <div
                     class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5">
                   </div>
@@ -377,16 +273,15 @@
               </label>
             </div>
           </div>
-        </div>
-
-        <!-- FOOTER -->
-        <div class="mt-8 flex flex-col-reverse sm:flex-row justify-end gap-3">
-          <button type="button" (click)="closeModal()" class="rounded-lg border px-5 py-2">
-            Cancelar
-          </button>
-          <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
-            Guardar
-          </button>
+          <!-- FOOTER -->
+          <div class="mt-8 flex flex-col-reverse sm:flex-row justify-end gap-3">
+            <button type="button" (click)="closeModal()" class="rounded-lg border px-5 py-2">
+              Cancelar
+            </button>
+            <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
+              Guardar
+            </button>
+          </div>
         </div>
       </form>
     </div>
