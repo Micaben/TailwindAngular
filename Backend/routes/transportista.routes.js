@@ -4,7 +4,7 @@ const pool = require('../db');
 
 router.get('/transportista', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM transportista order by nombres asc');
+    const result = await pool.query('SELECT *, e.razon_social FROM transportista t inner join empresa_transporte e on t.empresa_transporte=e.ruc order by nombres asc');
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ message: 'Error transportista' });

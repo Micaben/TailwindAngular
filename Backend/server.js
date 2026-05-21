@@ -119,6 +119,30 @@ app.use(empresa_transporteRoutes);
 const transportistaRoutes = require('./routes/transportista.routes');
 app.use(transportistaRoutes);
 
+//TIPO COMPROBANTE
+const documentosRoutes = require('./routes/tablas.routes');
+app.use(documentosRoutes);
+
+//TIPO AFECTACION
+const tipoafectacionRoutes = require('./routes/tablas.routes');
+app.use(tipoafectacionRoutes);
+
+//TIPO FACTURA
+const tipofacturaRoutes = require('./routes/tablas.routes');
+app.use(tipofacturaRoutes);
+
+//TIPO OPERACION
+const tipooperacionRoutes = require('./routes/tablas.routes');
+app.use(tipooperacionRoutes);
+
+//TIPO NC
+const tiponcRoutes = require('./routes/tablas.routes');
+app.use(tiponcRoutes);
+
+//TIPO ND
+const tipondRoutes = require('./routes/tablas.routes');
+app.use(tipondRoutes);
+
 // SERVIDOR FUNCIONANDO CORRECTAMENTE DEBE MOSTRAR EL MENSAJE API FUNCIONANDO
 app.listen(3000, () => {
   console.log('Backend corriendo en http://localhost:3000');

@@ -19,37 +19,23 @@ router.post('/sublinea', async (req, res) => {
 
   } catch (error) {
     console.error(error);
-     console.error('FULL ERROR:', error);
 
-  return res
-    .status(400)
-    .setHeader('Content-Type', 'application/json')
-    .json({
-      message: error.detail || error.message
-    });
     // UNIQUE
     if (error.code === '23505') {
-        console.error(error);
-
-  return res
-    .status(400)
-    .json({
-      message: error.detail || error.message
-    });
+      return res.status(400).json({
+        message: 'El código ya existe'
+      });
     }
 
     // CHECK
     if (error.code === '23514') {
-        console.error(error);
-
-  return res
-    .status(400)
-    .json({
-      message: error.detail || error.message
-    });
+      return res.status(400).json({
+        message: 'Error de validación'
+      });
     }
 
-    res.status(500).json({
+    // ERROR GENERAL
+    return res.status(500).json({
       message: 'Error interno del servidor'
     });
   }
