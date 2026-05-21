@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
 import { LineaService } from '../../../core/services/linea.service';
-
 import { ErrorHandlerService } from '../../../core/services/error-handler.service';
 
 interface SublineaForm {
@@ -137,8 +136,6 @@ export class SublineaComponent implements OnInit {
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-
-        this.closeModal();
         this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },

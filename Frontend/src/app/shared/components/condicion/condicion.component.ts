@@ -132,8 +132,6 @@ export class CondicionComponent {
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-
-        this.closeModal();
         this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },

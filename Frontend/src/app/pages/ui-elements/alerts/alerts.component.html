@@ -3,91 +3,38 @@
   <div>
     <app-component-card title="Success Alert">
       <div>
-        <app-alert
-          variant="success"
-          title="Success Message"
-          message="Be cautious when performing this action."
-          [showLink]="true"
-          linkHref="/"
-          linkText="Learn more"
-        />
-      </div>
-      <div>
-        <app-alert
-          variant="success"
-          title="Success Message"
-          message="Be cautious when performing this action."
-          [showLink]="false"
-        />
-      </div>
-    </app-component-card>
-  </div>
+        @if (variant === 'success') {
+    <lucide-icon
+      [img]="CheckCircle"
+      class="text-green-500">
+    </lucide-icon>
+  }
+
+  @if (variant === 'error') {
+    <lucide-icon
+      [img]="XCircle"
+      class="text-red-500">
+    </lucide-icon>
+  }
+
+  @if (variant === 'warning') {
+    <lucide-icon
+      [img]="AlertTriangle"
+      class="text-yellow-500">
+    </lucide-icon>
+  }
+
+  @if (variant === 'info') {
+    <lucide-icon
+      [img]="Info"
+      class="text-blue-500">
+    </lucide-icon>
+  }
 
   <div>
-    <app-component-card title="Warning Alert">
-      <div>
-        <app-alert
-          variant="warning"
-          title="Warning Message"
-          message="Be cautious when performing this action."
-          [showLink]="true"
-          linkHref="/"
-          linkText="Learn more"
-        />
-      </div>
-      <div>
-        <app-alert
-          variant="warning"
-          title="Warning Message"
-          message="Be cautious when performing this action."
-          [showLink]="false"
-        />
-      </div>
-    </app-component-card>
+    <h4>{{ title }}</h4>
+    <p>{{ message }}</p>
   </div>
-
-  <div>
-    <app-component-card title="Error Alert">
-      <div>
-        <app-alert
-          variant="error"
-          title="Error Message"
-          message="Be cautious when performing this action."
-          [showLink]="true"
-          linkHref="/"
-          linkText="Learn more"
-        />
-      </div>
-      <div>
-        <app-alert
-          variant="error"
-          title="Error Message"
-          message="Be cautious when performing this action."
-          [showLink]="false"
-        />
-      </div>
-    </app-component-card>
-  </div>
-
-  <div>
-    <app-component-card title="Info Alert">
-      <div>
-        <app-alert
-          variant="info"
-          title="Info Message"
-          message="Be cautious when performing this action."
-          [showLink]="true"
-          linkHref="/"
-          linkText="Learn more"
-        />
-      </div>
-      <div>
-        <app-alert
-          variant="info"
-          title="Info Message"
-          message="Be cautious when performing this action."
-          [showLink]="false"
-        />
       </div>
     </app-component-card>
   </div>

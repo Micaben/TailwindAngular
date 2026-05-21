@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { Color } from '../../core/models/color.model';
+import { Modelobase } from '../../core/models/modelobase.model';
 
 
 @Injectable({
@@ -15,7 +15,7 @@ export class ColorService {
 
   obtenerColor() {
     return firstValueFrom(
-      this.http.get<Color[]>(
+      this.http.get<Modelobase[]>(
         `${this.API_URL}/color`
       )
     );

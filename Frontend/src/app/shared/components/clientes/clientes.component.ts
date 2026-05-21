@@ -96,6 +96,7 @@ export class ClientesComponent {
   isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
+  modalContacto: boolean = false;
   currentPage = 1;
   itemsPerPage = 5;
   @Input() tipopersonaoptions: Option[] = [];
@@ -147,8 +148,6 @@ export class ClientesComponent {
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-
-        this.closeModal();
         this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },
@@ -279,5 +278,12 @@ export class ClientesComponent {
     }
     return 'error';
   }
+abrirModalContacto() {
+  this.modalContacto = true;
+}
 
+
+cerrarModalContacto() {
+  this.modalContacto = false;
+}
 }

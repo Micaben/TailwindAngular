@@ -6,7 +6,7 @@ import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
 import { ColorService } from '../../../core/services/color.service';
-import { Color } from '../../../core/models/color.model';
+import { Modelobase } from '../../../core/models/modelobase.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
@@ -50,8 +50,8 @@ export class ColorComponent {
   constructor(public modal: ModalService, private alertService: AlertService, private colorService: ColorService) { }
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
-  filteredItems: Color[] = [];
-  color: Color[] = [];
+  filteredItems: Modelobase[] = [];
+  color: Modelobase[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
@@ -62,7 +62,7 @@ export class ColorComponent {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }
 
-  get currentItems(): Color[] {
+  get currentItems(): Modelobase[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredItems.slice(start, start + this.itemsPerPage);
   }
@@ -124,8 +124,7 @@ export class ColorComponent {
               ? 'Datos guardados'
               : 'Datos modificados'
           );
-  
-          this.closeModal();
+
           this.selected = { ...EMPTY_FORM };
           this.formSubmitted = false;
         },
@@ -151,7 +150,7 @@ export class ColorComponent {
       this.isOpen = true;
     }
   
-    async openEditModal(item: Color) {
+    async openEditModal(item: Modelobase) {
       this.formSubmitted = false;
       this.modo = 'editar';
       this.selected = {

@@ -66,21 +66,22 @@ const EMPTY_FORM: Formulario = {
 
 export class TransportistaComponent implements OnInit {
   selected: Formulario = { ...EMPTY_FORM };
-  constructor(public modal: ModalService, private alertService: AlertService, private empresa_transporteService: Empresa_transporteService, private tablasService: TablasService, private transportistaService: TransportistaService) { }
-  modo: 'crear' | 'editar' = 'crear';
-  formSubmitted = false;
-  boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
-  searchTerm: string = '';
   filteredItems: Transportista[] = [];
   transportista: Transportista[] = [];
+  modo: 'crear' | 'editar' = 'crear';
   empresa_transporteoptions: Option[] = [];
   @Input() tipopersonaoptions: Option[] = [];
   @Input() tipodocumentooptions: Option[] = [];
+  formSubmitted = false;
   isOpen = false;
-  openModal() { this.isOpen = true; }
-  closeModal() { this.isOpen = false; }
   currentPage = 1;
   itemsPerPage = 5;
+  constructor(public modal: ModalService, private alertService: AlertService, private empresa_transporteService: Empresa_transporteService, private tablasService: TablasService, private transportistaService: TransportistaService) { }
+  boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
+  searchTerm: string = '';  
+  openModal() { this.isOpen = true; }
+  closeModal() { this.isOpen = false; }
+
 
   get totalPages(): number {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
@@ -98,26 +99,45 @@ export class TransportistaComponent implements OnInit {
   }
 
   filterTable() {
-    const term = this.searchTerm.trim().toLowerCase();
-    if (!term) {
-      this.filteredItems = [...this.transportista];
-      return;
-    }
 
-    this.filteredItems = this.transportista.filter(item =>
-      item.nombres?.toLowerCase().includes(term) ||
-      item.dni?.toLowerCase().includes(term) ||
-      item.empresa_transporte?.toLowerCase().includes(term)
-    );
+  const term =
+    this.searchTerm
+      .trim()
+      .toLowerCase();
+
+  if (!term) {
+    this.filteredItems = [...this.transportista];
+    return;
   }
 
-  async handleSave(form: any) {
-    console.log('SUBMIT EJECUTADO');
-console.log('INVALID?', form.invalid);
-console.log(form.value);
-    this.formSubmitted = true;
+  this.filteredItems =
+    this.transportista.filter(item =>
 
-    if (form.invalid) {      
+      // NOMBRE COMPLETO
+      `${item.nombres}
+       ${item.apellido_paterno}
+       ${item.apellido_materno}`
+        .toLowerCase()
+        .includes(term)
+
+      ||
+
+      item.dni
+        ?.toLowerCase()
+        .includes(term)
+
+      ||
+
+      item.empresa_transporte
+        ?.toLowerCase()
+        .includes(term)
+    );
+
+}
+
+  async handleSave(form: any) {
+    this.formSubmitted = true;
+    if (form.invalid) {
       return;
     }
     const payload = {
@@ -143,8 +163,6 @@ console.log(form.value);
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-
-        this.closeModal();
         this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },
@@ -232,7 +250,7 @@ console.log(form.value);
     this.selected = {
       id: item.id,
       tipo_documento: item.tipo_documento || '',
-      dni: item.dni || '',  
+      dni: item.dni || '',
       nombres: item.nombres || '',
       apellido_paterno: item.apellido_paterno || '',
       apellido_materno: item.apellido_materno || '',

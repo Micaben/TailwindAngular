@@ -164,7 +164,13 @@
               <label class="mb-2 block text-sm font-medium">
                 Naturaleza
               </label>
-              <select [(ngModel)]="selected.naturaleza" name="naturaleza" required
+              <select [(ngModel)]="selected.naturaleza" name="naturaleza" required #naturaleza="ngModel" [ngClass]="{
+                    'border-red-500 focus:border-red-500 focus:ring-red-500/20':
+                      naturaleza.invalid && (naturaleza.touched || formSubmitted),
+
+                    'border-gray-300 dark:border-gray-700':
+                      !(naturaleza.invalid && (naturaleza.touched || formSubmitted))
+                  }"
                 class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
                 <option value="" disabled>Seleccione una opción</option>
                 @for (option of naturalezaoptions; track $index) {
@@ -173,14 +179,24 @@
                 </option>
                 }
               </select>
+              @if (naturaleza.invalid && (naturaleza.touched || formSubmitted)) {
+              <p class="mt-1 text-xs text-red-500">
+                Este campo es obligatorio
+              </p>
+              }
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
                 Linea
               </label>
-              <select [(ngModel)]="selected.linea" (change)="onLineaChange()" name="linea" required  #lineaCtrl="ngModel"
-                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
-                
+              <select [(ngModel)]="selected.linea" (change)="onLineaChange()" name="linea"  required #linea="ngModel" [ngClass]="{
+                    'border-red-500 focus:border-red-500 focus:ring-red-500/20':
+                      linea.invalid && (linea.touched || formSubmitted),
+
+                    'border-gray-300 dark:border-gray-700':
+                      !(linea.invalid && (linea.touched || formSubmitted))
+                  }"
+                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">                
                 <option value="" disabled>Seleccione una opción</option>
                 @for (option of lineaoptions; track $index) {
                 <option [value]="option.value">
@@ -188,12 +204,23 @@
                 </option>
                 }
               </select>
+              @if (linea.invalid && (linea.touched || formSubmitted)) {
+              <p class="mt-1 text-xs text-red-500">
+                Este campo es obligatorio
+              </p>
+              }
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
                 Sublinea
               </label>
-              <select [(ngModel)]="selected.sublinea" name="sublinea" required
+              <select [(ngModel)]="selected.sublinea" name="sublinea"  required #sublinea="ngModel" [ngClass]="{
+                    'border-red-500 focus:border-red-500 focus:ring-red-500/20':
+                      sublinea.invalid && (sublinea.touched || formSubmitted),
+
+                    'border-gray-300 dark:border-gray-700':
+                      !(sublinea.invalid && (sublinea.touched || formSubmitted))
+                  }"
                 class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
                 <option value="" disabled>Seleccione una opción</option>
                 @for (option of sublineaoptions; track $index) {
@@ -202,6 +229,11 @@
                 </option>
                 }
               </select>
+              @if (sublinea.invalid && (sublinea.touched || formSubmitted)) {
+              <p class="mt-1 text-xs text-red-500">
+                Este campo es obligatorio
+              </p>
+              }
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
@@ -223,7 +255,13 @@
               <label class="mb-2 block text-sm font-medium">
                 Unidad de Medida
               </label>
-              <select [(ngModel)]="selected.unidad_medida" name="unidad_medida" [required]="true"
+              <select [(ngModel)]="selected.unidad_medida" name="unidad_medida" required #unidad_medida="ngModel" [ngClass]="{
+                    'border-red-500 focus:border-red-500 focus:ring-red-500/20':
+                      unidad_medida.invalid && (unidad_medida.touched || formSubmitted),
+
+                    'border-gray-300 dark:border-gray-700':
+                      !(unidad_medida.invalid && (unidad_medida.touched || formSubmitted))
+                  }"
                 class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
                 <option value="" disabled>Seleccione una opción</option>
 
@@ -233,6 +271,11 @@
                 </option>
                 }
               </select>
+              @if (unidad_medida.invalid && (unidad_medida.touched || formSubmitted)) {
+              <p class="mt-1 text-xs text-red-500">
+                Este campo es obligatorio
+              </p>
+              }
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">
@@ -324,7 +367,13 @@
               <label class="mb-2 block text-sm font-medium">
                 Proveedor
               </label>
-              <select [(ngModel)]="selected.proveedor" name="proveedor" (ngModelChange)="onProveedorChange($event)"
+              <select [(ngModel)]="selected.proveedor" name="proveedor" (ngModelChange)="onProveedorChange($event)" required #proveedor="ngModel" [ngClass]="{
+                    'border-red-500 focus:border-red-500 focus:ring-red-500/20':
+                      proveedor.invalid && (proveedor.touched || formSubmitted),
+
+                    'border-gray-300 dark:border-gray-700':
+                      !(proveedor.invalid && (proveedor.touched || formSubmitted))
+                  }"
                 class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
                 <option value="" disabled>Seleccione una opción</option>
 
@@ -333,7 +382,12 @@
                   {{ option.label }}
                 </option>
                 }
-              </select>              
+              </select> 
+              @if (proveedor.invalid && (proveedor.touched || formSubmitted)) {
+              <p class="mt-1 text-xs text-red-500">
+                Este campo es obligatorio
+              </p>
+              }             
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium">

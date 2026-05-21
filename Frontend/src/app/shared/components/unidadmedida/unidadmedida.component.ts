@@ -124,8 +124,6 @@ export class UnidadMedidaComponent {
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-
-        this.closeModal();
         this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },

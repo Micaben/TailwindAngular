@@ -9,5 +9,6 @@ export interface Transportista{
   apellido_paterno: string;
   apellido_materno: string;
   tipo_documento: string;
+  razon_social: string;
   estado: boolean;
 }
