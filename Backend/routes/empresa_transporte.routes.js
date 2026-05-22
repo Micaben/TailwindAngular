@@ -15,11 +15,12 @@ router.post('/empresa_transporte', async (req, res) => {
   const { ruc, razon_social } = req.body;
   try {
     await pool.query(
-      `INSERT INTO empresa_transporte (ruc, razon_social) VALUES ($1, $2) `,
+      `INSERT INTO empresa_transporte (ruc, razon_social) VALUES ($1, $2) RETURNING * `,
       [ruc, razon_social]
     );
     res.json({
-      message: 'empresa creado'
+      message: 'empresa creado',
+      data: result.rows[0]
     });
 
   } catch (error) {

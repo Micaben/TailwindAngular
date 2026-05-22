@@ -16,15 +16,13 @@ router.post('/vendedor', async (req, res) => {
   try {
     await pool.query(
       `
-      INSERT INTO vendedor
-      (codigo, nombres, direccion, telefono, correo, estado)
-      VALUES ($1, $2, $3, $4, $5, %6)
-      `,
+      INSERT INTO vendedor (codigo, nombres, direccion, telefono, correo, estado) VALUES ($1, $2, $3, $4, $5, %6) RETURNING * `,
       [codigo, nombres, direccion, telefono, correo, estado]
     );
 
     res.json({
-      message: 'vendedor creada'
+      message: 'vendedor creadO',
+      data: result.rows[0]
     });
 
   } catch (error) {

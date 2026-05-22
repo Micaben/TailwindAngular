@@ -6,15 +6,12 @@ router.post('/sublinea', async (req, res) => {
   const { codigo, descripcion, linea } = req.body;
   try {
     await pool.query(
-      `
-      INSERT INTO sublinea
-      (codigo, descripcion, linea)
-      VALUES ($1, $2, $3)
-      `,
+      ` INSERT INTO sublinea (codigo, descripcion, linea) VALUES ($1, $2, $3) RETURNING * `,
       [codigo, descripcion, linea]
     );
     res.json({
-      message: 'sublinea creada'
+      message: 'sublinea creada',
+      data: result.rows[0]
     });
 
   } catch (error) {

@@ -15,11 +15,12 @@ router.post('/condicion', async (req, res) => {
   const { codigo, descripcion, plazo } = req.body;
   try {
     await pool.query(
-      `INSERT INTO condicion_venta (codigo, descripcion, plazo) VALUES ($1, $2, $3) `,
+      `INSERT INTO condicion_venta (codigo, descripcion, plazo) VALUES ($1, $2, $3)  RETURNING * `,
       [codigo, descripcion, plazo]
     );
     res.json({
-      message: 'condicion creada'
+      message: 'condicion creada',
+      data: result.rows[0]
     });
 
   } catch (error) {

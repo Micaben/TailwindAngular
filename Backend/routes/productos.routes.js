@@ -25,11 +25,12 @@ router.post('/productos', async (req, res) => {
   try {
     await pool.query(
       `INSERT INTO productos (naturaleza, linea, sublinea, codigo, descripcion, unidad_medida, color, peso, codigo_barras, numero_serie, numero_lote, codigo_sunat, codigo_gtin, principio, marca, procedencia, 
-      fecha_vencimiento, proveedor, estado ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
+      fecha_vencimiento, proveedor, estado ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) RETURNING * `,
       [naturaleza, linea, sublinea, codigo, descripcion, unidad_medida, color, peso, codigo_barras, numero_serie, numero_lote, codigo_sunat, codigo_gtin, principio, marca, procedencia, fecha_vencimiento, proveedor, estado]
     );
     res.json({
-      message: 'productos creado'
+      message: 'productos creado',
+      data: result.rows[0]
     });
 
   } catch (error) {

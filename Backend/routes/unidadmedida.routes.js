@@ -19,15 +19,12 @@ router.post('/unidadmedida', async (req, res) => {
   const { codigo, descripcion } = req.body;
   try {
     await pool.query(
-      `
-      INSERT INTO unidad_medida
-      (codigo, descripcion)
-      VALUES ($1, $2)
-      `,
+      ` INSERT INTO unidad_medida (codigo, descripcion) VALUES ($1, $2) RETURNING * `,
       [codigo, descripcion]
     );
     res.json({
-      message: 'unidadmedida creada'
+      message: 'color creada',
+      data: result.rows[0]
     });
 
   } catch (error) {

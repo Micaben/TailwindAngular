@@ -15,15 +15,12 @@ router.post('/linea', async (req, res) => {
   const { codigo, descripcion } = req.body;
   try {
     await pool.query(
-      `
-      INSERT INTO linea
-      (codigo, descripcion)
-      VALUES ($1, $2)
-      `,
+      ` INSERT INTO linea (codigo, descripcion) VALUES ($1, $2) RETURNING * `,
       [codigo, descripcion]
     );
     res.json({
-      message: 'Linea creada'
+      message: 'Linea creada',
+      data: result.rows[0]
     });
 
   } catch (error) {

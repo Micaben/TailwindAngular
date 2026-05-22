@@ -14,24 +14,23 @@ router.get('/color', async (req, res) => {
 router.post('/color', async (req, res) => {
   const { codigo, descripcion } = req.body;
   try {
-    await pool.query(
-      `INSERT INTO color (codigo, descripcion) VALUES ($1, $2) `,
+      await pool.query(
+      ` INSERT INTO color (codigo, descripcion) VALUES ($1, $2) RETURNING * `,
       [codigo, descripcion]
     );
     res.json({
-      message: 'color creada'
+      message: 'color creada',
+      data: result.rows[0]
     });
 
   } catch (error) {
     console.error(error);
-    // UNIQUE
     if (error.code === '23505') {
       return res.status(400).json({
         message: `El código ${codigo} ya existe`
       });
     }
 
-    // CHECK
     if (error.code === '23514') {
       return res.status(400).json({
         message: 'El código debe tener 2 dígitos'

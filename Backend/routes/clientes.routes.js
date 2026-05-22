@@ -12,15 +12,16 @@ router.get('/clientes', async (req, res) => {
 });
 
 router.post('/clientes', async (req, res) => {
-  const { tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado } = req.body;
+  const { tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, vendedor, estado, condicion_venta, moneda,correo, direccion_entrega, ag_retencion,ubigeo } = req.body;
   try {
     await pool.query(
       `INSERT INTO clientes (tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno,
-       nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
-      [tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado]
+       nombre_comercial, razon_social, direccion, nombre_contacto, telefono, vendedor, estado, condicion_venta, moneda, correo, direccion_entrega, ag_retencion, ubigeo ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) RETURNING * `,
+      [tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, vendedor, estado, condicion_venta, moneda,correo, direccion_entrega, ag_retencion,ubigeo]
     );
     res.json({
-      message: 'clientes creado'
+      message: 'clientes creado',
+      data: result.rows[0]
     });
 
   } catch (error) {
@@ -47,17 +48,17 @@ router.post('/clientes', async (req, res) => {
 
 router.put('/clientes/:id', async (req, res) => {
   const { id } = req.params;
-  const { tipo_documento, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado  } = req.body;
+  const { tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, vendedor, estado, condicion_venta, moneda,correo, direccion_entrega, ag_retencion,ubigeo  } = req.body;
 
   try {
     await pool.query(
       `
       UPDATE clientes
-      SET tipo_documento=$1, tipo_persona=$2, nombres=$3, apellido_paterno=$4, apellido_materno=$5, nombre_comercial=$6,
-      razon_social=$7, direccion=$8 , nombre_contacto=$9 , telefono= $10, pais=$11, estado=$12
-      WHERE id = $13
+      SET tipo_documento=$1, ruc=$2, tipo_persona=$3, nombres=$4, apellido_paterno=$5, apellido_materno=$6,
+       nombre_comercial=$7, razon_social=$8, direccion=$9, nombre_contacto=$10, telefono=$11, vendedor=$12, estado=$13, condicion_venta=$14, moneda=$15, correo=$16, direccion_entrega=$17, ag_retencion=$18, ubigeo=$19
+      WHERE id = $20
       `,
-      [tipo_documento, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, pais, estado, id]
+      [tipo_documento, ruc, tipo_persona, nombres, apellido_paterno, apellido_materno, nombre_comercial, razon_social, direccion, nombre_contacto, telefono, vendedor, estado, condicion_venta, moneda,correo, direccion_entrega, ag_retencion,ubigeo, id]
     );
 
     res.json({

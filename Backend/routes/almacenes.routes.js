@@ -15,11 +15,12 @@ router.post('/almacenes', async (req, res) => {
   const { codigo, descripcion, direccion, telefono, encargado } = req.body;
   try {
     await pool.query(
-      `INSERT INTO almacenes (codigo, descripcion, direccion, telefono, encargado) VALUES ($1, $2, $3, $4, $5) `,
+      `INSERT INTO almacenes (codigo, descripcion, direccion, telefono, encargado) VALUES ($1, $2, $3, $4, $5)  RETURNING * `,
       [codigo, descripcion, direccion, telefono, encargado]
     );
     res.json({
-      message: 'almacen creado'
+      message: 'almacen creado',
+      data: result.rows[0]
     });
 
   } catch (error) {
@@ -55,7 +56,7 @@ router.put('/almacenes/:id', async (req, res) => {
       SET descripcion = $1, direccion= $2, telefono= $3, encargado= $4
       WHERE id = $5
       `,
-      [descripcion, direccion, telefono, encargado, id ]
+      [descripcion, direccion, telefono, encargado, id]
     );
 
     res.json({
