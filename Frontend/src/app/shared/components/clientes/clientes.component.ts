@@ -14,6 +14,7 @@ import { VendedorService } from '../../../core/services/vendedor.service';
 import { TablasService } from '../../../core/services/tablas.service';
 import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 interface Formulario {
   id?: number;
@@ -59,9 +60,9 @@ const EMPTY_FORM: Formulario = {
   telefono: '',
   cargo_contacto: '',
   correo: '',
-  condicion_venta: '',
-  vendedor: '',
-  moneda: '',
+  condicion_venta: '01',
+  vendedor: '01',
+  moneda: '01',
   ubigeo: '',
   direccion_entrega: '',
   estado: true,
@@ -78,6 +79,7 @@ const EMPTY_FORM: Formulario = {
     ModalComponent,
     AutoFocusFirstDirective,
     FormsModule,
+    NgSelectModule,
     PageBreadcrumbComponent,
   ],
   templateUrl: './clientes.component.html',
@@ -94,6 +96,7 @@ export class ClientesComponent {
   filteredItems: Clientes[] = [];
   clientes: Clientes[] = [];
   isOpen = false;
+  search = '';
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
   modalContacto: boolean = false;
@@ -104,6 +107,7 @@ export class ClientesComponent {
   @Input() monedaoptions: Option[] = [];
   @Input() condicionoptions: Option[] = [];
   @Input() vendedoroptions: Option[] = [];
+  filteredOptions = [...this.tipopersonaoptions];
   get totalPages(): number {
     return Math.ceil(this.clientes.length / this.itemsPerPage);
   }
@@ -119,36 +123,55 @@ export class ClientesComponent {
     }
   }
 
+  filtrarOpciones() {
+    this.filteredOptions = this.tipopersonaoptions.filter(x =>
+      x.label.toLowerCase().includes(this.search.toLowerCase())
+    );
+  }
+
+  seleccionar(option: any) {
+    this.selected.tipo_persona = option.value;
+    this.search = option.label;
+    this.filteredOptions = [];
+  }
+
   async handleSave(form: any) {
     this.formSubmitted = true;
 
     if (form.invalid) {
       return;
     }
+
     const payload = {
       ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
       //fechaFin: this.selected.fechaFin || null,
     };
-    console.log(payload);
-    const request =
-      this.modo === 'crear'
-        ? this.clientesService.crearClientes(payload)
-        : this.clientesService.actualizarClientes(
-          this.selected.id!,
-          payload
-        );
+
+    const isCreate = this.modo === 'crear';
+
+    const request = isCreate
+      ? this.clientesService.crearClientes(payload)
+      : this.clientesService.actualizarClientes(
+        this.selected.id!,
+        payload
+      );
 
     request.subscribe({
-      next: async () => {
-        await this.cargarClientes();
+      next: async (resp: any) => {
+        // guardar el ID retornado por el backend
+        if (isCreate) {
+          this.selected.id = resp.id; // o resp.data.id
+          this.modo = 'editar';
+        }
 
+        await this.cargarClientes();
         this.alertService.success(
-          this.modo === 'crear'
+          isCreate
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-        this.selected = { ...EMPTY_FORM };
+
         this.formSubmitted = false;
       },
 
@@ -278,12 +301,12 @@ export class ClientesComponent {
     }
     return 'error';
   }
-abrirModalContacto() {
-  this.modalContacto = true;
-}
 
+  abrirModalContacto() {
+    this.modalContacto = true;
+  }
 
-cerrarModalContacto() {
-  this.modalContacto = false;
-}
+  cerrarModalContacto() {
+    this.modalContacto = false;
+  }
 }

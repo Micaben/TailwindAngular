@@ -78,7 +78,7 @@ export class TransportistaComponent implements OnInit {
   itemsPerPage = 5;
   constructor(public modal: ModalService, private alertService: AlertService, private empresa_transporteService: Empresa_transporteService, private tablasService: TablasService, private transportistaService: TransportistaService) { }
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
-  searchTerm: string = '';  
+  searchTerm: string = '';
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
 
@@ -100,70 +100,77 @@ export class TransportistaComponent implements OnInit {
 
   filterTable() {
 
-  const term =
-    this.searchTerm
-      .trim()
-      .toLowerCase();
+    const term =
+      this.searchTerm
+        .trim()
+        .toLowerCase();
 
-  if (!term) {
-    this.filteredItems = [...this.transportista];
-    return;
-  }
+    if (!term) {
+      this.filteredItems = [...this.transportista];
+      return;
+    }
 
-  this.filteredItems =
-    this.transportista.filter(item =>
+    this.filteredItems =
+      this.transportista.filter(item =>
 
-      // NOMBRE COMPLETO
-      `${item.nombres}
+        // NOMBRE COMPLETO
+        `${item.nombres}
        ${item.apellido_paterno}
        ${item.apellido_materno}`
-        .toLowerCase()
-        .includes(term)
+          .toLowerCase()
+          .includes(term)
 
-      ||
+        ||
 
-      item.dni
-        ?.toLowerCase()
-        .includes(term)
+        item.dni
+          ?.toLowerCase()
+          .includes(term)
 
-      ||
+        ||
 
-      item.empresa_transporte
-        ?.toLowerCase()
-        .includes(term)
-    );
+        item.empresa_transporte
+          ?.toLowerCase()
+          .includes(term)
+      );
 
-}
+  }
 
   async handleSave(form: any) {
     this.formSubmitted = true;
+
     if (form.invalid) {
       return;
     }
+
     const payload = {
       ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
       //fechaFin: this.selected.fechaFin || null,
     };
-    console.log(payload);
-    const request =
-      this.modo === 'crear'
-        ? this.transportistaService.crearTransportista(payload)
-        : this.transportistaService.actualizarTransportista(
-          this.selected.id!,
-          payload
-        );
+
+    const isCreate = this.modo === 'crear';
+
+    const request = isCreate
+      ? this.transportistaService.crearTransportista(payload)
+      : this.transportistaService.actualizarTransportista(
+        this.selected.id!,
+        payload
+      );
 
     request.subscribe({
-      next: async () => {
-        await this.cargarTransportista();
+      next: async (resp: any) => {
+        // guardar el ID retornado por el backend
+        if (isCreate) {
+          this.selected.id = resp.id; // o resp.data.id
+          this.modo = 'editar';
+        }
 
+        await this.cargarTransportista();
         this.alertService.success(
-          this.modo === 'crear'
+          isCreate
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-        this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },
 

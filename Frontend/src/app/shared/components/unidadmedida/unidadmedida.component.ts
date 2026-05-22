@@ -95,36 +95,42 @@ export class UnidadMedidaComponent {
     }
   }
 
-    async handleSave(form: any) {
+  async handleSave(form: any) {
     this.formSubmitted = true;
 
     if (form.invalid) {
       return;
     }
+
     const payload = {
       ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
       //fechaFin: this.selected.fechaFin || null,
     };
-    console.log(payload);
-    const request =
-      this.modo === 'crear'
-        ? this.unidadmedidaService.crearUnidadMedida(payload)
-        : this.unidadmedidaService.actualizarUnidadMedida(
-          this.selected.id!,
-          payload
-        );
+
+    const isCreate = this.modo === 'crear';
+
+    const request = isCreate
+      ? this.unidadmedidaService.crearUnidadMedida(payload)
+      : this.unidadmedidaService.actualizarUnidadMedida(
+        this.selected.id!,
+        payload
+      );
 
     request.subscribe({
-      next: async () => {
-        await this.cargarUnidadMedida();
+      next: async (resp: any) => {
+        // guardar el ID retornado por el backend
+        if (isCreate) {
+          this.selected.id = resp.id; // o resp.data.id
+          this.modo = 'editar';
+        }
 
+        await this.cargarUnidadMedida();
         this.alertService.success(
-          this.modo === 'crear'
+          isCreate
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-        this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },
 
@@ -140,23 +146,23 @@ export class UnidadMedidaComponent {
     await Promise.all([
       this.cargarUnidadMedida()
     ]);
-  }  
+  }
 
   openCreateModal() {
-      this.formSubmitted = false;
-      this.modo = 'crear';
-      this.selected = { ...EMPTY_FORM };
-      this.isOpen = true;
-    }
-  
-    async openEditModal(item: UnidadMedida) {
-      this.formSubmitted = false;
-      this.modo = 'editar';
-      this.selected = {
-        id: item.id,
-        codigo: item.codigo || '',
-        descripcion: item.descripcion || '',
-      };
-      this.isOpen = true;
-    }
+    this.formSubmitted = false;
+    this.modo = 'crear';
+    this.selected = { ...EMPTY_FORM };
+    this.isOpen = true;
+  }
+
+  async openEditModal(item: UnidadMedida) {
+    this.formSubmitted = false;
+    this.modo = 'editar';
+    this.selected = {
+      id: item.id,
+      codigo: item.codigo || '',
+      descripcion: item.descripcion || '',
+    };
+    this.isOpen = true;
+  }
 }

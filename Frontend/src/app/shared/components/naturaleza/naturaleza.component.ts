@@ -86,77 +86,84 @@ export class NaturalezaComponent {
     );
   }
 
-  async cargarUnidadMedida() {
-      try {
-        this.naturaleza = await this.naturalezaService.obtenerNaturaleza();
-        this.filteredItems = [...this.naturaleza];
-      } catch (error) {
-        this.alertService.error('Error cargando productos');
-      }
+  async cargarNaturaleza() {
+    try {
+      this.naturaleza = await this.naturalezaService.obtenerNaturaleza();
+      this.filteredItems = [...this.naturaleza];
+    } catch (error) {
+      this.alertService.error('Error cargando productos');
     }
-  
-      async handleSave(form: any) {
-      this.formSubmitted = true;
-  
-      if (form.invalid) {
-        return;
-      }
-      const payload = {
-        ...this.selected,
-        //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
-        //fechaFin: this.selected.fechaFin || null,
-      };
-      console.log(payload);
-      const request =
-        this.modo === 'crear'
-          ? this.naturalezaService.crearNaturaleza(payload)
-          : this.naturalezaService.actualizarNaturaleza(
-            this.selected.id!,
-            payload
-          );
-  
-      request.subscribe({
-        next: async () => {
-          await this.cargarUnidadMedida();
-  
-          this.alertService.success(
-            this.modo === 'crear'
-              ? 'Datos guardados'
-              : 'Datos modificados'
-          );
-          this.selected = { ...EMPTY_FORM };
-          this.formSubmitted = false;
-        },
-  
-        error: (err) => {
-          this.alertService.error(
-            err.error?.message || 'Ocurrió un error'
-          );
+  }
+
+  async handleSave(form: any) {
+    this.formSubmitted = true;
+
+    if (form.invalid) {
+      return;
+    }
+
+    const payload = {
+      ...this.selected,
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
+      //fechaFin: this.selected.fechaFin || null,
+    };
+
+    const isCreate = this.modo === 'crear';
+
+    const request = isCreate
+      ? this.naturalezaService.crearNaturaleza(payload)
+      : this.naturalezaService.actualizarNaturaleza(
+        this.selected.id!,
+
+        payload
+      );
+
+    request.subscribe({
+      next: async (resp: any) => {
+        // guardar el ID retornado por el backend
+        if (isCreate) {
+          this.selected.id = resp.id; // o resp.data.id
+          this.modo = 'editar';
         }
-      });
-    }
-  
-    async ngOnInit(): Promise<void> {
-      await Promise.all([
-        this.cargarUnidadMedida()
-      ]);
-    }  
-  
-    openCreateModal() {
+
+        await this.cargarNaturaleza();
+        this.alertService.success(
+          isCreate
+            ? 'Datos guardados'
+            : 'Datos modificados'
+        );
         this.formSubmitted = false;
-        this.modo = 'crear';
-        this.selected = { ...EMPTY_FORM };
-        this.isOpen = true;
+      },
+
+      error: (err) => {
+        this.alertService.error(
+          err.error?.message || 'Ocurrió un error'
+        );
       }
-    
-      async openEditModal(item: Naturaleza) {
-        this.formSubmitted = false;
-        this.modo = 'editar';
-        this.selected = {
-          id: item.id,
-          codigo: item.codigo || '',
-          descripcion: item.descripcion || '',
-        };
-        this.isOpen = true;
-      }
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    await Promise.all([
+      this.cargarNaturaleza()
+    ]);
+  }
+
+  openCreateModal() {
+    this.formSubmitted = false;
+    this.modo = 'crear';
+    this.selected = { ...EMPTY_FORM };
+    this.isOpen = true;
+  }
+
+  async openEditModal(item: Naturaleza) {
+    this.formSubmitted = false;
+    this.modo = 'editar';
+    this.selected = {
+      id: item.id,
+      codigo: item.codigo || '',
+      descripcion: item.descripcion || '',
+    };
+    this.isOpen = true;
+  }
 }

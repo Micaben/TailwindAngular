@@ -113,42 +113,43 @@ export class SublineaComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+
     const payload = {
       ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
       //fechaFin: this.selected.fechaFin || null,
     };
-    console.log(payload);
-    const request =
-      this.modo === 'crear'
-        ? this.sublineaService.crearSublinea(payload)
-        : this.sublineaService.actualizarSublinea(
-          this.selected.id!,
-          payload
-        );
+
+    const isCreate = this.modo === 'crear';
+
+    const request = isCreate
+      ? this.sublineaService.crearSublinea(payload)
+      : this.sublineaService.actualizarSublinea(
+        this.selected.id!,
+        payload
+      );
 
     request.subscribe({
-      next: async () => {
-        await this.cargarSublinea();
+      next: async (resp: any) => {
+        // guardar el ID retornado por el backend
+        if (isCreate) {
+          this.selected.id = resp.id; // o resp.data.id
+          this.modo = 'editar';
+        }
 
+        await this.cargarSublinea();
         this.alertService.success(
-          this.modo === 'crear'
+          isCreate
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-        this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },
 
       error: (err) => {
-        console.log('err.error:', err.error);
-
-        const message =
-          typeof err.error === 'string'
-            ? err.error
-            : err.error?.message;
-
-        this.alertService.error(message || 'Error');
+        this.alertService.error(
+          err.error?.message || 'Ocurrió un error'
+        );
       }
     });
   }

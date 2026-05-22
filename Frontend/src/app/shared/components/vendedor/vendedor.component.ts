@@ -111,30 +111,36 @@ export class VendedorComponent {
     if (form.invalid) {
       return;
     }
+
     const payload = {
       ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
       //fechaFin: this.selected.fechaFin || null,
     };
-    console.log(payload);
-    const request =
-      this.modo === 'crear'
-        ? this.vendedorService.crearVendedor(payload)
+
+    const isCreate = this.modo === 'crear';
+
+    const request = isCreate
+       ? this.vendedorService.crearVendedor(payload)
         : this.vendedorService.actualizarVendedor(
           this.selected.id!,
-          payload
-        );
+        payload
+      );
 
     request.subscribe({
-      next: async () => {
-        await this.cargarVendedor();
+      next: async (resp: any) => {
+        // guardar el ID retornado por el backend
+        if (isCreate) {
+          this.selected.id = resp.id; // o resp.data.id
+          this.modo = 'editar';
+        }
 
+        await this.cargarVendedor();
         this.alertService.success(
-          this.modo === 'crear'
+          isCreate
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-        this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },
 

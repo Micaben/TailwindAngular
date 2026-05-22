@@ -30,7 +30,7 @@ const EMPTY_FORM: Formulario = {
   codigo: '',
   descripcion: '',
   direccion: '',
-  telefono:'',
+  telefono: '',
   encargado: '',
 };
 
@@ -113,30 +113,36 @@ export class AlmacenesComponent {
     if (form.invalid) {
       return;
     }
+
     const payload = {
       ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
       //fechaFin: this.selected.fechaFin || null,
     };
-    console.log(payload);
-    const request =
-      this.modo === 'crear'
-        ? this.almacenesService.crearAlmacenes(payload)
-        : this.almacenesService.actualizarAlmacenes(
-          this.selected.id!,
-          payload
-        );
+
+    const isCreate = this.modo === 'crear';
+
+    const request = isCreate
+      ? this.almacenesService.crearAlmacenes(payload)
+      : this.almacenesService.actualizarAlmacenes(
+        this.selected.id!,
+        payload
+      );
 
     request.subscribe({
-      next: async () => {
-        await this.cargarAlmacenes();
+      next: async (resp: any) => {
+        // guardar el ID retornado por el backend
+        if (isCreate) {
+          this.selected.id = resp.id; // o resp.data.id
+          this.modo = 'editar';
+        }
 
+        await this.cargarAlmacenes();
         this.alertService.success(
-          this.modo === 'crear'
+          isCreate
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-        this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },
 

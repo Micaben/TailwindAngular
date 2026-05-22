@@ -86,78 +86,82 @@ export class ColorComponent {
     );
   }
 
-    async cargarColor() {
-      try {
-        this.color = await this.colorService.obtenerColor();
-        this.filteredItems = [...this.color];
-      } catch (error) {
-        this.alertService.error('Error cargando productos');
-      }
+  async cargarColor() {
+    try {
+      this.color = await this.colorService.obtenerColor();
+      this.filteredItems = [...this.color];
+    } catch (error) {
+      this.alertService.error('Error cargando productos');
     }
-  
-    async handleSave(form: any) {
-      this.formSubmitted = true;
-  
-      if (form.invalid) {
-        return;
-      }
-      const payload = {
-        ...this.selected,
-        //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
-        //fechaFin: this.selected.fechaFin || null,
-      };
-      console.log(payload);
-      const request =
-        this.modo === 'crear'
-          ? this.colorService.crearColor(payload)
-          : this.colorService.actualizarColor(
-            this.selected.id!,
-            payload
-          );
-  
-      request.subscribe({
-        next: async () => {
-          await this.cargarColor();
-  
-          this.alertService.success(
-            this.modo === 'crear'
-              ? 'Datos guardados'
-              : 'Datos modificados'
-          );
+  }
 
-          this.selected = { ...EMPTY_FORM };
-          this.formSubmitted = false;
-        },
-  
-        error: (err) => {
-          this.alertService.error(
-            err.error?.message || 'Ocurrió un error'
-          );
+  async handleSave(form: any) {
+    this.formSubmitted = true;
+    if (form.invalid) {
+      return;
+    }
+
+    const payload = {
+      ...this.selected,
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
+      //fechaFin: this.selected.fechaFin || null,
+    };
+
+    const isCreate = this.modo === 'crear';
+    const request = isCreate
+      ? this.colorService.crearColor(payload)
+      : this.colorService.actualizarColor(
+        this.selected.id!,
+
+        payload
+      );
+
+    request.subscribe({
+      next: async (resp: any) => {
+        // guardar el ID retornado por el backend
+        if (isCreate) {
+          this.selected = resp.data;
+          this.modo = 'editar';
         }
-      });
-    }
-  
-    async ngOnInit(): Promise<void> {
-      await Promise.all([
-        this.cargarColor()
-      ]);
-    }
-  
-    openCreateModal() {
-      this.formSubmitted = false;
-      this.modo = 'crear';
-      this.selected = { ...EMPTY_FORM };
-      this.isOpen = true;
-    }
-  
-    async openEditModal(item: Modelobase) {
-      this.formSubmitted = false;
-      this.modo = 'editar';
-      this.selected = {
-        id: item.id,
-        codigo: item.codigo || '',
-        descripcion: item.descripcion || '',
-      };
-      this.isOpen = true;
-    }
+
+        await this.cargarColor();
+        this.alertService.success(
+          isCreate
+            ? 'Datos guardados'
+            : 'Datos modificados'
+        );
+        this.formSubmitted = false;
+      },
+
+      error: (err) => {
+        this.alertService.error(
+          err.error?.message || 'Ocurrió un error'
+        );
+      }
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    await Promise.all([
+      this.cargarColor()
+    ]);
+  }
+
+  openCreateModal() {
+    this.formSubmitted = false;
+    this.modo = 'crear';
+    this.selected = { ...EMPTY_FORM };
+    this.isOpen = true;
+  }
+
+  async openEditModal(item: Modelobase) {
+    this.formSubmitted = false;
+    this.modo = 'editar';
+    this.selected = {
+      id: item.id,
+      codigo: item.codigo || '',
+      descripcion: item.descripcion || '',
+    };
+    this.isOpen = true;
+  }
 }

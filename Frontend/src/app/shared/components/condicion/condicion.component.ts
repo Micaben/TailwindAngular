@@ -103,36 +103,43 @@ export class CondicionComponent {
     }
   }
 
-  async handleSave(form: any) {
+    async handleSave(form: any) {
     this.formSubmitted = true;
 
     if (form.invalid) {
       return;
     }
+
     const payload = {
       ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS
+      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
       //fechaFin: this.selected.fechaFin || null,
     };
-    console.log(payload);
-    const request =
-      this.modo === 'crear'
-        ? this.condicionService.crearCondicion(payload)
+
+    const isCreate = this.modo === 'crear';
+
+    const request = isCreate
+       ? this.condicionService.crearCondicion(payload)
         : this.condicionService.actualizarCondicion(
           this.selected.id!,
-          payload
-        );
+
+        payload
+      );
 
     request.subscribe({
-      next: async () => {
-        await this.cargarCondicion();
+      next: async (resp: any) => {
+        // guardar el ID retornado por el backend
+        if (isCreate) {
+          this.selected.id = resp.id; // o resp.data.id
+          this.modo = 'editar';
+        }
 
+        await this.cargarCondicion();
         this.alertService.success(
-          this.modo === 'crear'
+          isCreate
             ? 'Datos guardados'
             : 'Datos modificados'
         );
-        this.selected = { ...EMPTY_FORM };
         this.formSubmitted = false;
       },
 
