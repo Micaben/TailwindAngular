@@ -14,14 +14,14 @@ router.get('/vendedor', async (req, res) => {
 router.post('/vendedor', async (req, res) => {
   const { codigo, nombres, direccion, telefono, correo, estado } = req.body;
   try {
-    await pool.query(
+    const result = await pool.query(
       `
       INSERT INTO vendedor (codigo, nombres, direccion, telefono, correo, estado) VALUES ($1, $2, $3, $4, $5, %6) RETURNING * `,
       [codigo, nombres, direccion, telefono, correo, estado]
     );
 
     res.json({
-      message: 'vendedor creadO',
+      message: 'vendedor creado',
       data: result.rows[0]
     });
 

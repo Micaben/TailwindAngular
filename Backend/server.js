@@ -143,6 +143,14 @@ app.use(tiponcRoutes);
 const tipondRoutes = require('./routes/tablas.routes');
 app.use(tipondRoutes);
 
+//TIPO DE CAMBIO  
+const tipocambioRoutes = require('./routes/tipocambio.routes');
+app.use(tipocambioRoutes);
+
+//SERIE
+const seriesRoutes = require('./routes/series.routes');
+app.use(seriesRoutes);
+
 // SERVIDOR FUNCIONANDO CORRECTAMENTE DEBE MOSTRAR EL MENSAJE API FUNCIONANDO
 app.listen(3000, () => {
   console.log('Backend corriendo en http://localhost:3000');

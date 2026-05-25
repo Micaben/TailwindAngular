@@ -14,7 +14,7 @@ router.get('/concepto', async (req, res) => {
 router.post('/concepto', async (req, res) => {
   const { codigo, descripcion, tipo_afectacion, tipo_operacion, comprobante, tipo_factura, tipo_nc, tipo_nd} = req.body;
   try {
-    await pool.query(
+    const result = await pool.query(
       `INSERT INTO concepto_venta (codigo, descripcion, tipo_afectacion, tipo_operacion, comprobante, tipo_factura, tipo_nc, tipo_nd) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)  RETURNING * `,
       [codigo, descripcion, tipo_afectacion, tipo_operacion, comprobante, tipo_factura, tipo_nc, tipo_nd]
     );

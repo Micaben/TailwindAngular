@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { EcommerceComponent } from './pages/dashboard/ecommerce/ecommerce.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { FormElementsComponent } from './pages/forms/form-elements/form-elements.component';
-import { BlankComponent } from './pages/blank/blank.component';
 import { NaturalezaComponent } from './shared/components/naturaleza/naturaleza.component';
 import { LineaComponent } from './shared/components/linea/linea.component';
 import { SublineaComponent } from './shared/components/sublinea/sublinea.component';
@@ -10,6 +9,7 @@ import { UnidadMedidaComponent } from './shared/components/unidadmedida/unidadme
 import { ColorComponent } from './shared/components/color/color.component';
 import { ProductosComponent } from './shared/components/productos/productos.component';
 import { AlmacenesComponent } from './shared/components/almacenes/almacenes.component';
+import { IngresosComponent } from './shared/components/almacen/ingresos.component';
 import { Empresa_transporteComponent } from './shared/components/empresa_transporte/empresa_transporte.component';
 import { ClientesComponent } from './shared/components/clientes/clientes.component';
 import { ProveedoresComponent } from './shared/components/proveedores/proveedores.component';
@@ -17,6 +17,9 @@ import { VendedorComponent } from './shared/components/vendedor/vendedor.compone
 import { TransportistaComponent } from './shared/components/transportista/transportista.component';
 import { CondicionComponent } from './shared/components/condicion/condicion.component';
 import { ConceptoComponent } from './shared/components/concepto/concepto.component';
+import { DocumentosComponent } from './shared/components/documentos/documentos.component';
+import { SeriesComponent } from './shared/components/documentos/series.component';
+import { TipocambioComponent } from './shared/components/tipocambio/tipocambio.component';
 import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
@@ -108,6 +111,26 @@ export const routes: Routes = [
         title: 'Angular Concepto Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
+        path: 'documentos',
+        component: DocumentosComponent,
+        title: 'Angular Documentos Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'series',
+        component: SeriesComponent,
+        title: 'Angular Series Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'tipocambio',
+        component: TipocambioComponent,
+        title: 'Angular Tipo cambio Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'ingresos',
+        component: IngresosComponent,
+        title: 'Angular Documentos Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
         path: 'dashboard',
         component: EcommerceComponent,
        
@@ -129,12 +152,7 @@ export const routes: Routes = [
         path: 'form-elements',
         component: FormElementsComponent,
         title: 'Angular Form Elements Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
-      {
-        path: 'blank',
-        component: BlankComponent,
-        title: 'Angular Blank Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
+      },      
       // support tickets
       {
         path: 'invoice',

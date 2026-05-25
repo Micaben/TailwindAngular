@@ -23,7 +23,7 @@ router.get('/productos', async (req, res) => {
 router.post('/productos', async (req, res) => {
   const { naturaleza, linea, sublinea, codigo, descripcion, unidad_medida, color, peso, codigo_barras, numero_serie, numero_lote, codigo_sunat, codigo_gtin, principio, marca, procedencia, fecha_vencimiento, proveedor, estado } = req.body;
   try {
-    await pool.query(
+    const result = await pool.query(
       `INSERT INTO productos (naturaleza, linea, sublinea, codigo, descripcion, unidad_medida, color, peso, codigo_barras, numero_serie, numero_lote, codigo_sunat, codigo_gtin, principio, marca, procedencia, 
       fecha_vencimiento, proveedor, estado ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) RETURNING * `,
       [naturaleza, linea, sublinea, codigo, descripcion, unidad_medida, color, peso, codigo_barras, numero_serie, numero_lote, codigo_sunat, codigo_gtin, principio, marca, procedencia, fecha_vencimiento, proveedor, estado]

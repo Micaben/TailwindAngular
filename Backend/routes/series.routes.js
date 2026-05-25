@@ -2,24 +2,24 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
-router.get('/condicion', async (req, res) => {
+router.get('/series', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM condicion_venta order by codigo asc');
+    const result = await pool.query('SELECT s.id, s.comprobante, d.descripcion as descripcion, serie, ultimo FROM series s inner join documentos d on d.codigo=s.comprobante order by s.comprobante asc');
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: 'Error condicion' });
+    res.status(500).json({ message: 'Error series' });
   }
 });
 
-router.post('/condicion', async (req, res) => {
-  const { codigo, descripcion, plazo } = req.body;
+router.post('/series', async (req, res) => {
+  const { serie, ultimo, comprobante } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO condicion_venta (codigo, descripcion, plazo) VALUES ($1, $2, $3)  RETURNING * `,
-      [codigo, descripcion, plazo]
+      `INSERT INTO series (serie, ultimo, comprobante) VALUES ($1, $2, $3)  RETURNING * `,
+      [ serie, ultimo, comprobante]
     );
     res.json({
-      message: 'condicion creada',
+      message: 'series creada',
       data: result.rows[0]
     });
 
@@ -45,18 +45,18 @@ router.post('/condicion', async (req, res) => {
   }
 });
 
-router.put('/condicion/:id', async (req, res) => {
+router.put('/series/:id', async (req, res) => {
   const { id } = req.params;
-  const { descripcion, plazo } = req.body;
+  const { serie, ultimo, comprobante } = req.body;
 
   try {
     await pool.query(
       `
-      UPDATE condicion_venta
-      SET descripcion = $1, plazo=$2
-      WHERE id = $3
+      UPDATE series
+      SET serie = $1, ultimo=$2, comprobante=$3
+      WHERE id = $4
       `,
-      [descripcion, plazo, id]
+      [ serie, ultimo, comprobante, id]
     );
 
     res.json({

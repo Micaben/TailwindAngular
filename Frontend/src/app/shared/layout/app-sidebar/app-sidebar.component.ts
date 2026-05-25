@@ -10,7 +10,13 @@ type NavItem = {
   icon: string;
   path?: string;
   new?: boolean;
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  subItems?: {
+    name: string;
+    path?: string;
+    pro?: boolean;
+    new?: boolean;
+    subSubItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  }[];
 };
 
 @Component({
@@ -29,39 +35,65 @@ export class AppSidebarComponent {
     {
       name: "Archivo",
       icon: `<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.5 3.25C4.25736 3.25 3.25 4.25736 3.25 5.5V8.99998C3.25 10.2426 4.25736 11.25 5.5 11.25H9C10.2426 11.25 11.25 10.2426 11.25 8.99998V5.5C11.25 4.25736 10.2426 3.25 9 3.25H5.5ZM4.75 5.5C4.75 5.08579 5.08579 4.75 5.5 4.75H9C9.41421 4.75 9.75 5.08579 9.75 5.5V8.99998C9.75 9.41419 9.41421 9.74998 9 9.74998H5.5C5.08579 9.74998 4.75 9.41419 4.75 8.99998V5.5ZM5.5 12.75C4.25736 12.75 3.25 13.7574 3.25 15V18.5C3.25 19.7426 4.25736 20.75 5.5 20.75H9C10.2426 20.75 11.25 19.7427 11.25 18.5V15C11.25 13.7574 10.2426 12.75 9 12.75H5.5ZM4.75 15C4.75 14.5858 5.08579 14.25 5.5 14.25H9C9.41421 14.25 9.75 14.5858 9.75 15V18.5C9.75 18.9142 9.41421 19.25 9 19.25H5.5C5.08579 19.25 4.75 18.9142 4.75 18.5V15ZM12.75 5.5C12.75 4.25736 13.7574 3.25 15 3.25H18.5C19.7426 3.25 20.75 4.25736 20.75 5.5V8.99998C20.75 10.2426 19.7426 11.25 18.5 11.25H15C13.7574 11.25 12.75 10.2426 12.75 8.99998V5.5ZM15 4.75C14.5858 4.75 14.25 5.08579 14.25 5.5V8.99998C14.25 9.41419 14.5858 9.74998 15 9.74998H18.5C18.9142 9.74998 19.25 9.41419 19.25 8.99998V5.5C19.25 5.08579 18.9142 4.75 18.5 4.75H15ZM15 12.75C13.7574 12.75 12.75 13.7574 12.75 15V18.5C12.75 19.7426 13.7574 20.75 15 20.75H18.5C19.7426 20.75 20.75 19.7427 20.75 18.5V15C20.75 13.7574 19.7426 12.75 18.5 12.75H15ZM14.25 15C14.25 14.5858 14.5858 14.25 15 14.25H18.5C18.9142 14.25 19.25 14.5858 19.25 15V18.5C19.25 18.9142 18.9142 19.25 18.5 19.25H15C14.5858 19.25 14.25 18.9142 14.25 18.5V15Z" fill="currentColor"></path></svg>`,
-      subItems: [   
-        { name: "Almacenes", path: "/almacenes", pro: false },
-        { name: "Empresa de transporte", path: "/empresa_transporte", pro: false },
-        { name: "Transportista", path: "/transportista", pro: false },
-        { name: "Condicion de venta", path: "/condicion", pro: false },
-        { name: "Concepto de venta", path: "/concepto", pro: false },
-        { name: "Vendedor", path: "/vendedor", pro: false },     
+      subItems: [
+        {
+          name: "Productos",   // sin path, tiene hijos
+          subSubItems: [
+            { name: "Mantenimiento", path: "/productos", pro: false },
+            { name: "Naturaleza", path: "/naturaleza", pro: false },
+            { name: "Linea", path: "/linea", pro: false },
+            { name: "Sublinea", path: "/sublinea", pro: false },
+            { name: "Unidad de Medida", path: "/unidadmedida", pro: false },
+            { name: "Color", path: "/color", pro: false },
+          ]
+        },
+        {
+          name: "Almacen",   // sin path, tiene hijos
+          subSubItems: [
+            { name: "Almacenes", path: "/almacenes", pro: false },
+            { name: "Empresa de transporte", path: "/empresa_transporte", pro: false },
+            { name: "Transportista", path: "/transportista", pro: false },
+          ]
+        },
+        {
+          name: "Ventas",   // sin path, tiene hijos
+          subSubItems: [
+            { name: "Condicion de venta", path: "/condicion", pro: false },
+            { name: "Concepto de venta", path: "/concepto", pro: false },
+            { name: "Vendedor", path: "/vendedor", pro: false },
+          ]
+        },
+        {//usar HEROICONS
+          name: "Clientes",
+          path: "/clientes",
+        },
+        {//usar HEROICONS
+          name: "Proveedores",
+          path: "/proveedores",
+        },
+        {
+          name: "Documentos",   // sin path, tiene hijos
+          subSubItems: [
+            { name: "Comprobantes", path: "/documentos", pro: false },
+            { name: "Series", path: "/series", pro: false },
+          ]
+        },
+        {//usar HEROICONS
+          name: "Tipo de cambio",
+          path: "/tipocambio",
+        },
       ],
+
     },
     {
-      name: "Productos",
-      icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" /></svg>`,
+      name: "Almacen",
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" /></svg>`,
       subItems: [
-        { name: "Mantenimiento", path: "/productos", pro: false },
-        { name: "Naturaleza", path: "/naturaleza", pro: false },
-        { name: "Linea", path: "/linea", pro: false },
-        { name: "Sublinea", path: "/sublinea", pro: false },
-        { name: "Unidad de Medida", path: "/unidadmedida", pro: false },
-        { name: "Color", path: "/color", pro: false },
+        { name: "Ingresos", path: "/ingresos", pro: false }
       ],
     },
-    {//usar HEROICONS
-      icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" /></svg>`,
-      name: "Clientes",
-      path: "/clientes",
-    },
-    {//usar HEROICONS
-      icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>`,
-      name: "Proveedores",
-      path: "/proveedores",
-    },
     //usar HEROICONS icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" /></svg>`,
-        {
+    {
       icon: `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 2C8.41421 2 8.75 2.33579 8.75 2.75V3.75H15.25V2.75C15.25 2.33579 15.5858 2 16 2C16.4142 2 16.75 2.33579 16.75 2.75V3.75H18.5C19.7426 3.75 20.75 4.75736 20.75 6V9V19C20.75 20.2426 19.7426 21.25 18.5 21.25H5.5C4.25736 21.25 3.25 20.2426 3.25 19V9V6C3.25 4.75736 4.25736 3.75 5.5 3.75H7.25V2.75C7.25 2.33579 7.58579 2 8 2ZM8 5.25H5.5C5.08579 5.25 4.75 5.58579 4.75 6V8.25H19.25V6C19.25 5.58579 18.9142 5.25 18.5 5.25H16H8ZM19.25 9.75H4.75V19C4.75 19.4142 5.08579 19.75 5.5 19.75H18.5C18.9142 19.75 19.25 19.4142 19.25 19V9.75Z" fill="currentColor"></path></svg>`,
       name: "Calendar",
       path: "/calendar",
@@ -109,7 +141,10 @@ export class AppSidebarComponent {
 
   openSubmenu: string | null | number = null;
   subMenuHeights: { [key: string]: number } = {};
+  openSubSubmenu: string | null = null;
+  subSubMenuHeights: { [key: string]: number } = {};
   @ViewChildren('subMenu') subMenuRefs!: QueryList<ElementRef>;
+
 
   readonly isExpanded$;
   readonly isMobileOpen$;
@@ -164,26 +199,26 @@ export class AppSidebarComponent {
     this.subscription.unsubscribe();
   }
 
-  isActive(path: string): boolean {
+  isActive(path: string | undefined): boolean {
+    if (!path) return false;
     return this.router.url === path;
   }
 
   toggleSubmenu(section: string, index: number) {
     const key = `${section}-${index}`;
-
     if (this.openSubmenu === key) {
       this.openSubmenu = null;
-      this.subMenuHeights[key] = 0;
     } else {
       this.openSubmenu = key;
+    }
+  }
 
-      setTimeout(() => {
-        const el = document.getElementById(key);
-        if (el) {
-          this.subMenuHeights[key] = el.scrollHeight;
-          this.cdr.detectChanges(); // Ensure UI updates
-        }
-      });
+  toggleSubSubmenu(parentKey: string, subIndex: number) {
+    const key = `${parentKey}-sub-${subIndex}`;
+    if (this.openSubSubmenu === key) {
+      this.openSubSubmenu = null;
+    } else {
+      this.openSubSubmenu = key;
     }
   }
 
@@ -204,25 +239,53 @@ export class AppSidebarComponent {
     menuGroups.forEach(group => {
       group.items.forEach((nav, i) => {
         if (nav.subItems) {
-          nav.subItems.forEach(subItem => {
+          nav.subItems.forEach((subItem, j) => {
+
+            // Nivel 2 (igual que antes)
             if (currentUrl === subItem.path) {
               const key = `${group.prefix}-${i}`;
               this.openSubmenu = key;
-
               setTimeout(() => {
                 const el = document.getElementById(key);
                 if (el) {
                   this.subMenuHeights[key] = el.scrollHeight;
-                  this.cdr.detectChanges(); // Ensure UI updates
+                  this.cdr.detectChanges();
                 }
               });
             }
+
+            // Nivel 3 (nuevo)
+            if (subItem.subSubItems) {
+              subItem.subSubItems.forEach(subSubItem => {
+                if (currentUrl === subSubItem.path) {
+                  const parentKey = `${group.prefix}-${i}`;
+                  const subKey = `${parentKey}-sub-${j}`;
+
+                  this.openSubmenu = parentKey;
+                  this.openSubSubmenu = subKey;
+
+                  setTimeout(() => {
+                    const subEl = document.getElementById(subKey);
+                    if (subEl) {
+                      this.subSubMenuHeights[subKey] = subEl.scrollHeight;
+                    }
+                    setTimeout(() => {
+                      const parentEl = document.getElementById(parentKey);
+                      if (parentEl) {
+                        this.subMenuHeights[parentKey] = parentEl.scrollHeight;
+                        this.cdr.detectChanges();
+                      }
+                    }, 50);
+                  });
+                }
+              });
+            }
+
           });
         }
       });
     });
   }
-
   onSubmenuClick() {
     console.log('click submenu');
     this.isMobileOpen$.subscribe(isMobile => {
@@ -231,6 +294,5 @@ export class AppSidebarComponent {
       }
     }).unsubscribe();
   }
-
 
 }

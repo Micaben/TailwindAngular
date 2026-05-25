@@ -5,7 +5,7 @@ const pool = require('../db');
 router.post('/sublinea', async (req, res) => {
   const { codigo, descripcion, linea } = req.body;
   try {
-    await pool.query(
+    const result = await pool.query(
       ` INSERT INTO sublinea (codigo, descripcion, linea) VALUES ($1, $2, $3) RETURNING * `,
       [codigo, descripcion, linea]
     );

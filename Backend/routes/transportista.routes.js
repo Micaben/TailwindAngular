@@ -14,7 +14,7 @@ router.get('/transportista', async (req, res) => {
 router.post('/transportista', async (req, res) => {
   const { empresa_transporte, nombres, dni, licencia, unidad, placa, apellido_paterno, apellido_materno, tipo_documento, estado} = req.body;
   try {
-    await pool.query(
+    const result = await pool.query(
       `INSERT INTO transportista
       (empresa_transporte,  nombres, dni, licencia, unidad, placa, apellido_paterno, apellido_materno, tipo_documento, estado)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING * `,

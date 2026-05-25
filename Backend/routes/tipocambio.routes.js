@@ -2,24 +2,24 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
-router.get('/condicion', async (req, res) => {
+router.get('/tipocambio', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM condicion_venta order by codigo asc');
+    const result = await pool.query('SELECT * FROM tipocambio order by fecha asc');
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: 'Error condicion' });
+    res.status(500).json({ message: 'Error tipo de cambio' });
   }
 });
 
-router.post('/condicion', async (req, res) => {
-  const { codigo, descripcion, plazo } = req.body;
+router.post('/tipocambio', async (req, res) => {
+  const { fecha, compra, venta } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO condicion_venta (codigo, descripcion, plazo) VALUES ($1, $2, $3)  RETURNING * `,
-      [codigo, descripcion, plazo]
+      `INSERT INTO tipocambio (fecha, compra, venta) VALUES ($1, $2, $3)  RETURNING * `,
+      [fecha, compra, venta]
     );
     res.json({
-      message: 'condicion creada',
+      message: 'almacen creado',
       data: result.rows[0]
     });
 
@@ -45,22 +45,22 @@ router.post('/condicion', async (req, res) => {
   }
 });
 
-router.put('/condicion/:id', async (req, res) => {
+router.put('/tipocambio/:id', async (req, res) => {
   const { id } = req.params;
-  const { descripcion, plazo } = req.body;
+  const {fecha, compra, venta } = req.body;
 
   try {
     await pool.query(
       `
-      UPDATE condicion_venta
-      SET descripcion = $1, plazo=$2
-      WHERE id = $3
+      UPDATE tipocambio
+      SET fecha = $1, compra= $2, venta= $3
+      WHERE id = $4
       `,
-      [descripcion, plazo, id]
+      [fecha, compra, venta, id]
     );
 
     res.json({
-      message: 'Condicion actualizado'
+      message: 'Datos actualizados'
     });
   } catch (error) {
     console.error(error);

@@ -14,7 +14,7 @@ router.get('/naturaleza', async (req, res) => {
 router.post('/naturaleza', async (req, res) => {
   const { codigo, descripcion } = req.body;
   try {
-    await pool.query(
+    const result = await pool.query(
       ` INSERT INTO naturaleza (codigo, descripcion) VALUES ($1, $2) RETURNING * `,
       [codigo, descripcion]
     );
