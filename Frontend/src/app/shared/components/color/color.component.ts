@@ -10,6 +10,7 @@ import { Modelobase } from '../../../core/models/modelobase.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
   id?: number;
@@ -34,6 +35,7 @@ const EMPTY_FORM: Formulario = {
     CommonModule,
     ButtonComponent,
     InputFieldComponent,
+    PaginationComponent,
     ModalComponent,
     PageBreadcrumbComponent,
     FormsModule,
@@ -65,12 +67,6 @@ export class ColorComponent {
   get currentItems(): Modelobase[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredItems.slice(start, start + this.itemsPerPage);
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
   }
 
   filterTable() {

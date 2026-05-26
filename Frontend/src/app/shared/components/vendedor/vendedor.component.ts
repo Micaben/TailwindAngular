@@ -11,6 +11,7 @@ import { Vendedor } from '../../../core/models/vendedor.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
   id?: number;
@@ -45,6 +46,7 @@ const EMPTY_FORM: Formulario = {
     InputFieldComponent,
     BadgeComponent,
     ModalComponent,
+    PaginationComponent,
     PageBreadcrumbComponent,
     FormsModule,
     AutoFocusFirstDirective,
@@ -69,18 +71,15 @@ export class VendedorComponent {
   itemsPerPage = 5;
   @Input() options: Option[] = [];
   get totalPages(): number {
-    return Math.ceil(this.filteredItems.length / this.itemsPerPage);
+    return Math.ceil(
+      this.filteredItems.length /
+      this.itemsPerPage
+    );
   }
 
   get currentItems(): Vendedor[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredItems.slice(start, start + this.itemsPerPage);
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
   }
 
   filterTable() {
@@ -121,9 +120,9 @@ export class VendedorComponent {
     const isCreate = this.modo === 'crear';
 
     const request = isCreate
-       ? this.vendedorService.crearVendedor(payload)
-        : this.vendedorService.actualizarVendedor(
-          this.selected.id!,
+      ? this.vendedorService.crearVendedor(payload)
+      : this.vendedorService.actualizarVendedor(
+        this.selected.id!,
         payload
       );
 

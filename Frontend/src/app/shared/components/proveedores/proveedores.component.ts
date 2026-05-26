@@ -12,6 +12,7 @@ import { ProveedoresService } from '../../../core/services/proveedores.service';
 import { TablasService } from '../../../core/services/tablas.service';
 import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
   id?: number;
@@ -61,6 +62,7 @@ const EMPTY_FORM: Formulario = {
     InputFieldComponent,
     BadgeComponent,
     ModalComponent,
+    PaginationComponent,
     AutoFocusFirstDirective,
     FormsModule,
     PageBreadcrumbComponent,

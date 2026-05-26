@@ -12,6 +12,7 @@ import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
 import { LineaService } from '../../../core/services/linea.service';
 import { ErrorHandlerService } from '../../../core/services/error-handler.service';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface SublineaForm {
   id?: number;
@@ -39,6 +40,7 @@ const EMPTY_FORM: SublineaForm = {
     ButtonComponent,
     InputFieldComponent,
     ModalComponent,
+    PaginationComponent,
     PageBreadcrumbComponent,
     FormsModule,
     AutoFocusFirstDirective,

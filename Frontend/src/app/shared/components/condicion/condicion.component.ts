@@ -10,6 +10,7 @@ import { Condicion } from '../../../core/models/condicion.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
   id?: number;
@@ -37,6 +38,7 @@ const EMPTY_FORM: Formulario = {
     ButtonComponent,
     InputFieldComponent,
     ModalComponent,
+    PaginationComponent,
     PageBreadcrumbComponent,
     FormsModule,
     AutoFocusFirstDirective,

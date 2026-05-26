@@ -102,6 +102,15 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
       };
     }
 
+    if (this.pattern && value) {
+      const regex = new RegExp(this.pattern);
+
+      if (!regex.test(value)) {
+        return {
+          pattern: true
+        };
+      }
+    }
     return null;
   }
 
@@ -188,12 +197,18 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
       this.maxLength !== undefined &&
       value.length > this.maxLength;
 
+    const hasPatternError =
+      this.pattern &&
+      value &&
+      !(new RegExp(this.pattern).test(value));
+
     return (
       (this.touched || this.submitted) &&
       (
         (this.required && empty) ||
         hasMinLengthError ||
-        hasMaxLengthError
+        hasMaxLengthError ||
+        hasPatternError
       )
     );
   }
@@ -215,6 +230,14 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
 
     if (this.maxLength && this.value?.length > this.maxLength) {
       return `Debe tener máximo ${this.maxLength} caracteres`;
+    }
+
+    if (this.pattern) {
+      const regex = new RegExp(this.pattern);
+
+      if (!regex.test(this.value)) {
+        return 'Formato inválido';
+      }
     }
 
     return '';

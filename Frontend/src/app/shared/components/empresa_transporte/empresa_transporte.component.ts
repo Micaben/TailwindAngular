@@ -10,6 +10,7 @@ import { Empresa_transporte } from '../../../core/models/empresa_transporte.mode
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
   id?: number;
@@ -36,6 +37,7 @@ const EMPTY_FORM: Formulario = {
     InputFieldComponent,
     ModalComponent,
     PageBreadcrumbComponent,
+    PaginationComponent,
     FormsModule,
     AutoFocusFirstDirective,
   ],

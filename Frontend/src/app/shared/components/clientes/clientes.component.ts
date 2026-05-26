@@ -15,6 +15,7 @@ import { TablasService } from '../../../core/services/tablas.service';
 import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
   id?: number;
@@ -76,6 +77,7 @@ const EMPTY_FORM: Formulario = {
     ButtonComponent,
     InputFieldComponent,
     BadgeComponent,
+    PaginationComponent,
     ModalComponent,
     AutoFocusFirstDirective,
     FormsModule,

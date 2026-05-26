@@ -12,6 +12,7 @@ import { Modelobase } from '../../../core/models/modelobase.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
   id?: number;
@@ -53,6 +54,7 @@ const EMPTY_FORM: Formulario = {
     ModalComponent,
     PageBreadcrumbComponent,
     FormsModule,
+    PaginationComponent,
     AutoFocusFirstDirective,
   ],
   templateUrl: './concepto.component.html',

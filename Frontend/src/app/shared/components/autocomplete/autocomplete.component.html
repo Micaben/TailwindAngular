@@ -1,0 +1,24 @@
+<div class="relative">
+  <input
+    type="text"
+    [(ngModel)]="search"
+    (input)="filtrar()"
+    (focus)="onFocus()"
+    [placeholder]="placeholder"
+    class="w-full border rounded px-3 py-2"
+  />
+
+  @if(showDropdown){
+
+    <div
+      class="absolute z-50 w-full bg-white border rounded mt-1 max-h-60 overflow-auto"  >
+      @for(option of filteredOptions; track option.value){
+        <div
+          (click)="seleccionar(option)"
+          class="px-3 py-2 hover:bg-gray-100 cursor-pointer" >
+          {{ option.label }}
+        </div>
+      }
+    </div>
+  }
+</div>

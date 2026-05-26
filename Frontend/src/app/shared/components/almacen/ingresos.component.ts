@@ -5,34 +5,17 @@ import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterVie
 import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
+import { CatalogosService } from '../../../shared/services/catalogo.service';
 import { IngresosService } from '../../../core/services/ingresos.service';
 import { Ingresos } from '../../../core/models/ingresos.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
-
-interface Formulario {
-  id?: number;
-  codigo: string;
-  descripcion: string;
-  direccion: string;
-  telefono: string;
-  encargado: string;
-}
-
-interface Option {
-  value: string;
-  label: string;
-}
-
-const EMPTY_FORM: Formulario = {
-  id: undefined,
-  codigo: '',
-  descripcion: '',
-  direccion: '',
-  telefono: '',
-  encargado: '',
-};
+import { getFechaHoy } from '../../services/date.utils';
+import { AutocompleteComponent } from '../../components/autocomplete/autocomplete.component';
+import { Option } from '../../../core/models/option.model';
+import { EMPTY_INGRESO } from '../../components/almacen/ingresos.constants';
+import { SiguienteNumeroSerie } from '../../services/series.utils';
 
 @Component({
   selector: 'app-almacen',
@@ -40,9 +23,10 @@ const EMPTY_FORM: Formulario = {
     CommonModule,
     ButtonComponent,
     InputFieldComponent,
-    ModalComponent,
+    //ModalComponent,
     PageBreadcrumbComponent,
     FormsModule,
+    AutocompleteComponent,
     AutoFocusFirstDirective,
   ],
   templateUrl: './ingresos.component.html',
@@ -50,10 +34,10 @@ const EMPTY_FORM: Formulario = {
 })
 
 export class IngresosComponent {
-  selected: Formulario = { ...EMPTY_FORM };
+  selected: Ingresos = { ...EMPTY_INGRESO };
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
-  constructor(public modal: ModalService, private alertService: AlertService, private ingresosService: IngresosService) { }
+  constructor(public modal: ModalService, private alertService: AlertService, private catalogosService: CatalogosService, private ingresosService: IngresosService) { }
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
   filteredItems: Ingresos[] = [];
@@ -63,7 +47,15 @@ export class IngresosComponent {
   closeModal() { this.isOpen = false; }
   currentPage = 1;
   itemsPerPage = 5;
-  @Input() options: Option[] = [];
+  @Input() serieoptions: Option[] = [];
+  @Input() tipo_operacionoptions: Option[] = [];
+  @Input() monedaoptions: Option[] = [];
+  @Input() razonsocialoptions: Option[] = [];
+  @Input() almacenoptions: Option[] = [];
+  @Input() doc_referenciaoptions: Option[] = [];
+  searchRazonsocial = '';
+  filteredRazonsocial: any[] = [];
+  showDropdown = false;
   get totalPages(): number {
     return Math.ceil(this.filteredItems.length / this.itemsPerPage);
   }
@@ -73,26 +65,13 @@ export class IngresosComponent {
     return this.filteredItems.slice(start, start + this.itemsPerPage);
   }
 
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
-  }
-
   filterTable() {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
       this.filteredItems = [...this.ingresos];
       return;
     }
-
   }
-
-  /*async cargarIngresos() {
-    this.ingresos =
-      await this.ingresosService.obtenerLinea();
-    this.filteredItems = [...this.ingresos];
-  }*/
 
   async cargarIngresos() {
     try {
@@ -105,7 +84,6 @@ export class IngresosComponent {
 
   async handleSave(form: any) {
     this.formSubmitted = true;
-
     if (form.invalid) {
       return;
     }
@@ -117,7 +95,6 @@ export class IngresosComponent {
     };
 
     const isCreate = this.modo === 'crear';
-
     const request = isCreate
       ? this.ingresosService.crearIngresos(payload)
       : this.ingresosService.actualizarIngresos(
@@ -151,22 +128,54 @@ export class IngresosComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    await Promise.all([
-      this.cargarIngresos()
+    [
+      this.serieoptions,
+      this.razonsocialoptions,
+      this.tipo_operacionoptions,
+      this.monedaoptions,
+      this.almacenoptions,
+      this.doc_referenciaoptions
+    ] = await Promise.all([
+      this.catalogosService.obtenerSeries(),
+      this.catalogosService.obtenerProveedores(),
+      this.catalogosService.obtenerTipoOperacion(),
+      this.catalogosService.obtenerMonedas(),
+      this.catalogosService.obtenerAlmacenes(),
+      this.catalogosService.obtenerDocumentos()
     ]);
+    this.filteredRazonsocial = [
+      ...this.razonsocialoptions
+    ];
+    this.selected.fecha = getFechaHoy();
+    this.selected.fecha_compra = getFechaHoy();
   }
 
   openCreateModal() {
     this.formSubmitted = false;
     this.modo = 'crear';
-    this.selected = { ...EMPTY_FORM };
+    this.selected = { ...EMPTY_INGRESO };
     this.isOpen = true;
   }
 
   async openEditModal(item: Ingresos) {
     this.formSubmitted = false;
     this.modo = 'editar';
-    
     this.isOpen = true;
   }
+
+  onSerieChange() {
+    const numero = SiguienteNumeroSerie(
+      this.selected.serie,
+      this.serieoptions
+    );
+    if (numero) {
+      this.selected.numero = numero;
+    }
+  }
+
+  onProveedorSelected(option: Option) {
+    this.selected.razonsocial = option.value;
+    this.selected.proveedor = option.ruc || '';
+  }
+
 }

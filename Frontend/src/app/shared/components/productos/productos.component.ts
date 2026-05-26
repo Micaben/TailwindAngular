@@ -16,6 +16,7 @@ import { SublineaService } from '../../../core/services/sublinea.service';
 import { UnidadMedidaService } from '../../../core/services/unidadmedida.service';
 import { ColorService } from '../../../core/services/color.service';
 import { AlertService } from '../../../core/services/alert.services';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
   id?: number;
@@ -79,6 +80,7 @@ const EMPTY_FORM: Formulario = {
     InputFieldComponent,
     BadgeComponent,
     ModalComponent,
+    PaginationComponent,
     FormsModule,
     PageBreadcrumbComponent,
   ],

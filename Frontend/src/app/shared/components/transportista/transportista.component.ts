@@ -13,6 +13,7 @@ import { TablasService } from '../../../core/services/tablas.service';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { Empresa_transporteService } from '../../../core/services/empresa_transporte.services';
 import { AlertService } from '../../../core/services/alert.services';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
   id?: number;
@@ -54,6 +55,7 @@ const EMPTY_FORM: Formulario = {
     CommonModule,
     ButtonComponent,
     InputFieldComponent,
+    PaginationComponent,
     BadgeComponent,
     ModalComponent,
     AutoFocusFirstDirective,
