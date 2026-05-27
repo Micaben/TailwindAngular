@@ -14,7 +14,6 @@ import { VendedorService } from '../../../core/services/vendedor.service';
 import { TablasService } from '../../../core/services/tablas.service';
 import { AutoFocusFirstDirective } from '../../../shared/directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Formulario {
@@ -81,7 +80,6 @@ const EMPTY_FORM: Formulario = {
     ModalComponent,
     AutoFocusFirstDirective,
     FormsModule,
-    NgSelectModule,
     PageBreadcrumbComponent,
   ],
   templateUrl: './clientes.component.html',

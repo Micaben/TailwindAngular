@@ -25,7 +25,7 @@ export class IngresosService {
   obtenerSerie() {
     return firstValueFrom(
       this.http.get<Serie[]>(
-        `${this.API_URL}/ingresos`
+        `${this.API_URL}/series`
       )
     );
   }
@@ -33,7 +33,7 @@ export class IngresosService {
   obtenerTipooperacion() {
     return firstValueFrom(
       this.http.get<Modelobase[]>(
-        `${this.API_URL}/tipo-operacion`
+        `${this.API_URL}/tipo_operacion`
       )
     );
   }

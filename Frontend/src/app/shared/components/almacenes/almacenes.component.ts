@@ -1,8 +1,6 @@
-import { PageBreadcrumbComponent } from '../common/page-breadcrumb/page-breadcrumb.component';
 import { CommonModule } from '@angular/common';
 import { InputFieldComponent } from '../form/input/input-field.component';
 import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterViewInit } from '@angular/core';
-import { ButtonComponent } from '../ui/button/button.component';
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
 import { AlmacenesService } from '../../../core/services/almacenes.services';
@@ -10,7 +8,8 @@ import { Almacenes } from '../../../core/models/almacenes.model';
 import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { AlertService } from '../../../core/services/alert.services';
-import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { CrudTableComponent } from '../../components/tabla/crud-table.component';
+import { BaseListComponent } from '../../components/tabla/base.component';
 
 interface Formulario {
   id?: number;
@@ -39,11 +38,9 @@ const EMPTY_FORM: Formulario = {
   selector: 'app-almacenes',
   imports: [
     CommonModule,
-    ButtonComponent,
+    CrudTableComponent,
     InputFieldComponent,
-    PaginationComponent,
     ModalComponent,
-    PageBreadcrumbComponent,
     FormsModule,
     AutoFocusFirstDirective,
   ],
@@ -51,29 +48,19 @@ const EMPTY_FORM: Formulario = {
   styles: ``
 })
 
-export class AlmacenesComponent {
+export class AlmacenesComponent extends BaseListComponent<Almacenes>  {
   selected: Formulario = { ...EMPTY_FORM };
   modo: 'crear' | 'editar' = 'crear';
   formSubmitted = false;
-  constructor(public modal: ModalService, private alertService: AlertService, private almacenesService: AlmacenesService) { }
+  constructor(public modal: ModalService, private alertService: AlertService, private almacenesService: AlmacenesService) { super()}
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
-  filteredItems: Almacenes[] = [];
   almacenes: Almacenes[] = [];
   isOpen = false;
   openModal() { this.isOpen = true; }
   closeModal() { this.isOpen = false; }
-  currentPage = 1;
-  itemsPerPage = 5;
   @Input() options: Option[] = [];
-  get totalPages(): number {
-    return Math.ceil(this.filteredItems.length / this.itemsPerPage);
-  }
 
-  get currentItems(): Almacenes[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredItems.slice(start, start + this.itemsPerPage);
-  }
 
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
@@ -93,6 +80,29 @@ export class AlmacenesComponent {
       item.descripcion?.toLowerCase().includes(term)
     );
   }
+
+  tableColumns = [
+    {
+      header: 'Código',
+      field: 'codigo',
+      width: '15%'
+    },
+    {
+      header: 'Nombre',
+      field: 'descripcion',
+      width: '25%'
+    },
+    {
+      header: 'Dirección',
+      field: 'direccion',
+      width: '35%'
+    },
+    {
+      header: 'Telefono',
+      field: 'telefono',
+      width: '25%'
+    }
+  ];
 
   /*async cargarAlmacenes() {
     this.almacenes =
@@ -181,5 +191,11 @@ export class AlmacenesComponent {
       encargado: item.encargado || '',
     };
     this.isOpen = true;
+  }
+
+  onSearch(term: string) {
+    this.searchTerm = term;
+    this.filterTable();
+
   }
 }
