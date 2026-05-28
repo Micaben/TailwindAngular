@@ -1,0 +1,21 @@
+<div class="mt-8 flex flex-col-reverse sm:flex-row sm:justify-between gap-3">
+    <!-- BOTON NUEVO -->
+    @if (showNewButton) {
+    <app-button type="button" variant="primary" startIcon="plus" (click)="onNew()">
+        Nuevo
+    </app-button>
+    }
+
+    <!-- BOTONES DERECHA -->
+    <div class="flex gap-3 justify-end">
+        <!-- CERRAR -->
+        <app-button type="button" variant="outline" startIcon="close" (click)="onClose()">
+            {{ closeText }}
+        </app-button>
+
+        <!-- GUARDAR -->
+        <app-button type="submit" variant="primary" startIcon="check">
+            {{ saveText }}
+        </app-button>
+    </div>
+</div>

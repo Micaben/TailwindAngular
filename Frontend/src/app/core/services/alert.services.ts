@@ -34,7 +34,7 @@ export class AlertService {
 
     this.timeoutId = setTimeout(() => {
       this.alertSubject.next(null);
-    }, 3000);
+    }, 1000);
   }
 
   success(message: string) {

@@ -187,7 +187,7 @@ export class ProductosComponent implements OnInit {
       this.cargarNaturaleza(),
       this.cargarLinea(),
       this.cargarUnidadmedida(),
-      this.cargarColor(),
+      //this.cargarColor(),
       this.cargarProveedor()
     ]);
   }
@@ -292,14 +292,14 @@ export class ProductosComponent implements OnInit {
     );
   }
 
-  async cargarColor() {
+  /*async cargarColor() {
     const data = await this.colorService.obtenerColor();
     this.coloroptions = this.mapOptions(
       data,
       'codigo',
       'descripcion'
     );
-  }
+  }*/
 
   async cargarProveedor() {
     const data = await this.proveedoresService.obtenerProveedor();

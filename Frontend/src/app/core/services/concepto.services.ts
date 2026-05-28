@@ -1,36 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import { Concepto } from '../models/concepto.model';
+import { Modelobase } from '../../core/models/modelobase.model';
+import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
+export class ConceptoService
+  extends BaseCrudService<Modelobase> {
 
-export class ConceptoService {
-
-  private API_URL = 'http://localhost:3000';
-  constructor(private http: HttpClient) { }
-
-  obtenerConcepto() {
-    return firstValueFrom(
-      this.http.get<Concepto[]>(
-        `${this.API_URL}/concepto`
-      )
-    );
-  }
-
-  crearConcepto(data: any) {
-    return this.http.post(
-      'http://localhost:3000/concepto',
-      data
-    );
-  }
-
-  actualizarConcepto(id: number, data: any) {
-    return this.http.put(
-      `http://localhost:3000/concepto/${id}`,
-      data
-    );
-  }
+  protected override endpoint =
+    'http://localhost:3000/concepto';
 }

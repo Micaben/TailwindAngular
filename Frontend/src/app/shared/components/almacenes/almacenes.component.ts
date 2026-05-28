@@ -1,201 +1,34 @@
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { InputFieldComponent } from '../form/input/input-field.component';
-import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterViewInit } from '@angular/core';
-import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
-import { AlmacenesService } from '../../../core/services/almacenes.services';
-import { Almacenes } from '../../../core/models/almacenes.model';
-import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
-import { AlertService } from '../../../core/services/alert.services';
 import { CrudTableComponent } from '../../components/tabla/crud-table.component';
-import { BaseListComponent } from '../../components/tabla/base.component';
-
-interface Formulario {
-  id?: number;
-  codigo: string;
-  descripcion: string;
-  direccion: string;
-  telefono: string;
-  encargado: string;
-}
-
-interface Option {
-  value: string;
-  label: string;
-}
-
-const EMPTY_FORM: Formulario = {
-  id: undefined,
-  codigo: '',
-  descripcion: '',
-  direccion: '',
-  telefono: '',
-  encargado: '',
-};
+import { FooterComponent } from '../../components/footer/footer.component';
+import { AlmacenesService } from '../../../core/services/almacenes.services';
+import { Almacen } from '../../components/almacenes/almacenes.model';
+import { ALMACENES_TABLE_COLUMNS } from '../../components/tabla/almacenes_table_config';
+import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
 
 @Component({
   selector: 'app-almacenes',
-  imports: [
-    CommonModule,
-    CrudTableComponent,
-    InputFieldComponent,
-    ModalComponent,
-    FormsModule,
-    AutoFocusFirstDirective,
-  ],
+  standalone: true,
   templateUrl: './almacenes.component.html',
-  styles: ``
+  imports: [
+    FormsModule,
+    CrudTableComponent,
+    ModalComponent,
+    FooterComponent,
+    InputFieldComponent,
+    AutoFocusFirstDirective
+  ]
 })
+export class AlmacenesComponent
+ extends BaseCrudComponent<Almacen> {
 
-export class AlmacenesComponent extends BaseListComponent<Almacenes>  {
-  selected: Formulario = { ...EMPTY_FORM };
-  modo: 'crear' | 'editar' = 'crear';
-  formSubmitted = false;
-  constructor(public modal: ModalService, private alertService: AlertService, private almacenesService: AlmacenesService) { super()}
-  boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
-  searchTerm: string = '';
-  almacenes: Almacenes[] = [];
-  isOpen = false;
-  openModal() { this.isOpen = true; }
-  closeModal() { this.isOpen = false; }
-  @Input() options: Option[] = [];
+  protected override service =
+    inject(AlmacenesService);
 
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
-  }
-
-  filterTable() {
-    const term = this.searchTerm.trim().toLowerCase();
-    if (!term) {
-      this.filteredItems = [...this.almacenes];
-      return;
-    }
-
-    this.filteredItems = this.almacenes.filter(item =>
-      item.codigo?.toLowerCase().includes(term) ||
-      item.descripcion?.toLowerCase().includes(term)
-    );
-  }
-
-  tableColumns = [
-    {
-      header: 'Código',
-      field: 'codigo',
-      width: '15%'
-    },
-    {
-      header: 'Nombre',
-      field: 'descripcion',
-      width: '25%'
-    },
-    {
-      header: 'Dirección',
-      field: 'direccion',
-      width: '35%'
-    },
-    {
-      header: 'Telefono',
-      field: 'telefono',
-      width: '25%'
-    }
-  ];
-
-  /*async cargarAlmacenes() {
-    this.almacenes =
-      await this.almacenesService.obtenerLinea();
-    this.filteredItems = [...this.almacenes];
-  }*/
-
-  async cargarAlmacenes() {
-    try {
-      this.almacenes = await this.almacenesService.obtenerAlmacenes();
-      this.filteredItems = [...this.almacenes];
-    } catch (error) {
-      this.alertService.error('Error cargando productos');
-    }
-  }
-
-  async handleSave(form: any) {
-    this.formSubmitted = true;
-
-    if (form.invalid) {
-      return;
-    }
-
-    const payload = {
-      ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
-      //fechaFin: this.selected.fechaFin || null,
-    };
-
-    const isCreate = this.modo === 'crear';
-
-    const request = isCreate
-      ? this.almacenesService.crearAlmacenes(payload)
-      : this.almacenesService.actualizarAlmacenes(
-        this.selected.id!,
-        payload
-      );
-
-    request.subscribe({
-      next: async (resp: any) => {
-        // guardar el ID retornado por el backend
-        if (isCreate) {
-          this.selected.id = resp.id; // o resp.data.id
-          this.modo = 'editar';
-        }
-
-        await this.cargarAlmacenes();
-        this.alertService.success(
-          isCreate
-            ? 'Datos guardados'
-            : 'Datos modificados'
-        );
-        this.formSubmitted = false;
-      },
-
-      error: (err) => {
-        this.alertService.error(
-          err.error?.message || 'Ocurrió un error'
-        );
-      }
-    });
-  }
-
-  async ngOnInit(): Promise<void> {
-    await Promise.all([
-      this.cargarAlmacenes()
-    ]);
-  }
-
-  openCreateModal() {
-    this.formSubmitted = false;
-    this.modo = 'crear';
-    this.selected = { ...EMPTY_FORM };
-    this.isOpen = true;
-  }
-
-  async openEditModal(item: Almacenes) {
-    this.formSubmitted = false;
-    this.modo = 'editar';
-    this.selected = {
-      id: item.id,
-      codigo: item.codigo || '',
-      descripcion: item.descripcion || '',
-      direccion: item.direccion || '',
-      telefono: item.telefono || '',
-      encargado: item.encargado || '',
-    };
-    this.isOpen = true;
-  }
-
-  onSearch(term: string) {
-    this.searchTerm = term;
-    this.filterTable();
-
-  }
+  readonly tableColumns =
+    ALMACENES_TABLE_COLUMNS;
 }

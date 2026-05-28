@@ -19,11 +19,8 @@ export interface TableColumn {
   templateUrl: './table.component.html',
 })
 export class TableComponent {
-
   @Input() columns: TableColumn[] = [];
-
   @Input() data: any[] = [];
-
   @Output() edit = new EventEmitter<any>();
 
 }

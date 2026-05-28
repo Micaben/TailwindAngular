@@ -134,13 +134,13 @@ export class IngresosComponent {
       this.tipo_operacionoptions,
       this.monedaoptions,
       this.almacenoptions,
-      this.doc_referenciaoptions
+      //this.doc_referenciaoptions
     ] = await Promise.all([
       this.catalogosService.obtenerSeries(),
       this.catalogosService.obtenerProveedores(),
       this.catalogosService.obtenerTipoOperacion(),
       this.catalogosService.obtenerMonedas(),
-      this.catalogosService.obtenerAlmacenes(),
+      //this.catalogosService.obtenerAlmacenes(),
       this.catalogosService.obtenerDocumentos()
     ]);
     this.filteredRazonsocial = [

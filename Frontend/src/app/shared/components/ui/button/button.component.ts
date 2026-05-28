@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { SafeHtmlPipe } from '../../../pipe/safe-html.pipe';
+import { IconComponent } from '../../icons/icon.component';
 
 @Component({
   selector: 'app-button',
   imports: [
     CommonModule,
     SafeHtmlPipe,
+    IconComponent,
   ],
   templateUrl: './button.component.html',
   styles: ``,
@@ -20,7 +22,7 @@ export class ButtonComponent {
   @Input() variant: 'primary' | 'outline' = 'primary';
   @Input() disabled = false;
   @Input() className = '';
-  @Input() startIcon?: string; // SVG or icon class, or use ng-content for more flexibility
+  @Input() startIcon = '';
   @Input() endIcon?: string;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Output() btnClick = new EventEmitter<Event>();

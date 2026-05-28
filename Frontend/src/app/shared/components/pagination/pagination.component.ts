@@ -4,19 +4,14 @@ import { ButtonComponent } from '../ui/button/button.component';
 
 @Component({
   selector: 'app-pagination',
-
   standalone: true,
-
   imports: [
     CommonModule,
     ButtonComponent
   ],
 
-  templateUrl:
-    './pagination.component.html',
-
-  styleUrls:
-    ['./pagination.component.css']
+  templateUrl: './pagination.component.html',
+  styleUrls: ['./pagination.component.css']
 })
 
 export class PaginationComponent {
@@ -26,7 +21,6 @@ export class PaginationComponent {
   // =========================
 
   private _currentPage = signal(1);
-
   private _totalPages = signal(1);
 
   @Input()
@@ -52,45 +46,22 @@ export class PaginationComponent {
   // =========================
 
   @Output()
-  pageChange =
-    new EventEmitter<number>();
+  pageChange =  new EventEmitter<number>();
 
   // =========================
   // PAGINAS VISIBLES
   // =========================
-  // Ejemplo:
-  // 1 2 3 4 5
-  // 4 5 6 7 8
-  // etc...
-
   visiblePages = computed(() => {
 
-    const total =
-      this.totalPages;
-
-    const current =
-      this.currentPage;
-
+    const total = this.totalPages;
+    const current = this.currentPage;
     const maxVisible = 5;
-
-    let start =
-      Math.max(
-        current - 2,
-        1
-      );
-
-    let end =
-      start + maxVisible - 1;
+    let start = Math.max( current - 2, 1 );
+    let end = start + maxVisible - 1;
 
     if (end > total) {
-
       end = total;
-
-      start =
-        Math.max(
-          end - maxVisible + 1,
-          1
-        );
+      start = Math.max( end - maxVisible + 1, 1 );
     }
 
     return Array.from(
@@ -104,15 +75,9 @@ export class PaginationComponent {
   // =========================
 
   goToPage(page: number): void {
-
-    if (
-      page < 1 ||
-      page > this.totalPages ||
-      page === this.currentPage
-    ) {
+    if ( page < 1 || page > this.totalPages || page === this.currentPage ) {
       return;
     }
-
     this.pageChange.emit(page);
   }
 
@@ -121,17 +86,14 @@ export class PaginationComponent {
   // =========================
 
   isActive(page: number): boolean {
-
     return page === this.currentPage;
   }
 
   hasPreviousPage(): boolean {
-
     return this.currentPage > 1;
   }
 
   hasNextPage(): boolean {
-
     return this.currentPage < this.totalPages;
   }
 }

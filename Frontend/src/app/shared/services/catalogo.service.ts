@@ -36,15 +36,15 @@ export class CatalogosService {
     // =========================
     // ALMACENES
     // =========================
-    async obtenerAlmacenes(): Promise<Option[]> {
+    /*async obtenerAlmacenes(): Promise<Option[]> {
         const data =
-            await this.almacenesService.obtenerAlmacenes();
+            await this.almacenesService.getAll();
         return mapOptions(
             data,
             'codigo',
             'descripcion'
         );
-    }
+    }*/
 
     // =========================
     // DOCUMENTOS
