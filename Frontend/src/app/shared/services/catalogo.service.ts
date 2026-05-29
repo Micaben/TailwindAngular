@@ -49,15 +49,6 @@ export class CatalogosService {
     // =========================
     // DOCUMENTOS
     // =========================
-    async obtenerDocumentos(): Promise<Option[]> {
-        const data =
-            await this.documentosService.obtenerDocumentos();
-        return mapOptions(
-            data,
-            'codigo',
-            'descripcion'
-        );
-    }
 
     // =========================
     // TIPO OPERACION

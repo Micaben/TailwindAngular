@@ -11,7 +11,6 @@ import { Transportista } from '../../../core/models/transportista.model';
 import { TransportistaService } from '../../../core/services/transportista.service';
 import { TablasService } from '../../../core/services/tablas.service';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
-import { Empresa_transporteService } from '../../../core/services/empresa_transporte.services';
 import { AlertService } from '../../../core/services/alert.services';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 
@@ -78,7 +77,7 @@ export class TransportistaComponent implements OnInit {
   isOpen = false;
   currentPage = 1;
   itemsPerPage = 5;
-  constructor(public modal: ModalService, private alertService: AlertService, private empresa_transporteService: Empresa_transporteService, private tablasService: TablasService, private transportistaService: TransportistaService) { }
+  constructor(public modal: ModalService, private alertService: AlertService, private tablasService: TablasService, private transportistaService: TransportistaService) { }
   boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
   searchTerm: string = '';
   openModal() { this.isOpen = true; }
@@ -188,7 +187,6 @@ export class TransportistaComponent implements OnInit {
     await Promise.all([
       this.cargarTipodocumento(),
       this.cargarTransportista(),
-      this.cargarEmpresa_transporte()
     ]);
   }
 
@@ -217,14 +215,6 @@ export class TransportistaComponent implements OnInit {
     );
   }
 
-  async cargarEmpresa_transporte() {
-    const data = await this.empresa_transporteService.obtenerEmpresa_transporte();
-    this.empresa_transporteoptions = this.mapOptions(
-      data,
-      'ruc',
-      'razon_social'
-    );
-  }
   /*onChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
     this.value = value;

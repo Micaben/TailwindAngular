@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Modelobase } from '../../core/models/modelobase.model';
+import { Serie } from '../models/serie.model';
 import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DocumentosService
-  extends BaseCrudService<Modelobase> {
+export class SeriesService
+  extends BaseCrudService<Serie> {
 
   protected override endpoint =
-    'http://localhost:3000/documentos';
-
+    'http://localhost:3000/series';
 
 }

@@ -185,7 +185,7 @@ export class ProductosComponent implements OnInit {
     await Promise.all([
       this.cargarProducto(),
       this.cargarNaturaleza(),
-      this.cargarLinea(),
+      //this.cargarLinea(),
       this.cargarUnidadmedida(),
       //this.cargarColor(),
       this.cargarProveedor()
@@ -226,7 +226,7 @@ export class ProductosComponent implements OnInit {
       estado: item.estado ?? true
     };
     if (item.linea) {
-      await this.cargarSublinea(item.linea);
+      //await this.cargarSublinea(item.linea);
     }
     this.selected.sublinea = item.sublinea || '';
 
@@ -240,20 +240,20 @@ export class ProductosComponent implements OnInit {
     }));
   }
 
-  async onLineaChange() {
+  /*async onLineaChange() {
     this.selected.sublinea = '';
     if (!this.selected.linea) {
       this.sublineaoptions = [];
       return;
     }
     await this.cargarSublinea(this.selected.linea);
-  }
+  }*/
 
-  async cargarSublinea(lineaId: string) {
+  /*async cargarSublinea(lineaId: string) {
     try {
       this.sublineaoptions = [];
       const data =
-        await this.sublineaService.getSublineasByLinea(lineaId);
+      //  await this.sublineaService.getSublineasByLinea(lineaId);
       this.sublineaoptions = this.mapOptions(
         data,
         'codigo',
@@ -263,16 +263,8 @@ export class ProductosComponent implements OnInit {
       console.error('Error cargando sublíneas', error);
       this.sublineaoptions = [];
     }
-  }
+  }*/
 
-  async cargarLinea() {
-    const data = await this.lineaService.obtenerLinea();
-    this.lineaoptions = this.mapOptions(
-      data,
-      'codigo',
-      'descripcion'
-    );
-  }
 
   async cargarNaturaleza() {
     const data = await this.naturalezaService.obtenerNaturaleza();

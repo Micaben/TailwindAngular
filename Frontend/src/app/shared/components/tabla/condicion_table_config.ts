@@ -1,4 +1,4 @@
-export const COLOR_TABLE_COLUMNS = [
+export const CONDICION_TABLE_COLUMNS = [
   {
     header: 'Código',
     field: 'codigo',
@@ -7,6 +7,11 @@ export const COLOR_TABLE_COLUMNS = [
   {
     header: 'Descripción',
     field: 'descripcion',
+    width: '25%'
+  },
+  {
+    header: 'Plazo',
+    field: 'plazo',
     width: '25%'
   }
 ];

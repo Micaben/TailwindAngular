@@ -1,48 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import { Sublinea } from '../../core/models/sublinea.model';
-import { HttpParams } from '@angular/common/http';
+import { Sublinea } from '../../shared/components/sublinea/sublinea.model';
+import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
+export class SublineaService
+  extends BaseCrudService<Sublinea> {
 
-export class SublineaService {
-
-  private API_URL = 'http://localhost:3000';
-  constructor(private http: HttpClient) { }
-
-  obtenerSublinea() {
-    return firstValueFrom(
-      this.http.get<Sublinea[]>(
-        `${this.API_URL}/sublinea`
-      )
-    );
-  }
-
-  crearSublinea(data: any) {
-    return this.http.post(
-      'http://localhost:3000/sublinea',
-      data
-    );
-  }
-
-  actualizarSublinea(id: number, data: any) {
-    return this.http.put(
-      `http://localhost:3000/sublinea/${id}`,
-      data
-    );
-  }
-
-  async getSublineasByLinea(lineaId: string) {
-    const params = new HttpParams()
-      .set('linea', lineaId);
-    return await firstValueFrom(
-      this.http.get<any[]>(
-        `${this.API_URL}/sublinea`,
-        { params }
-      )
-    );
-  }
+  protected override endpoint =
+    'http://localhost:3000/sublinea';
 }

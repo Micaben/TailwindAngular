@@ -129,19 +129,9 @@ export class IngresosComponent {
 
   async ngOnInit(): Promise<void> {
     [
-      this.serieoptions,
-      this.razonsocialoptions,
-      this.tipo_operacionoptions,
-      this.monedaoptions,
-      this.almacenoptions,
       //this.doc_referenciaoptions
     ] = await Promise.all([
-      this.catalogosService.obtenerSeries(),
-      this.catalogosService.obtenerProveedores(),
-      this.catalogosService.obtenerTipoOperacion(),
-      this.catalogosService.obtenerMonedas(),
-      //this.catalogosService.obtenerAlmacenes(),
-      this.catalogosService.obtenerDocumentos()
+      
     ]);
     this.filteredRazonsocial = [
       ...this.razonsocialoptions

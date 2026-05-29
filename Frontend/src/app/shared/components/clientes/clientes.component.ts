@@ -185,12 +185,6 @@ export class ClientesComponent {
 
   async ngOnInit(): Promise<void> {
     await Promise.all([
-      this.cargarTipopersona(),
-      this.cargarTipodocumento(),
-      this.cargarMoneda(),
-      this.cargarCondicion(),
-      this.cargarVendedor(),
-      this.cargarClientes()
     ]);
   }
 
@@ -208,51 +202,6 @@ export class ClientesComponent {
       value: String(item[valueKey]),
       label: String(item[labelKey])
     }));
-  }
-
-  async cargarTipopersona() {
-    const data = await this.tablasService.obtenerTipopersona();
-    this.tipopersonaoptions = this.mapOptions(
-      data,
-      'codigo',
-      'descripcion'
-    );
-  }
-
-  async cargarTipodocumento() {
-    const data = await this.tablasService.obtenerTipodocumento();
-    this.tipodocumentooptions = this.mapOptions(
-      data,
-      'codigo',
-      'descripcion'
-    );
-  }
-
-  async cargarCondicion() {
-    const data = await this.condicionService.obtenerCondicion();
-    this.condicionoptions = this.mapOptions(
-      data,
-      'codigo',
-      'descripcion'
-    );
-  }
-
-  async cargarMoneda() {
-    const data = await this.tablasService.obtenerMoneda();
-    this.monedaoptions = this.mapOptions(
-      data,
-      'codigo',
-      'descripcion'
-    );
-  }
-
-  async cargarVendedor() {
-    const data = await this.vendedorService.obtenerVendedor();
-    this.vendedoroptions = this.mapOptions(
-      data,
-      'codigo',
-      'nombres'
-    );
   }
 
   openCreateModal() {

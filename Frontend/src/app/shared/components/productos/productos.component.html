@@ -148,7 +148,7 @@
               <label class="mb-2 block text-sm font-medium">
                 Linea
               </label>
-              <select [(ngModel)]="selected.linea" (change)="onLineaChange()" name="linea" required #linea="ngModel"
+              <select [(ngModel)]="selected.linea"   name="linea" required #linea="ngModel"
                 [ngClass]="{
                     'border-red-500 focus:border-red-500 focus:ring-red-500/20':
                       linea.invalid && (linea.touched || formSubmitted),

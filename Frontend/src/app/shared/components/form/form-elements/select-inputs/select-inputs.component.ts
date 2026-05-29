@@ -21,7 +21,7 @@ interface MultiOption {
   imports: [
     MultiSelectComponent,
     ComponentCardComponent,
-    SelectComponent,
+  
     LabelComponent
 ],
   templateUrl: './select-inputs.component.html',

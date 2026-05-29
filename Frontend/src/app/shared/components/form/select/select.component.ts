@@ -1,17 +1,13 @@
 import { Component, Input, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors,  FormsModule } from '@angular/forms';
-
-export interface Option {
-  value: string;
-  label: string;
-}
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
+import { Option } from '../../../../core/models/option.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-select-field',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './select.component.html',
-
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -33,14 +29,10 @@ export class SelectComponent
   // =========================
 
   @Input() options: Option[] = [];
-
-  @Input() placeholder =
-    'Seleccione una opción';
-
+  @Input() placeholder = 'Seleccione una opción';
+  @Input() customClass = '';
   @Input() submitted = false;
-
   @Input() required = false;
-
   @Input() disabled = false;
 
   // =========================
@@ -48,17 +40,14 @@ export class SelectComponent
   // =========================
 
   value = '';
-
   touched = false;
 
   // =========================
   // CONTROL VALUE ACCESSOR
   // =========================
 
-  onChange = (value: string) => {};
-
-  onTouched = () => {};
-
+  onChange = (value: string) => { };
+  onTouched = () => { };
   writeValue(value: string): void {
     this.value = value ?? '';
   }
@@ -80,14 +69,10 @@ export class SelectComponent
   // =========================
 
   handleChange(event: Event): void {
-
     const value =
       (event.target as HTMLSelectElement).value;
-
     this.value = value;
-
     this.onChange(value);
-
     this.onTouched();
   }
 
@@ -95,10 +80,7 @@ export class SelectComponent
   // VALIDATION
   // =========================
 
-  validate(
-    control: AbstractControl
-  ): ValidationErrors | null {
-
+  validate( control: AbstractControl ): ValidationErrors | null {
     if (
       this.required &&
       !control.value
@@ -107,7 +89,6 @@ export class SelectComponent
         required: true
       };
     }
-
     return null;
   }
 }

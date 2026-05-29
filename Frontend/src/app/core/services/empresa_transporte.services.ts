@@ -1,36 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import { Empresa_transporte } from '../models/empresa_transporte.model';
+import { Empresa_transporte } from '../../shared/components/empresa_transporte/empresa_transporte.model';
+import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
+export class EmpresatransporteService
+  extends BaseCrudService<Empresa_transporte> {
 
-export class Empresa_transporteService {
-
-  private API_URL = 'http://localhost:3000';
-  constructor(private http: HttpClient) { }
-
-  obtenerEmpresa_transporte() {
-    return firstValueFrom(
-      this.http.get<Empresa_transporte[]>(
-        `${this.API_URL}/empresa_transporte`
-      )
-    );
-  }
-
-  crearEmpresa_transporte(data: any) {
-    return this.http.post(
-      'http://localhost:3000/empresa_transporte',
-      data
-    );
-  }
-
-  actualizarEmpresa_transporte(id: number, data: any) {
-    return this.http.put(
-      `http://localhost:3000/empresa_transporte/${id}`,
-      data
-    );
-  }
+  protected override endpoint =
+    'http://localhost:3000/empresa_transporte';
 }

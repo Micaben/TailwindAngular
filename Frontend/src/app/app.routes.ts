@@ -18,7 +18,7 @@ import { TransportistaComponent } from './shared/components/transportista/transp
 import { CondicionComponent } from './shared/components/condicion/condicion.component';
 import { ConceptoComponent } from './shared/components/concepto/concepto.component';
 import { DocumentosComponent } from './shared/components/documentos/documentos.component';
-import { SeriesComponent } from './shared/components/documentos/series.component';
+import { SeriesComponent } from './shared/components/series/series.component';
 import { TipocambioComponent } from './shared/components/tipocambio/tipocambio.component';
 import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';

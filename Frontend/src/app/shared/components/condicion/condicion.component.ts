@@ -1,180 +1,33 @@
-import { PageBreadcrumbComponent } from '../common/page-breadcrumb/page-breadcrumb.component';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
 import { InputFieldComponent } from '../form/input/input-field.component';
-import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterViewInit } from '@angular/core';
-import { ButtonComponent } from '../ui/button/button.component';
-import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
-import { CondicionService } from '../../../core/services/condicion.service';
-import { Condicion } from '../../../core/models/condicion.model';
-import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
-import { AlertService } from '../../../core/services/alert.services';
-import { PaginationComponent } from '../../components/pagination/pagination.component';
-
-interface Formulario {
-  id?: number;
-  codigo: string;
-  descripcion: string;
-  plazo: number;
-}
-
-interface Option {
-  value: string;
-  label: string;
-}
-
-const EMPTY_FORM: Formulario = {
-  id: undefined,
-  codigo: '',
-  descripcion: '',
-  plazo: 0,
-};
-
+import { CrudTableComponent } from '../../components/tabla/crud-table.component';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { CondicionService } from '../../../core/services/condicion.service';
+import { CONDICION_TABLE_COLUMNS } from '../../components/tabla/condicion_table_config'
+import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
+import { Condicion } from './condicion.model';
 @Component({
   selector: 'app-condicion',
+  standalone: true,
+  templateUrl: './condicion.component.html',
   imports: [
     CommonModule,
-    ButtonComponent,
-    InputFieldComponent,
-    ModalComponent,
-    PaginationComponent,
-    PageBreadcrumbComponent,
     FormsModule,
-    AutoFocusFirstDirective,
-  ],
-  templateUrl: './condicion.component.html',
-  styles: ``
+    CrudTableComponent,
+    ModalComponent,
+    FooterComponent,
+    InputFieldComponent,
+    AutoFocusFirstDirective
+  ]
 })
-
-export class CondicionComponent {
-  selected: Formulario = { ...EMPTY_FORM };
-  modo: 'crear' | 'editar' = 'crear';
-  formSubmitted = false;
-  constructor(public modal: ModalService, private alertService: AlertService, private condicionService: CondicionService) { }
-  boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
-  searchTerm: string = '';
-  filteredItems: Condicion[] = [];
-  condicion: Condicion[] = [];
-  isOpen = false;
-  openModal() { this.isOpen = true; }
-  closeModal() { this.isOpen = false; }
-  currentPage = 1;
-  itemsPerPage = 5;
-  @Input() options: Option[] = [];
-  get totalPages(): number {
-    return Math.ceil(this.filteredItems.length / this.itemsPerPage);
-  }
-
-  get currentItems(): Condicion[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredItems.slice(start, start + this.itemsPerPage);
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
-  }
-
-  filterTable() {
-    const term = this.searchTerm.trim().toLowerCase();
-    if (!term) {
-      this.filteredItems = [...this.condicion];
-      return;
-    }
-
-    this.filteredItems = this.condicion.filter(item =>
-      item.codigo?.toLowerCase().includes(term) ||
-      item.descripcion?.toLowerCase().includes(term)
-    );
-  }
-
-  /*async cargarCondicion() {
-    this.condicion =
-      await this.condicionService.obtenerLinea();
-    this.filteredItems = [...this.condicion];
-  }*/
-
-  async cargarCondicion() {
-    try {
-      this.condicion = await this.condicionService.obtenerCondicion();
-      this.filteredItems = [...this.condicion];
-    } catch (error) {
-      this.alertService.error('Error cargando productos');
-    }
-  }
-
-    async handleSave(form: any) {
-    this.formSubmitted = true;
-
-    if (form.invalid) {
-      return;
-    }
-
-    const payload = {
-      ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
-      //fechaFin: this.selected.fechaFin || null,
-    };
-
-    const isCreate = this.modo === 'crear';
-
-    const request = isCreate
-       ? this.condicionService.crearCondicion(payload)
-        : this.condicionService.actualizarCondicion(
-          this.selected.id!,
-
-        payload
-      );
-
-    request.subscribe({
-      next: async (resp: any) => {
-        // guardar el ID retornado por el backend
-        if (isCreate) {
-          this.selected.id = resp.id; // o resp.data.id
-          this.modo = 'editar';
-        }
-
-        await this.cargarCondicion();
-        this.alertService.success(
-          isCreate
-            ? 'Datos guardados'
-            : 'Datos modificados'
-        );
-        this.formSubmitted = false;
-      },
-
-      error: (err) => {
-        this.alertService.error(
-          err.error?.message || 'Ocurrió un error'
-        );
-      }
-    });
-  }
-
-  async ngOnInit(): Promise<void> {
-    await Promise.all([
-      this.cargarCondicion()
-    ]);
-  }
-
-  openCreateModal() {
-    this.formSubmitted = false;
-    this.modo = 'crear';
-    this.selected = { ...EMPTY_FORM };
-    this.isOpen = true;
-  }
-
-  async openEditModal(item: Condicion) {
-    this.formSubmitted = false;
-    this.modo = 'editar';
-    this.selected = {
-      id: item.id,
-      codigo: item.codigo || '',
-      descripcion: item.descripcion || '',
-      plazo: item.plazo ?? 0,
-    };
-    this.isOpen = true;
-  }
+export class CondicionComponent
+  extends BaseCrudComponent<Condicion> {
+  protected override service = inject(CondicionService);
+  
+  readonly tableColumns = CONDICION_TABLE_COLUMNS;
+  
 }

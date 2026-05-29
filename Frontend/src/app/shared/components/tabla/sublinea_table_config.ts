@@ -1,4 +1,4 @@
-export const COLOR_TABLE_COLUMNS = [
+export const SUBLINEA_TABLE_COLUMNS = [
   {
     header: 'Código',
     field: 'codigo',

@@ -26,9 +26,7 @@ import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
 export class ColorComponent
   extends BaseCrudComponent<Modelobase> {
 
-  protected override service =
-    inject(ColorService);
+  protected override service = inject(ColorService);
 
-  readonly tableColumns =
-    COLOR_TABLE_COLUMNS;
+  readonly tableColumns = COLOR_TABLE_COLUMNS;
 }

@@ -1,177 +1,32 @@
-import { PageBreadcrumbComponent } from '../common/page-breadcrumb/page-breadcrumb.component';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { InputFieldComponent } from '../form/input/input-field.component';
-import { Component, Input, Output, EventEmitter, ElementRef, viewChild, AfterViewInit } from '@angular/core';
-import { ButtonComponent } from '../ui/button/button.component';
-import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from '../ui/modal/modal.component';
-import { LineaService } from '../../../core/services/linea.service';
-import { Linea } from '../../../core/models/linea.model';
-import { FormsModule } from '@angular/forms';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
-import { AlertService } from '../../../core/services/alert.services';
-import { PaginationComponent } from '../../components/pagination/pagination.component';
-
-interface Formulario {
-  id?: number;
-  codigo: string;
-  descripcion: string;
-}
-
-interface Option {
-  value: string;
-  label: string;
-}
-
-const EMPTY_FORM: Formulario = {
-  id: undefined,
-  codigo: '',
-  descripcion: '',
-};
+import { CrudTableComponent } from '../../components/tabla/crud-table.component';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { LineaService } from '../../../core/services/linea.service';
+import { Modelobase } from '../../../core/models/modelobase.model';
+import { LINEA_TABLE_COLUMNS } from '../../components/tabla/linea_table_config';
+import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
 
 @Component({
   selector: 'app-linea',
-  imports: [
-    CommonModule,
-    ButtonComponent,
-    InputFieldComponent,
-    ModalComponent,
-    PaginationComponent,
-    PageBreadcrumbComponent,
-    FormsModule,
-    AutoFocusFirstDirective,
-  ],
+  standalone: true,
   templateUrl: './linea.component.html',
-  styles: ``
+  imports: [
+    FormsModule,
+    CrudTableComponent,
+    ModalComponent,
+    FooterComponent,
+    InputFieldComponent,
+    AutoFocusFirstDirective
+  ]
 })
+export class LineaComponent
+  extends BaseCrudComponent<Modelobase> {
 
-export class LineaComponent {
-  selected: Formulario = { ...EMPTY_FORM };
-  modo: 'crear' | 'editar' = 'crear';
-  formSubmitted = false;
-  constructor(public modal: ModalService, private alertService: AlertService, private lineaService: LineaService) { }
-  boxIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`
-  searchTerm: string = '';
-  filteredItems: Linea[] = [];
-  linea: Linea[] = [];
-  isOpen = false;
-  openModal() { this.isOpen = true; }
-  closeModal() { this.isOpen = false; }
-  currentPage = 1;
-  itemsPerPage = 5;
-  @Input() options: Option[] = [];
-  get totalPages(): number {
-    return Math.ceil(this.filteredItems.length / this.itemsPerPage);
-  }
+  protected override service = inject(LineaService);
 
-  get currentItems(): Linea[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredItems.slice(start, start + this.itemsPerPage);
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
-  }
-
-  filterTable() {
-    const term = this.searchTerm.trim().toLowerCase();
-    if (!term) {
-      this.filteredItems = [...this.linea];
-      return;
-    }
-
-    this.filteredItems = this.linea.filter(item =>
-      item.codigo?.toLowerCase().includes(term) ||
-      item.descripcion?.toLowerCase().includes(term)
-    );
-  }
-
-  /*async cargarLinea() {
-    this.linea =
-      await this.lineaService.obtenerLinea();
-    this.filteredItems = [...this.linea];
-  }*/
-
-  async cargarLinea() {
-    try {
-      this.linea = await this.lineaService.obtenerLinea();
-      this.filteredItems = [...this.linea];
-    } catch (error) {
-      this.alertService.error('Error cargando productos');
-    }
-  }
-
-  async handleSave(form: any) {
-    this.formSubmitted = true;
-
-    if (form.invalid) {
-      return;
-    }
-
-    const payload = {
-      ...this.selected,
-      //fechaInicio: this.selected.fechaInicio || null, EJEMPLO PARA VARIAS FECHAS 
-      //fechaFin: this.selected.fechaFin || null,
-    };
-
-    const isCreate = this.modo === 'crear';
-
-    const request = isCreate
-      ? this.lineaService.crearLinea(payload)
-      : this.lineaService.actualizarLinea(
-        this.selected.id!,
-
-        payload
-      );
-
-    request.subscribe({
-      next: async (resp: any) => {
-        // guardar el ID retornado por el backend
-        if (isCreate) {
-          this.selected.id = resp.id; // o resp.data.id
-          this.modo = 'editar';
-        }
-
-        await this.cargarLinea();
-        this.alertService.success(
-          isCreate
-            ? 'Datos guardados'
-            : 'Datos modificados'
-        );
-        this.formSubmitted = false;
-      },
-
-      error: (err) => {
-        this.alertService.error(
-          err.error?.message || 'Ocurrió un error'
-        );
-      }
-    });
-  }
-
-  async ngOnInit(): Promise<void> {
-    await Promise.all([
-      this.cargarLinea()
-    ]);
-  }
-
-  openCreateModal() {
-    this.formSubmitted = false;
-    this.modo = 'crear';
-    this.selected = { ...EMPTY_FORM };
-    this.isOpen = true;
-  }
-
-  async openEditModal(item: Linea) {
-    this.formSubmitted = false;
-    this.modo = 'editar';
-    this.selected = {
-      id: item.id,
-      codigo: item.codigo || '',
-      descripcion: item.descripcion || '',
-    };
-    this.isOpen = true;
-  }
+  readonly tableColumns = LINEA_TABLE_COLUMNS;
 }

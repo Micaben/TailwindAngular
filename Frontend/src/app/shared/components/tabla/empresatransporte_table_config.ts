@@ -1,12 +1,12 @@
-export const COLOR_TABLE_COLUMNS = [
+export const Empresatransporte_TABLE_COLUMNS = [
   {
     header: 'Código',
-    field: 'codigo',
+    field: 'ruc',
     width: '15%'
   },
   {
     header: 'Descripción',
-    field: 'descripcion',
+    field: 'razon_social',
     width: '25%'
   }
 ];

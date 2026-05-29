@@ -1,4 +1,4 @@
-export const COLOR_TABLE_COLUMNS = [
+export const DOCUMENTOS_TABLE_COLUMNS = [
   {
     header: 'Código',
     field: 'codigo',
