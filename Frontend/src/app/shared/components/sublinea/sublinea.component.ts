@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { InputFieldComponent } from '../form/input/input-field.component';
 import { ModalComponent } from '../ui/modal/modal.component';
@@ -19,7 +18,6 @@ import { OptionsService } from '../../../core/services/options.service';
   standalone: true,
   templateUrl: './sublinea.component.html',
   imports: [
-    CommonModule,
     FormsModule,
     CrudTableComponent,
     ModalComponent,
@@ -34,8 +32,8 @@ export class SublineaComponent
   protected override service = inject(SublineaService);
   private optionsService = inject(OptionsService);
   lineaOptions: Option[] = [];
-
   readonly tableColumns = SUBLINEA_TABLE_COLUMNS;
+
   override ngOnInit(): void {
     super.ngOnInit();
     this.loadOptions();

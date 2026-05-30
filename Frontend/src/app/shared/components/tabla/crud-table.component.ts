@@ -19,6 +19,7 @@ import { PageBreadcrumbComponent } from '../common/page-breadcrumb/page-breadcru
   ],
   templateUrl: './crud-table.component.html',
 })
+
 export class CrudTableComponent {
 
   title = input('');

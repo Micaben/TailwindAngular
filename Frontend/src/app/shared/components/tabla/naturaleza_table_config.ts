@@ -1,4 +1,4 @@
-export const SUBLINEA_TABLE_COLUMNS = [
+export const NATURALEZA_TABLE_COLUMNS = [
   {
     header: 'Código',
     field: 'codigo',
@@ -7,11 +7,6 @@ export const SUBLINEA_TABLE_COLUMNS = [
   {
     header: 'Descripción',
     field: 'descripcion',
-    width: '25%'
-  },
-  {
-    header: 'Linea',
-    field: 'lineadescripcion',
     width: '25%'
   }
 ];

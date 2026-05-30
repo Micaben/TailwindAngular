@@ -12,7 +12,9 @@ export abstract class BaseCrudComponent<T extends {
   descripcion?: string;
 }
 > implements OnInit {
-
+  protected getInitialData(): Partial<T> {
+    return {};
+  }
   // =========================
   // SERVICE
   // =========================
@@ -40,6 +42,7 @@ export abstract class BaseCrudComponent<T extends {
     formSubmitted: false,
     loading: false
   });
+
   readonly selected = computed(() => this.state().selected ?? {});
   readonly submitted = computed(() => this.state().formSubmitted);
   // =========================
@@ -119,7 +122,7 @@ export abstract class BaseCrudComponent<T extends {
             selected: {
               ...s.selected,
               ...res
-            }, 
+            },
             isOpen: true
           }));
           this.load();
@@ -134,7 +137,7 @@ export abstract class BaseCrudComponent<T extends {
         }
       });
   }
-  
+
   // =========================
   // FIELD UPDATE
   // =========================
@@ -156,7 +159,7 @@ export abstract class BaseCrudComponent<T extends {
   openCreate(): void {
     this.state.update(state => ({
       ...state,
-      selected: {},
+      selected: this.getInitialData() as T,
       modo: 'crear',
       isOpen: true,
       formSubmitted: false

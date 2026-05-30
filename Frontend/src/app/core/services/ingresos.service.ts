@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Ingresos } from '../models/ingresos.model';
-import { Serie } from '../models/serie.model'
+import { Serie } from '../../shared/components/series/serie.model';
 import { Modelobase } from '../models/modelobase.model';
 
 @Injectable({

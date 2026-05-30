@@ -69,7 +69,9 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   @Input() required: boolean = false;
   @Input() pattern?: string;
   @Input() maxLength?: number;
+  @Input() decimalOnly = false;
   @Input() minLength?: number;
+  @Input() icon?: string;
   @Input() onlyNumbers: boolean = false;
   touched = false;
   onChange: any = () => { };
@@ -125,6 +127,7 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
       event.target.showPicker();
     }
   }
+
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
@@ -163,12 +166,20 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
 
   onInput(event: Event) {
     let value = (event.target as HTMLInputElement).value;
-    // Solo números
+
     if (this.onlyNumbers) {
       value = value.replace(/[^0-9]/g, '');
     }
 
-    // Máximo de caracteres
+    if (this.decimalOnly) {
+      value = value.replace(/[^0-9.]/g, '');
+      const parts = value.split('.');
+
+      if (parts.length > 2) {
+        value = parts[0] + '.' + parts.slice(1).join('');
+      }
+    }
+
     if (this.maxLength) {
       value = value.slice(0, this.maxLength);
     }
@@ -176,6 +187,12 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
     this.value = value;
     (event.target as HTMLInputElement).value = value;
     this.onChange(value);
+
+    if (this.type === 'number' && value !== '') {
+      this.onChange(Number(value));
+    } else {
+      this.onChange(value);
+    }
   }
 
   onBlur() {
@@ -186,7 +203,6 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   get shouldShowError(): boolean {
 
     const value = this.value ?? '';
-
     const empty = value === '';
 
     const hasMinLengthError =

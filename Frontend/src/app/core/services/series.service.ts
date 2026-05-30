@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Serie } from '../models/serie.model';
+import { Serie } from '../../shared/components/series/serie.model';
 import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
 
 @Injectable({

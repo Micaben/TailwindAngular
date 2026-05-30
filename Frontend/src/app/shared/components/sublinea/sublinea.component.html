@@ -20,12 +20,12 @@
               <label class="mb-2 block text-sm font-medium">
                 Linea
               </label>
-              <app-select-field [options]="lineaOptions" [ngModel]="state().selected.linea ?? ''"
-                (ngModelChange)="updateField('linea', $event)" name="linea" [required]="true"
-                #linea="ngModel" [customClass]="linea.invalid && (linea.touched || submitted())
+              <app-select-field [options]="lineaOptions" [ngModel]="state().selected.codigolinea ?? ''"
+                (ngModelChange)="updateField('codigolinea', $event)" name="codigolinea" [required]="true"
+                #codigolinea="ngModel" [customClass]="codigolinea.invalid && (codigolinea.touched || submitted())
                  ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'">
               </app-select-field>
-              @if (showError(linea)) {
+              @if (showError(codigolinea)) {
               <p class="mt-1 text-xs text-red-500">
                 Este campo es obligatorio
               </p>

@@ -184,9 +184,9 @@ export class ProductosComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await Promise.all([
       this.cargarProducto(),
-      this.cargarNaturaleza(),
+      //this.cargarNaturaleza(),
       //this.cargarLinea(),
-      this.cargarUnidadmedida(),
+      //this.cargarUnidadmedida(),
       //this.cargarColor(),
       this.cargarProveedor()
     ]);
@@ -266,7 +266,7 @@ export class ProductosComponent implements OnInit {
   }*/
 
 
-  async cargarNaturaleza() {
+  /*async cargarNaturaleza() {
     const data = await this.naturalezaService.obtenerNaturaleza();
     this.naturalezaoptions = this.mapOptions(
       data,
@@ -282,7 +282,7 @@ export class ProductosComponent implements OnInit {
       'codigo',
       'descripcion'
     );
-  }
+  }*/
 
   /*async cargarColor() {
     const data = await this.colorService.obtenerColor();

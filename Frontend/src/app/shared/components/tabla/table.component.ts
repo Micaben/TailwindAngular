@@ -1,15 +1,11 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
 
 export interface TableColumn {
   header: string;
   field: string;
   width?: string;
+    type?: 'text' | 'date' | 'number';
 }
 
 @Component({

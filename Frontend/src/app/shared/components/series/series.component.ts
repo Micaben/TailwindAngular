@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { InputFieldComponent } from '../form/input/input-field.component';
 import { ModalComponent } from '../ui/modal/modal.component';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { CrudTableComponent } from '../tabla/crud-table.component';
 import { FooterComponent } from '../footer/footer.component';
 import { SeriesService } from '../../../core/services/series.service';
-import { Serie } from '../../../core/models/serie.model';
+import { Serie } from '../../components/series/serie.model';
 import { SERIES_TABLE_COLUMNS } from '../tabla/series_table_config';
 import { SelectComponent } from "../form/select/select.component";
 import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
