@@ -1,4 +1,4 @@
-<app-crud-table [title]="'Transportistas'" [data]="filteredItems()" (search)="setSearch($event)" (create)="openCreate()"
+<app-crud-table  [columns]="tableColumns" [title]="'Transportistas'" [data]="filteredItems()" (search)="setSearch($event)" (create)="openCreate()"
   (edit)="openEdit($event)">
 </app-crud-table>
 
@@ -8,24 +8,24 @@
     class="no-scrollbar relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
     <div class="px-2">
       <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-        Concepto de venta
+        Transportistas
       </h4>
       <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-        Ingresa o cambia los datos para tener la informacion actualizada.
+        Ingresa o cambia los datos para tener la información actualizada.
       </p>
       <form class="flex flex-col flex-1 overflow-hidden" #form="ngForm" (ngSubmit)="save(form)">
         <div class="space-y-5">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div class="md:col-span-3">
               <label class="mb-2 block text-sm font-medium">
-                Linea
+                Empresa de Transporte
               </label>
-              <app-select-field [options]="lineaOptions" [ngModel]="state().selected.codigo ?? ''"
-                (ngModelChange)="updateField('codigo', $event)" name="codigo" [required]="true"
-                #codigo="ngModel" [customClass]="codigo.invalid && (codigo.touched || submitted())
+              <app-select-field [options]="empresa_transporteOptions" [ngModel]="state().selected.ruc ?? ''"
+                (ngModelChange)="updateField('ruc', $event)" name="ruc" [required]="true"
+                #ruc="ngModel" [customClass]="ruc.invalid && (ruc.touched || submitted())
                  ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'">
               </app-select-field>
-              @if (showError(codigo)) {
+              @if (showError(ruc)) {
               <p class="mt-1 text-xs text-red-500">
                 Este campo es obligatorio
               </p>
@@ -33,24 +33,88 @@
             </div>
             <div class="md:col-span-1">
               <label class="mb-2 block text-sm font-medium">
-                Código
+                Tipo de documento
               </label>
-              <app-input-field [ngModel]="state().selected.codigo ?? ''" (ngModelChange)="updateField('codigo', $event)"
-                name="codigo" [disabled]="state().modo === 'editar'" [submitted]="submitted()" [required]="true"
-                pattern="^[0-9]*$" [minLength]="2" [maxLength]="4" [onlyNumbers]="true">
-              </app-input-field>
+              <app-select-field [options]="tipo_documentoOptions" [ngModel]="state().selected.tipo_documento ?? ''"
+                (ngModelChange)="updateField('tipo_documento', $event)" name="tipo_documento" [required]="true"
+                #tipo_documento="ngModel" [customClass]="tipo_documento.invalid && (tipo_documento.touched || submitted())
+                 ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'">
+              </app-select-field>
+              @if (showError(tipo_documento)) {
+              <p class="mt-1 text-xs text-red-500">
+                Este campo es obligatorio
+              </p>
+              }
             </div>
-            <div class="md:col-span-2">
+            <div class="md:col-span-1">
               <label class="mb-2 block text-sm font-medium">
-                Descripción
+                DNI
               </label>
-              <app-input-field [ngModel]="state().selected.descripcion ?? ''"
-                (ngModelChange)="updateField('descripcion', $event)" name="descripcion" [submitted]="submitted()"
+              <app-input-field [ngModel]="state().selected.dni ?? ''"
+                (ngModelChange)="updateField('dni', $event)" name="dni" [submitted]="submitted()"
                 [required]="true">
               </app-input-field>
             </div>
-            
-            
+            <div class="md:col-span-1">
+              <label class="mb-2 block text-sm font-medium">
+                Licencia
+              </label>
+              <app-input-field [ngModel]="state().selected.licencia ?? ''"
+                (ngModelChange)="updateField('licencia', $event)" name="licencia" [submitted]="submitted()"
+                [required]="true">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label class="mb-2 block text-sm font-medium">
+                Nombres
+              </label>
+              <app-input-field [ngModel]="state().selected.nombres ?? ''" (ngModelChange)="updateField('nombres', $event)"
+                name="nombres" [submitted]="submitted()" [required]="true" >
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label class="mb-2 block text-sm font-medium">
+                Apellido Paterno
+              </label>
+              <app-input-field [ngModel]="state().selected.apellido_paterno ?? ''"
+                (ngModelChange)="updateField('apellido_paterno', $event)" name="apellido_paterno" [submitted]="submitted()"
+                [required]="true">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label class="mb-2 block text-sm font-medium">
+                Apellido Materno
+              </label>
+              <app-input-field [ngModel]="state().selected.apellido_materno ?? ''"
+                (ngModelChange)="updateField('apellido_materno', $event)" name="apellido_materno" [submitted]="submitted()"
+                [required]="true">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label class="mb-2 block text-sm font-medium">
+                Unidad
+              </label>
+              <app-input-field [ngModel]="state().selected.unidad ?? ''" (ngModelChange)="updateField('unidad', $event)"
+                name="unidad" [submitted]="submitted()">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label class="mb-2 block text-sm font-medium">
+                Placa
+              </label>
+              <app-input-field [ngModel]="state().selected.placa ?? ''"
+                (ngModelChange)="updateField('placa', $event)" name="placa" [submitted]="submitted()"
+                [required]="true">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label class="mb-2 block text-sm font-medium">
+                Unidad
+              </label>
+              <app-input-field [ngModel]="state().selected.descripcion ?? ''"
+                (ngModelChange)="updateField('descripcion', $event)" name="descripcion" [submitted]="submitted()" >
+              </app-input-field>
+            </div>
           </div>
         </div>
 

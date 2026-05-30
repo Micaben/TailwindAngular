@@ -43,9 +43,7 @@ export class ConceptoComponent
   readonly tableColumns = CONCEPTO_TABLE_COLUMNS;
   
  override ngOnInit(): void {
-
   super.ngOnInit();
-
   this.loadOptions();
 
 }

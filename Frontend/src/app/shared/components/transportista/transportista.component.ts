@@ -27,32 +27,49 @@ import { OptionsService } from '../../../core/services/options.service';
     SelectComponent
   ]
 })
+
 export class TransportistaComponent
   extends BaseCrudComponent<Transportista> {
   protected override service = inject(TransportistaService);
   private optionsService = inject(OptionsService);
-  lineaOptions: Option[] = [];
+  empresa_transporteOptions: Option[] = [];
+  tipo_documentoOptions: Option[] = [];
   readonly tableColumns = TRANSPORTISTA_TABLE_COLUMNS;
 
   override ngOnInit(): void {
     super.ngOnInit();
+    this.loadEmpresaTransporte();
     this.loadOptions();
+  }
+
+  loadEmpresaTransporte(): void {
+    this.optionsService
+      .getOptions('http://localhost:3000/empresa_transporte')
+      .subscribe(data => {
+        this.empresa_transporteOptions = data.map((item: any) => ({
+          value: item.ruc,
+          label: item.razon_social,
+          ruc: item.ruc
+        }));
+console.log(this.state().selected);
+      });
   }
 
   loadSelect(endpoint: string, property: keyof this): void {
     this.optionsService
       .getOptions(endpoint)
       .subscribe(data => {
+        console.log(data);
         (this[property] as Option[]) = data;
       });
   }
 
   loadOptions(): void {
-    this.loadSelect(
-      'http://localhost:3000/linea',
-      'lineaOptions'
-    );
 
+    this.loadSelect(
+      'http://localhost:3000/tipo_documento',
+      'tipo_documentoOptions'
+    );
   }
 
   showError(control: any): boolean {

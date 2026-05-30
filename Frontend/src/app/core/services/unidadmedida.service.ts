@@ -1,36 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import { UnidadMedida } from '../../core/models/unidadmedida.model';
+import { Modelobase } from '../../core/models/modelobase.model';
+import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
+export class UnidadMedidaService
+  extends BaseCrudService<Modelobase> {
 
-export class UnidadMedidaService {
-
-  private API_URL = 'http://localhost:3000';
-  constructor(private http: HttpClient) { }
-
-  obtenerUnidadMedida() {
-    return firstValueFrom(
-      this.http.get<UnidadMedida[]>(
-        `${this.API_URL}/unidadmedida`
-      )
-    );
-  }
-
-  crearUnidadMedida(data: any) {
-    return this.http.post(
-      'http://localhost:3000/unidadmedida',
-      data
-    );
-  }
-
-  actualizarUnidadMedida(id: number, data: any) {
-    return this.http.put(
-      `http://localhost:3000/unidadmedida/${id}`,
-      data
-    );
-  }
+  protected override endpoint =
+    'http://localhost:3000/unidadmedida';
 }

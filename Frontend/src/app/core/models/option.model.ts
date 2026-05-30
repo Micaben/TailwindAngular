@@ -3,6 +3,5 @@ export interface Option {
   label: string;
   ultimo?: string;
   ruc?: string;
-
   [key: string]: any;
 }

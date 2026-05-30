@@ -9,5 +9,6 @@ export interface Transportista extends Modelobase {
   unidad?: string;
   placa?: string;
   tipo_documento?: string;
+  ruc?: string;
   empresa_transporte?: string;   
 }

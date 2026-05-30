@@ -1,36 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import { Vendedor } from '../models/vendedor.model';
+import { Vendedor } from '../../shared/components/vendedor/vendedor.model';
+import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
+export class VendedorService
+  extends BaseCrudService<Vendedor> {
 
-export class VendedorService {
-
-  private API_URL = 'http://localhost:3000';
-  constructor(private http: HttpClient) { }
-
-  obtenerVendedor() {
-    return firstValueFrom(
-      this.http.get<Vendedor[]>(
-        `${this.API_URL}/vendedor`
-      )
-    );
-  }
-
-  crearVendedor(data: any) {
-    return this.http.post(
-      'http://localhost:3000/vendedor',
-      data
-    );
-  }
-
-  actualizarVendedor(id: number, data: any) {
-    return this.http.put(
-      `http://localhost:3000/vendedor/${id}`,
-      data
-    );
-  }
+  protected override endpoint =
+    'http://localhost:3000/vendedor';
 }

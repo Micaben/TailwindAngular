@@ -168,7 +168,7 @@ export abstract class BaseCrudComponent<T extends {
 
   openEdit(item: T): void {
     console.log('ITEM EDIT:', item);
-
+    
     this.state.update(state => ({
       ...state,
       selected: { ...item },
