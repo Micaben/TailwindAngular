@@ -22,29 +22,29 @@
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <!-- First Name -->
           <div class="sm:col-span-1">
-            <app-label>
+           
              Nombres<span class="text-error-500">*</span>
-            </app-label>
+            
             <app-input-field type="text" [(ngModel)]="fname" id="fname" name="fname" />
           </div>
           <!-- Last Name -->
           <div class="sm:col-span-1">
-            <app-label>
+           
               Apellidos<span class="text-error-500">*</span>
-            </app-label>
+            
             <app-input-field type="text" [(ngModel)]="lname" id="lname" name="lname"/>
           </div>
         </div>
         <!-- Email -->
         <div>
-          <app-label>
+         
             Correo <span class="text-error-500">*</span>
-          </app-label>
+          
           <app-input-field type="email" [(ngModel)]="email" id="email" name="email" [required]="true"/>
         </div>
         <!-- Password -->
         <div>
-          <app-label>Contraseña <span class="text-error-500">*</span></app-label>
+         Contraseña <span class="text-error-500">*</span>
           <div class="relative">
             <app-input-field [type]="showPassword ? 'text' : 'password'"
               [(ngModel)]="password" name="password" class="form-input" [required]="true"/>

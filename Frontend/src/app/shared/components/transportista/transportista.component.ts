@@ -12,6 +12,7 @@ import { SelectComponent } from "../form/select/select.component";
 import { Option } from '../../../core/models/option.model';
 import { Transportista } from './transportista.model';
 import { OptionsService } from '../../../core/services/options.service';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 
 @Component({
   selector: 'app-transportista',
@@ -19,6 +20,7 @@ import { OptionsService } from '../../../core/services/options.service';
   templateUrl: './transportista.component.html',
   imports: [
     FormsModule,
+    LabelDirective,
     CrudTableComponent,
     ModalComponent,
     FooterComponent,

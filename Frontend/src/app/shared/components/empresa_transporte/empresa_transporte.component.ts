@@ -9,6 +9,7 @@ import { EmpresatransporteService } from '../../../core/services/empresa_transpo
 import { Empresa_transporte } from '../../components/empresa_transporte/empresa_transporte.model';
 import { Empresatransporte_TABLE_COLUMNS } from '../../components/tabla/empresatransporte_table_config';
 import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 
 @Component({
   selector: 'app-empresatransporte',
@@ -17,6 +18,7 @@ import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
   imports: [
     FormsModule,
     CrudTableComponent,
+    LabelDirective,
     ModalComponent,
     FooterComponent,
     InputFieldComponent,

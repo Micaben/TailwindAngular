@@ -1,6 +1,5 @@
 
 import { Component } from '@angular/core';
-import { LabelComponent } from '../../form/label/label.component';
 import { CheckboxComponent } from '../../form/input/checkbox.component';
 import { InputFieldComponent } from '../../form/input/input-field.component';
 import { RouterModule } from '@angular/router';
@@ -10,7 +9,6 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-signup-form',
   imports: [
-    LabelComponent,
     CheckboxComponent,
     InputFieldComponent,
     RouterModule,

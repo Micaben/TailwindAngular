@@ -50,11 +50,8 @@ export abstract class BaseCrudComponent<T extends {
   // =========================
 
   readonly filteredItems = computed(() => {
-    const { items, searchTerm } =
-      this.state();
-
-    const term =
-      searchTerm.toLowerCase().trim();
+    const { items, searchTerm } = this.state();
+    const term = searchTerm.toLowerCase().trim();
 
     if (!term) return items;
     return items.filter(item =>
@@ -85,6 +82,7 @@ export abstract class BaseCrudComponent<T extends {
       )
       .subscribe({
         next: data => {
+          console.log('DATA:', data);
           this.setItems(data);
         },
 

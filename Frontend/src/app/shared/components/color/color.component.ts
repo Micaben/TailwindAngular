@@ -9,6 +9,7 @@ import { ColorService } from '../../../core/services/color.service';
 import { Modelobase } from '../../../core/models/modelobase.model';
 import { COLOR_TABLE_COLUMNS } from '../../components/tabla/color_table_config';
 import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
+import { LabelDirective } from "../../directives/label.directive";
 
 @Component({
   selector: 'app-color',
@@ -20,8 +21,9 @@ import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
     ModalComponent,
     FooterComponent,
     InputFieldComponent,
-    AutoFocusFirstDirective
-  ]
+    AutoFocusFirstDirective,
+    LabelDirective
+]
 })
 export class ColorComponent
   extends BaseCrudComponent<Modelobase> {

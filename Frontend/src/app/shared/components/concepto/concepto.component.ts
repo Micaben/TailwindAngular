@@ -13,6 +13,7 @@ import { SelectComponent } from "../form/select/select.component";
 import { Option } from '../../../core/models/option.model';
 import { Concepto } from './concepto.model';
 import { OptionsService } from '../../../core/services/options.service';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 
 @Component({
   selector: 'app-concepto',
@@ -20,6 +21,7 @@ import { OptionsService } from '../../../core/services/options.service';
   templateUrl: './concepto.component.html',
   imports: [
     CommonModule,
+    LabelDirective,
     FormsModule,
     CrudTableComponent,
     ModalComponent,

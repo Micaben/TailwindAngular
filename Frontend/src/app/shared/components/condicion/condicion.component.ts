@@ -10,6 +10,8 @@ import { CondicionService } from '../../../core/services/condicion.service';
 import { CONDICION_TABLE_COLUMNS } from '../../components/tabla/condicion_table_config'
 import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
 import { Condicion } from './condicion.model';
+import { LabelDirective } from '../../../shared/directives/label.directive';
+
 @Component({
   selector: 'app-condicion',
   standalone: true,
@@ -17,6 +19,7 @@ import { Condicion } from './condicion.model';
   imports: [
     CommonModule,
     FormsModule,
+    LabelDirective,
     CrudTableComponent,
     ModalComponent,
     FooterComponent,

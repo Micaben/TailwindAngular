@@ -11,6 +11,7 @@ import { TIPOCAMBIO_TABLE_COLUMNS } from '../../components/tabla/tipocambio_tabl
 import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
 import { formatInputDate } from '../../../shared/services/date.utils';
 import { getFechaHoy } from '../../services/date.utils';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 
 @Component({
   selector: 'app-tipocambio',
@@ -19,6 +20,7 @@ import { getFechaHoy } from '../../services/date.utils';
   imports: [
     FormsModule,
     CrudTableComponent,
+    LabelDirective,
     ModalComponent,
     FooterComponent,
     InputFieldComponent,
@@ -29,7 +31,6 @@ import { getFechaHoy } from '../../services/date.utils';
 export class TipocambioComponent
   extends BaseCrudComponent<Tipocambio> {
   protected override service = inject(TipocambioService);
-
   readonly tableColumns = TIPOCAMBIO_TABLE_COLUMNS;
   protected override getInitialData(): Partial<Tipocambio> {
     return {
@@ -38,8 +39,8 @@ export class TipocambioComponent
       venta: 0
     };
   }
+  
   override openEdit(item: Tipocambio): void {
-
     this.state.update(state => ({
       ...state,
       selected: {
@@ -50,6 +51,5 @@ export class TipocambioComponent
       isOpen: true,
       formSubmitted: false
     }));
-
   }
 }

@@ -9,6 +9,7 @@ import { NaturalezaService } from '../../../core/services/naturaleza.service';
 import { Modelobase } from '../../../core/models/modelobase.model';
 import { NATURALEZA_TABLE_COLUMNS } from '../../components/tabla/naturaleza_table_config';
 import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 
 @Component({
   selector: 'app-naturaleza',
@@ -18,6 +19,7 @@ import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
     FormsModule,
     CrudTableComponent,
     ModalComponent,
+    LabelDirective,
     FooterComponent,
     InputFieldComponent,
     AutoFocusFirstDirective

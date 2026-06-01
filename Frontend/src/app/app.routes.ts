@@ -8,7 +8,7 @@ import { SublineaComponent } from './shared/components/sublinea/sublinea.compone
 import { UnidadMedidaComponent } from './shared/components/unidadmedida/unidadmedida.component';
 import { ColorComponent } from './shared/components/color/color.component';
 import { ProductosComponent } from './shared/components/productos/productos.component';
-import { AlmacenesComponent } from './shared/components/almacenes/almacenes.component';
+import { AlmacenPage } from './pages/almacen/almacen.page';
 import { IngresosComponent } from './shared/components/almacen/ingresos.component';
 import { Empresa_transporteComponent } from './shared/components/empresa_transporte/empresa_transporte.component';
 import { ClientesComponent } from './shared/components/clientes/clientes.component';
@@ -20,7 +20,6 @@ import { ConceptoComponent } from './shared/components/concepto/concepto.compone
 import { DocumentosComponent } from './shared/components/documentos/documentos.component';
 import { SeriesComponent } from './shared/components/series/series.component';
 import { TipocambioComponent } from './shared/components/tipocambio/tipocambio.component';
-import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
 import { BadgesComponent } from './pages/ui-elements/badges/badges.component';
@@ -42,7 +41,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'almacenes',
-        component: AlmacenesComponent,
+        component: AlmacenPage,
         title: 'Angular Almacenes Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
@@ -176,12 +175,6 @@ export const routes: Routes = [
     path: 'signup',
     component: SignUpComponent,
     title: 'Angular Sign Up Dashboard | TailAdmin - Angular Admin Dashboard Template'
-  },
-  // error pages
-  {
-    path: '**',
-    component: NotFoundComponent,
-    title: 'Angular NotFound Dashboard | TailAdmin - Angular Admin Dashboard Template'
   },
   
 ];

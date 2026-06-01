@@ -2,7 +2,6 @@
 import { Component } from '@angular/core';
 import { ComponentCardComponent } from '../../../common/component-card/component-card.component';
 import { InputFieldComponent } from '../../input/input-field.component';
-import { LabelComponent } from '../../label/label.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,7 +10,6 @@ import { FormsModule } from '@angular/forms';
     ComponentCardComponent,
     InputFieldComponent,
     FormsModule,
-    LabelComponent
 ],
   templateUrl: './input-states.component.html',
   styles: ``

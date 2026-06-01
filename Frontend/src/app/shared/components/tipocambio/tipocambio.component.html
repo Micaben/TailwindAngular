@@ -1,7 +1,7 @@
 <app-crud-table [columns]="tableColumns" [title]="'Tipo de cambio'" [data]="filteredItems()"
     (search)="setSearch($event)" (create)="openCreate()" (edit)="openEdit($event)">
 </app-crud-table>
-
+@if (state().isOpen) {
 <!-- Modal -->
 <app-modal [isOpen]="state().isOpen" (close)="closeModal()" className="w-full max-w-4xl p-4">
     <div appAutoFocusFirst
@@ -17,7 +17,7 @@
                 <div class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                         <div class="md:col-span-3">
-                            <label class="mb-2 block text-sm font-medium">
+                            <label appLabel>
                                 Fecha
                             </label>
                             <app-input-field type="date" [ngModel]="state().selected.fecha ?? ''"
@@ -25,7 +25,7 @@
                             </app-input-field>
                         </div>
                         <div class="md:col-span-1">
-                            <label class="mb-2 block text-sm font-medium">
+                            <label appLabel>
                                 Compra
                             </label>
                             <app-input-field [step]="0.01" [decimalOnly]="true"
@@ -34,7 +34,7 @@
                             </app-input-field>
                         </div>
                         <div class="md:col-span-2">
-                            <label class="mb-2 block text-sm font-medium">
+                            <label appLabel>
                                 Venta
                             </label>
                             <app-input-field [step]="0.01" [decimalOnly]="true" [minLength]="2" [maxLength]="5"
@@ -53,3 +53,4 @@
         </div>
     </div>
 </app-modal>
+}

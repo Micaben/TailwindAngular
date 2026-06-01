@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { InputFieldComponent } from '../form/input/input-field.component';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 import { ModalComponent } from '../ui/modal/modal.component';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
 import { CrudTableComponent } from '../../components/tabla/crud-table.component';
@@ -17,6 +18,7 @@ import { Modelobase } from '../../../core/models/modelobase.model';
   imports: [
     FormsModule,
     CrudTableComponent,
+    LabelDirective,
     ModalComponent,
     FooterComponent,
     InputFieldComponent,

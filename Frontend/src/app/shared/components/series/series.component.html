@@ -18,7 +18,7 @@
         <div class="space-y-5">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
             <div class="md:col-span-2">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Comprobante
               </label>
               <app-select-field [options]="comprobanteOptions" [ngModel]="state().selected.comprobante ?? ''"
@@ -34,7 +34,7 @@
             </div>
 
             <div class="md:col-span-1">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Serie
               </label>
               <app-input-field [ngModel]="state().selected.serie ?? ''" (ngModelChange)="updateField('serie', $event)"
@@ -42,7 +42,7 @@
               </app-input-field>
             </div>
             <div class="md:col-span-1">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Ultimo
               </label>
               <app-input-field [ngModel]="state().selected.ultimo ?? ''" (ngModelChange)="updateField('ultimo', $event)"

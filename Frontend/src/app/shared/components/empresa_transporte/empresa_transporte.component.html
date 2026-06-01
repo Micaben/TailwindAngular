@@ -19,7 +19,7 @@
           <div class="grid grid-cols-1 md:grid-cols-4 gap-5">            
 
             <div class="md:col-span-1">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 RUC
               </label>
               <app-input-field [ngModel]="state().selected.ruc ?? ''" (ngModelChange)="updateField('ruc', $event)"
@@ -27,7 +27,7 @@
               </app-input-field>
             </div>
             <div class="md:col-span-3">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Razon social    
               </label>
               <app-input-field [ngModel]="state().selected.razon_social ?? ''" (ngModelChange)="updateField('razon_social', $event)"

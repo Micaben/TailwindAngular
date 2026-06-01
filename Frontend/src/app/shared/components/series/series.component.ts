@@ -12,6 +12,7 @@ import { SelectComponent } from "../form/select/select.component";
 import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
 import { OptionsService } from '../../../core/services/options.service';
 import { Option } from '../../../core/models/option.model';
+import { LabelDirective } from "../../directives/label.directive";
 
 @Component({
   selector: 'app-series',
@@ -20,12 +21,13 @@ import { Option } from '../../../core/models/option.model';
   imports: [
     FormsModule,
     CrudTableComponent,
+    LabelDirective,
     SelectComponent,
     ModalComponent,
     FooterComponent,
     InputFieldComponent,
-    AutoFocusFirstDirective
-  ]
+    AutoFocusFirstDirective,
+]
 })
 export class SeriesComponent
   extends BaseCrudComponent<Serie> {

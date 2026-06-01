@@ -1,7 +1,8 @@
-<app-crud-table [columns]="tableColumns" [title]="'Sublinea'" [data]="filteredItems()" (search)="setSearch($event)" (create)="openCreate()"
-  (edit)="openEdit($event)">
+<app-crud-table [columns]="tableColumns" [title]="'Sublinea'" [data]="filteredItems()" (search)="setSearch($event)"
+  (create)="openCreate()" (edit)="openEdit($event)">
 </app-crud-table>
 
+@if (state().isOpen) {
 <!-- Modal -->
 <app-modal [isOpen]="state().isOpen" (close)="closeModal()" className="w-full max-w-4xl p-4">
   <div appAutoFocusFirst
@@ -17,22 +18,15 @@
         <div class="space-y-5">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div class="md:col-span-3">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Linea
               </label>
-              <app-select-field [options]="lineaOptions" [ngModel]="state().selected.codigolinea ?? ''"
-                (ngModelChange)="updateField('codigolinea', $event)" name="codigolinea" [required]="true"
-                #codigolinea="ngModel" [customClass]="codigolinea.invalid && (codigolinea.touched || submitted())
-                 ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'">
+              <app-select-field [options]="lineaOptions" [(ngModel)]="state().selected.codigolinea" name="codigolinea"
+                [required]="true" [submitted]="submitted()" #codigolinea="ngModel" [control]="codigolinea">
               </app-select-field>
-              @if (showError(codigolinea)) {
-              <p class="mt-1 text-xs text-red-500">
-                Este campo es obligatorio
-              </p>
-              }
             </div>
             <div class="md:col-span-1">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Código
               </label>
               <app-input-field [ngModel]="state().selected.codigo ?? ''" (ngModelChange)="updateField('codigo', $event)"
@@ -41,7 +35,7 @@
               </app-input-field>
             </div>
             <div class="md:col-span-2">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Descripción
               </label>
               <app-input-field [ngModel]="state().selected.descripcion ?? ''"
@@ -49,8 +43,6 @@
                 [required]="true">
               </app-input-field>
             </div>
-            
-            
           </div>
         </div>
 
@@ -62,3 +54,4 @@
     </div>
   </div>
 </app-modal>
+}

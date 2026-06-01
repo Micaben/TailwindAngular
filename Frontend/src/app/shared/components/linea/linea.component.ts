@@ -9,6 +9,7 @@ import { LineaService } from '../../../core/services/linea.service';
 import { Modelobase } from '../../../core/models/modelobase.model';
 import { LINEA_TABLE_COLUMNS } from '../../components/tabla/linea_table_config';
 import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 
 @Component({
   selector: 'app-linea',
@@ -16,6 +17,7 @@ import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
   templateUrl: './linea.component.html',
   imports: [
     FormsModule,
+    LabelDirective,
     CrudTableComponent,
     ModalComponent,
     FooterComponent,

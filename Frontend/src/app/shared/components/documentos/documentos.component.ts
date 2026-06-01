@@ -9,6 +9,7 @@ import { DocumentosService } from '../../../core/services/documentos.service';
 import { Modelobase } from '../../../core/models/modelobase.model';
 import { DOCUMENTOS_TABLE_COLUMNS } from '../../components/tabla/documentos_table_config';
 import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 
 @Component({
   selector: 'app-documentos',
@@ -17,6 +18,7 @@ import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
   imports: [
     FormsModule,
     CrudTableComponent,
+    LabelDirective,
     ModalComponent,
     FooterComponent,
     InputFieldComponent,

@@ -4,11 +4,9 @@ import { ModalComponent } from '../../ui/modal/modal.component';
 import { User } from '../../../../core/models/user.model';
 import { AuthService } from '../../../../core/services/auth.services';
 
-
 @Component({
   selector: 'app-user-info-card',
   imports: [
-
     ModalComponent
   ],
   templateUrl: './user-info-card.component.html',

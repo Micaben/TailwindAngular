@@ -11,7 +11,9 @@ import { BaseCrudComponent } from '../base_crud_component/base_crud.component';
 import { SelectComponent } from "../form/select/select.component";
 import { Option } from '../../../core/models/option.model';
 import { Sublinea } from './sublinea.model';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 import { OptionsService } from '../../../core/services/options.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sublinea',
@@ -19,7 +21,9 @@ import { OptionsService } from '../../../core/services/options.service';
   templateUrl: './sublinea.component.html',
   imports: [
     FormsModule,
+    CommonModule,
     CrudTableComponent,
+    LabelDirective,
     ModalComponent,
     FooterComponent,
     InputFieldComponent,

@@ -1,7 +1,7 @@
 <app-crud-table  [columns]="tableColumns" [title]="'Concepto de Venta'" [data]="filteredItems()" (search)="setSearch($event)" (create)="openCreate()"
   (edit)="openEdit($event)">
 </app-crud-table>
-
+@if (state().isOpen) {
 <!-- Modal -->
 <app-modal [isOpen]="state().isOpen" (close)="closeModal()" className="w-full max-w-4xl p-4">
   <div appAutoFocusFirst
@@ -17,7 +17,7 @@
         <div class="space-y-5">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
             <div class="md:col-span-1">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Código
               </label>
               <app-input-field [ngModel]="state().selected.codigo ?? ''" (ngModelChange)="updateField('codigo', $event)"
@@ -26,7 +26,7 @@
               </app-input-field>
             </div>
             <div class="md:col-span-3">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Descripción
               </label>
               <app-input-field [ngModel]="state().selected.descripcion ?? ''"
@@ -35,80 +35,49 @@
               </app-input-field>
             </div>
             <div class="md:col-span-3">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Comprobante
               </label>
               <app-select-field [options]="comprobanteOptions" [ngModel]="state().selected.comprobante ?? ''"
                 (ngModelChange)="updateField('comprobante', $event)" name="comprobante" [required]="true"
-                #comprobante="ngModel" [customClass]="comprobante.invalid && (comprobante.touched || submitted())
-                 ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'">
+                #comprobante="ngModel" [control]="comprobante">
               </app-select-field>
-              @if (showError(comprobante)) {
-              <p class="mt-1 text-xs text-red-500">
-                Este campo es obligatorio
-              </p>
-              }
             </div>
             <div class="md:col-span-3">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Tipo de Factura
               </label>
               <app-select-field [options]="tipoFacturaOptions" [ngModel]="state().selected.tipo_factura ?? ''"
                 (ngModelChange)="updateField('tipo_factura', $event)" name="tipo_factura" [required]="true"
-                #tipo_factura="ngModel" [customClass]="tipo_factura.invalid && (tipo_factura.touched || submitted())
-                 ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'">
+                #tipo_factura="ngModel"  [control]="tipo_factura">
               </app-select-field>
-              @if (showError(tipo_factura)) {
-              <p class="mt-1 text-xs text-red-500">
-                Este campo es obligatorio
-              </p>
-              }
-
             </div>
             <div class="md:col-span-3">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Tipo de Operacion
               </label>
               <app-select-field [options]="tipoOperacionOptions" [ngModel]="state().selected.tipo_operacion ?? ''"
                 (ngModelChange)="updateField('tipo_operacion', $event)" name="tipo_operacion" [required]="true"
-                #tipo_operacion="ngModel" [customClass]="tipo_operacion.invalid && (tipo_operacion.touched || submitted())
-                 ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'">
+                #tipo_operacion="ngModel" [control]=" tipo_factura">
               </app-select-field>
-              @if (showError(tipo_operacion)) {
-              <p class="mt-1 text-xs text-red-500">
-                Este campo es obligatorio
-              </p>
-              }
             </div>
             <div class="md:col-span-3">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Tipo de Afectación
               </label>
               <app-select-field [options]="tipoAfectacionOptions" [ngModel]="state().selected.tipo_afectacion ?? ''"
                 (ngModelChange)="updateField('tipo_afectacion', $event)" name="tipo_afectacion" [required]="true"
-                #tipo_afectacion="ngModel" [customClass]="tipo_afectacion.invalid && (tipo_afectacion.touched || submitted())
-                 ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'">
+                #tipo_afectacion="ngModel" [control]=" tipo_afectacion">
               </app-select-field>
-              @if (showError(tipo_afectacion)) {
-              <p class="mt-1 text-xs text-red-500">
-                Este campo es obligatorio
-              </p>
-              }
             </div>
             <div class="md:col-span-3">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Tipo de Nota de Crédito
               </label>
               <app-select-field [options]="tiponcOptions" [ngModel]="state().selected.tipo_nc ?? ''"
                 (ngModelChange)="updateField('tipo_nc', $event)" name="tipo_nc" [required]="true"
-                #tipo_nc="ngModel" [customClass]="tipo_nc.invalid && (tipo_nc.touched || submitted())
-                 ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'">
+                #tipo_nc="ngModel" [control]=" tipo_afectacion">
               </app-select-field>
-              @if (showError(tipo_nc)) {
-              <p class="mt-1 text-xs text-red-500">
-                Este campo es obligatorio
-              </p>
-              }
             </div>
           </div>
         </div>
@@ -121,3 +90,4 @@
     </div>
   </div>
 </app-modal>
+}

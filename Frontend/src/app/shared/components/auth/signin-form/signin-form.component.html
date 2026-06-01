@@ -10,7 +10,7 @@
       <!-- Form -->
       <form (ngSubmit)="onSignIn()" class="space-y-6">
         <div>
-          <app-label>Email <span class="text-error-500">*</span></app-label>
+          Email <span class="text-error-500">*</span>
           <app-input-field
             type="email"
             [(ngModel)]="email"
@@ -22,7 +22,7 @@
         </div>
 
         <div>
-          <app-label>Contraseña <span class="text-error-500">*</span></app-label>
+          Contraseña <span class="text-error-500">*</span>
           <div class="relative">
             <app-input-field
               [type]="showPassword ? 'text' : 'password'"

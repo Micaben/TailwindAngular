@@ -1,7 +1,8 @@
-import { Component, Input, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
+import { Component, Input, forwardRef, Injector, Optional, Self } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors, NgControl, FormsModule } from '@angular/forms';
 import { Option } from '../../../../core/models/option.model';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-select-field',
@@ -21,8 +22,8 @@ import { CommonModule } from '@angular/common';
     }
   ]
 })
-export class SelectComponent
-  implements ControlValueAccessor, Validator {
+
+export class SelectComponent implements ControlValueAccessor, Validator {
 
   // =========================
   // INPUTS
@@ -34,7 +35,7 @@ export class SelectComponent
   @Input() submitted = false;
   @Input() required = false;
   @Input() disabled = false;
-
+  @Input() control?: NgModel;
   // =========================
   // VALUE
   // =========================
@@ -76,19 +77,25 @@ export class SelectComponent
     this.onTouched();
   }
 
+  handleBlur(): void {
+    this.touched = true;
+    this.onTouched();
+  }
   // =========================
   // VALIDATION
   // =========================
-
-  validate( control: AbstractControl ): ValidationErrors | null {
-    if (
-      this.required &&
-      !control.value
-    ) {
-      return {
-        required: true
-      };
+  validate(control: AbstractControl): ValidationErrors | null {
+    if (this.required && !control.value) {
+      return { required: true };
     }
+
     return null;
+  }
+
+  get showError() {
+    return !!(
+      this.control?.invalid &&
+      (this.control?.touched || this.submitted)
+    );
   }
 }

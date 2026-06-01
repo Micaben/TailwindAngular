@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import { LabelDirective } from '../../../shared/directives/label.directive';
 import { InputFieldComponent } from '../form/input/input-field.component';
 import { ModalComponent } from '../ui/modal/modal.component';
 import { AutoFocusFirstDirective } from '../../directives/autofocus';
@@ -17,6 +18,7 @@ import { Vendedor } from './vendedor.model';
   templateUrl: './vendedor.component.html',
   imports: [
     FormsModule,
+    LabelDirective,
     CrudTableComponent,
     ModalComponent,
     SwitchToggleComponent,

@@ -18,7 +18,7 @@
         <div class="space-y-5">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
             <div class="md:col-span-1">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Código
               </label>
               <app-input-field [ngModel]="state().selected.codigo ?? ''" (ngModelChange)="updateField('codigo', $event)" name="codigo"
@@ -27,7 +27,7 @@
             </div>
 
             <div class="md:col-span-3">
-              <label class="mb-2 block text-sm font-medium">
+              <label appLabel>
                 Descripción
               </label>
               <app-input-field [ngModel]="state().selected.descripcion ?? ''" (ngModelChange)="updateField('descripcion', $event)"
