@@ -1,0 +1,141 @@
+@if (state?.isOpen) {
+<app-modal [isOpen]="state.isOpen" (close)="close.emit()" className="w-full max-w-4xl p-4">
+  <div appAutoFocusFirst [focusTrigger]="focusCounter"
+    class="no-scrollbar relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
+    <div class="px-2">
+      <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+        Productos
+      </h4>
+
+      <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+        Ingresa o cambia los datos para tener la información actualizada.
+      </p>
+
+      <form class="flex flex-col flex-1 overflow-hidden" #form="ngForm" (ngSubmit)="save.emit(form)">
+        <div class="space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="md:col-span-1">
+              <label appLabel>Naturaleza</label>
+              <app-select-field [options]="naturalezaOptions" [ngModel]="selectedSafe.naturaleza"
+                (ngModelChange)="update('naturaleza', $event)" name="naturaleza" [required]="true"
+                #naturaleza="ngModel" [control]="naturaleza">
+              </app-select-field>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel>Linea</label>
+              <app-select-field [options]="lineaOptions" [ngModel]="selectedSafe.linea" (ngModelChange)="onLineaChange($event)"
+                 name="linea" [required]="true" #linea="ngModel"  [control]="linea">
+              </app-select-field>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel>Sublinea</label>
+              <app-select-field [options]="sublineaOptions" [ngModel]="selectedSafe.sublinea"
+                (ngModelChange)="update('sublinea', $event)" name="sublinea" [required]="true" #sublinea="ngModel"
+                [control]="sublinea">
+              </app-select-field>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel>Codigo</label>
+              <app-input-field [ngModel]="selectedSafe.codigo" (ngModelChange)="update('codigo', $event)" name="codigo"
+                [submitted]="submitted">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-2">
+              <label appLabel> Descripcion </label>
+              <app-input-field [ngModel]="selectedSafe.descripcion" (ngModelChange)="update('descripcion', $event)"
+                name="descripcion " [submitted]="submitted">
+              </app-input-field>
+            </div>
+
+            <div>
+              <label appLabel> Unidad de Medida </label>
+              <app-select-field [options]="unidadmedidaOptions" [ngModel]="selectedSafe.unidad_medida"
+                (ngModelChange)="update('unidad_medida', $event)" name="unidad_medida" [required]="true"
+                #unidad_medida="ngModel" [control]="unidad_medida">
+              </app-select-field>
+            </div>
+
+            <div>
+              <label appLabel> Color </label>
+              <app-select-field [options]="colorOptions" [ngModel]="selectedSafe.color"
+                (ngModelChange)="update('color', $event)" name="color" [required]="true"
+                #color="ngModel" [control]="color">
+              </app-select-field>
+            </div>
+            <div>
+              <label appLabel> Peso (KG)</label>
+              <app-input-field [ngModel]="selectedSafe.peso" (ngModelChange)="update('peso', $event)" name="peso"
+                [submitted]="submitted" [required]="true">
+              </app-input-field>
+            </div>
+            <div>
+              <label appLabel> Código de barras </label>
+              <app-input-field [ngModel]="selectedSafe.codigo_barras" (ngModelChange)="update('codigo_barras', $event)"
+                name="codigo_barras" [submitted]="submitted" [onlyNumbers]="true">
+              </app-input-field>
+            </div>
+
+
+            <div class="md:col-span-1">
+              <label appLabel>Numero de lote </label>
+              <app-input-field [ngModel]="selectedSafe.numero_lote" (ngModelChange)="update('numero_lote', $event)"
+                name="numero_lote" [submitted]="submitted">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel> Código SUNAT </label>
+              <app-input-field [ngModel]="selectedSafe.codigo_sunat" (ngModelChange)="update('codigo_sunat', $event)"
+                name="codigo_sunat" [submitted]="submitted">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel> Marca </label>
+              <app-input-field [ngModel]="selectedSafe.marca" (ngModelChange)="update('marca', $event)" name="marca"
+                [submitted]="submitted">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel> Procedencia </label>
+              <app-input-field [ngModel]="selectedSafe.procedencia" (ngModelChange)="update('procedencia', $event)"
+                name="procedencia" [submitted]="submitted">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-2">
+              <label appLabel> Proveedor </label>
+              <app-select-field [options]="proveedorOptions" [ngModel]="selectedSafe.proveedor"
+                 (ngModelChange)="onProveedorChange($event)" name="proveedor" [required]="true" #proveedor="ngModel"
+                [control]="proveedor">
+              </app-select-field>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel> RUC </label>
+              <app-input-field [ngModel]="selectedSafe.proveedor" name="proveedor" [submitted]="submitted" [readonly]="true" >
+              </app-input-field>
+            </div>
+            <!-- CHECKBOX -->
+            <div class="md:col-span-1">
+              <label appLabel>
+                Estado
+              </label>
+              <app-switch-toggle [ngModel]="selectedSafe.estado" (ngModelChange)="update('estado', $event)"
+                [ngModelOptions]="{standalone:true}" name="estado" label="Activo">
+              </app-switch-toggle>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel>
+                Afecto
+              </label>
+              <app-switch-toggle [ngModel]="selectedSafe.afecto" (ngModelChange)="update('afecto', $event)"
+                [ngModelOptions]="{standalone:true}" name="afecto" label="Activo">
+              </app-switch-toggle>
+            </div>
+          </div>
+        </div>
+        <app-modal-footer [showNewButton]="true" closeText="Cerrar" saveText="Guardar" (create)="onCreate()"
+          (close)="close.emit()">
+        </app-modal-footer>
+      </form>
+    </div>
+  </div>
+</app-modal>
+}

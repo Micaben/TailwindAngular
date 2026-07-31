@@ -1,0 +1,26 @@
+<app-modal [isOpen]="isOpen" (close)="close.emit()" className="max-w-6xl">
+
+    <div class="p-5">
+        <h2 class="text-xl font-semibold mb-4">
+            {{title}}
+        </h2>
+
+        <div class="grid grid-cols-3 gap-4 mb-4">
+            <app-input-field name="textoBusqueda" [(ngModel)]="textoBusqueda" (keyup)="emitBuscar()"
+                placeholder="Buscar..." name="textoBusqueda">
+            </app-input-field>
+
+            <app-select-field [options]="mesOptions" [(ngModel)]="mesSeleccionado" (ngModelChange)="emitBuscar()">
+            </app-select-field>
+
+            <app-select-field [options]="anioOptions" [(ngModel)]="anioSeleccionado" (ngModelChange)="emitBuscar()">
+            </app-select-field>
+
+        </div>
+
+        <app-crud-table [columns]="columns" [data]="data" [showSearch]="false" [showBreadcrumb]="false"
+            [showCreateButton]="false" (edit)="select.emit($event)">
+        </app-crud-table>
+    </div>
+
+</app-modal>

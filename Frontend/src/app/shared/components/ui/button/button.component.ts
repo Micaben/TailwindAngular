@@ -24,6 +24,7 @@ export class ButtonComponent {
   @Input() className = '';
   @Input() startIcon = '';
   @Input() endIcon?: string;
+  @Input() loading = false;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Output() btnClick = new EventEmitter<Event>();
 
@@ -43,8 +44,17 @@ export class ButtonComponent {
     return this.disabled ? 'cursor-not-allowed opacity-50' : '';
   }
 
+  get animationClasses(): string {
+    return `
+    transition-all
+    duration-200
+    active:scale-95
+    hover:shadow-lg
+  `;
+  }
+
   onClick(event: Event) {
-    if (!this.disabled) {
+    if (!this.disabled && !this.loading) {
       this.btnClick.emit(event);
     }
   }

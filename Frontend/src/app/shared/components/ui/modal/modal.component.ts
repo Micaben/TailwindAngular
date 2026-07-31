@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { IconComponent } from '../../icons/icon.component';
 
 @Component({
   selector: 'app-modal',
   imports: [
-    CommonModule,
+    CommonModule, IconComponent
   ],
   templateUrl: './modal.component.html',
   styles: ``
@@ -17,7 +18,7 @@ export class ModalComponent {
   @Input() showCloseButton = true;
   @Input() isFullscreen = false;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) { }
 
   ngOnInit() {
     if (this.isOpen) {
@@ -43,7 +44,7 @@ export class ModalComponent {
     event.stopPropagation();
   }
 
- @HostListener('document:keydown.escape')
+  @HostListener('document:keydown.escape')
   onEscape() {
     if (this.isOpen) {
       this.close.emit();

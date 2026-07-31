@@ -1,42 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import { Clientes } from '../models/clientes.model';
+import { Clientes } from '../../pages/clientes/clientes.model';
+import { BaseCrudService } from '../../shared/components/base/services/base_crud.service';
+import { API } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class ClientesService {
-
-  private API_URL = 'http://localhost:3000';
-  constructor(private http: HttpClient) { }
-
-  obtenerClientes() {
-      return firstValueFrom(
-        this.http.get<Clientes[]>(
-          `${this.API_URL}/clientes`
-        )
-      );
-    }
-
-  crearClientes(data: any) {
-    return this.http.post(
-      'http://localhost:3000/clientes',
-      data
-    );
-  }
-
-  actualizarClientes(id: number, data: any) {
-    return this.http.put(
-      `http://localhost:3000/clientes/${id}`,
-      data
-    );
-  }
+export class ClientesService
+  extends BaseCrudService<Clientes> {
+  protected override endpoint = API.clientes;
 
   toggleEstado(id: number) {
     return this.http.put(
-      `http://localhost:3000/clientes/toggle-estado/${id}`,
+      `${this.endpoint}/toggle-estado/${id}`,
       {}
     );
   }

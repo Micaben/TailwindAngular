@@ -19,7 +19,7 @@ router.post('/documentos', async (req, res) => {
       [ codigo, descripcion]
     );
     res.json({
-      message: 'documentos creada',
+      message: 'documentos creado exitosamente',
       data: result.rows[0]
     });
 

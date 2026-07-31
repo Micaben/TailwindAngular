@@ -2,24 +2,24 @@ import { Routes } from '@angular/router';
 import { EcommerceComponent } from './pages/dashboard/ecommerce/ecommerce.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { FormElementsComponent } from './pages/forms/form-elements/form-elements.component';
-import { NaturalezaComponent } from './shared/components/naturaleza/naturaleza.component';
-import { LineaComponent } from './shared/components/linea/linea.component';
-import { SublineaComponent } from './shared/components/sublinea/sublinea.component';
-import { UnidadMedidaComponent } from './shared/components/unidadmedida/unidadmedida.component';
-import { ColorComponent } from './shared/components/color/color.component';
-import { ProductosComponent } from './shared/components/productos/productos.component';
+import { NaturalezaPage } from './pages//naturaleza/naturaleza.page';
+import { LineaPage } from './pages/linea/linea.page';
+import { SublineaPage } from './pages/sublinea/sublinea.page';
+import { UnidadmedidaPage } from './pages/unidadmedida/unidadmedida.page';
+import { ColorPage } from './pages/color/color.page';
+import { ProductosPage } from './pages/productos/productos.page';
 import { AlmacenPage } from './pages/almacen/almacen.page';
-import { IngresosComponent } from './shared/components/almacen/ingresos.component';
-import { Empresa_transporteComponent } from './shared/components/empresa_transporte/empresa_transporte.component';
-import { ClientesComponent } from './shared/components/clientes/clientes.component';
-import { ProveedoresComponent } from './shared/components/proveedores/proveedores.component';
-import { VendedorComponent } from './shared/components/vendedor/vendedor.component';
-import { TransportistaComponent } from './shared/components/transportista/transportista.component';
-import { CondicionComponent } from './shared/components/condicion/condicion.component';
-import { ConceptoComponent } from './shared/components/concepto/concepto.component';
-import { DocumentosComponent } from './shared/components/documentos/documentos.component';
-import { SeriesComponent } from './shared/components/series/series.component';
-import { TipocambioComponent } from './shared/components/tipocambio/tipocambio.component';
+import { IngresosPage } from './pages/ingresos/ingresos.page';
+import { EmpresatransportePage } from './pages/empresatransporte/empresatransporte.page';
+import { ClientesPage } from './pages/clientes/clientes.page';
+import { ProveedoresPage } from './pages/proveedores/proveedores.page';
+import { VendedorPage } from './pages/vendedor/vendedor.page';
+import { TransportistaPage } from './pages/transportista/transportista.page';
+import { CondicionventaPage } from './pages/condicionventa/condicionventa.page';
+import { ConceptoventaPage } from './pages/conceptoventa/conceptoventa.page';
+import { DocumentosPage } from './pages/documentos/documentos.page';
+import { SeriesPage } from './pages/series/series.page';
+import { TipocambioPage } from './pages/tipocambio/tipocambio.page';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
 import { BadgesComponent } from './pages/ui-elements/badges/badges.component';
@@ -46,88 +46,88 @@ export const routes: Routes = [
       },
       {
         path: 'empresa_transporte',
-        component: Empresa_transporteComponent,
+        component: EmpresatransportePage,
         title: 'Angular Almacenes Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'transportista',
-        component: TransportistaComponent,
+        component: TransportistaPage,
         title: 'Angular Almacenes Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'naturaleza',
-        component: NaturalezaComponent,
+        component: NaturalezaPage,
         title: 'Angular Naturaleza Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'linea',
-        component: LineaComponent,
+        component: LineaPage,
         title: 'Angular Linea Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'sublinea',
-        component: SublineaComponent,
+        component: SublineaPage,
         title: 'Angular Naturaleza Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'unidadmedida',
-        component: UnidadMedidaComponent,
+        component: UnidadmedidaPage,
         title: 'Angular Unidad de Medida Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'color',
-        component: ColorComponent,
+        component: ColorPage,
         title: 'Angular Color Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'productos',
-        component: ProductosComponent,
+        component: ProductosPage,
         title: 'Angular Productos Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'clientes',
-        component: ClientesComponent,
+        component: ClientesPage,
         title: 'Angular Clientes Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'proveedores',
-        component: ProveedoresComponent,
+        component: ProveedoresPage,
         title: 'Angular Proveedores Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'vendedor',
-        component: VendedorComponent,
+        component: VendedorPage,
         title: 'Angular Vendedor Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'condicion',
-        component: CondicionComponent,
+        component: CondicionventaPage,
         title: 'Angular Condicion Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'concepto',
-        component: ConceptoComponent,
+        component: ConceptoventaPage,
         title: 'Angular Concepto Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'documentos',
-        component: DocumentosComponent,
+        component: DocumentosPage,
         title: 'Angular Documentos Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'series',
-        component: SeriesComponent,
+        component: SeriesPage,
         title: 'Angular Series Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'tipocambio',
-        component: TipocambioComponent,
+        component: TipocambioPage,
         title: 'Angular Tipo cambio Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'ingresos',
-        component: IngresosComponent,
-        title: 'Angular Documentos Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        component: IngresosPage,
+        title: 'Angular Ingresos Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'dashboard',

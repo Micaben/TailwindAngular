@@ -1,0 +1,7 @@
+<app-crud-table [columns]="tableColumns" [title]="'Series'" [data]="filteredItems()" (search)="setSearch($event)" (create)="openCreate()"
+  (edit)="openEdit($event)">
+</app-crud-table>
+
+<app-series-form-model [state]="state()" [submitted]="submitted()" [comprobanteOptions]="comprobanteOptions" (create)="openCreate()" (save)="save($event)"
+  (close)="closeModal()">
+</app-series-form-model>

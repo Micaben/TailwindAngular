@@ -1,0 +1,64 @@
+<div class="flex justify-between items-center mb-3">
+
+    <button
+        type="button"       
+        (click)="addRow.emit()">
+
+        [ Agregar producto ]
+
+    </button>
+
+</div>
+<table class="min-w-full table-auto">
+  <thead>
+    <tr>
+      <th class="w-12"></th>
+      <th class="w-12"></th>
+      <th class="w-12 text-center">It</th>
+      @for(col of columns; track col.field){
+      <th class="text-center">
+        {{ col.header }}
+      </th>
+      }
+    </tr>
+  </thead>
+
+  <tbody>
+
+    @for(item of data; track $index){
+    <tr>
+
+      <td>
+        <button type="button" (click)="selectProduct($index)">
+          <app-icon name="search"></app-icon>
+        </button>
+      </td>
+
+      <td>
+        <button type="button" (click)="deleteRow($index)">
+          <app-icon name="trash"></app-icon>
+        </button>
+      </td>
+      <td class="text-center">
+        {{ $index + 1 }}
+      </td>
+      @for(col of columns; track col.field){
+      <td class="text-center">
+        @if(col.field === 'cantidad') {
+        <app-input-field type="text" min="1" [decimalOnly]="true" [step]="0.01" [ngModel]="item.cantidad"
+          (ngModelChange)="updateCantidad(item, $event)" widthClass="w-40"></app-input-field>
+        } @else if(col.field === 'precio') {
+        <app-input-field type="text" [step]="0.01" [decimalOnly]="true" [ngModel]="item.precio"
+          (ngModelChange)="updatePrecio(item, $event)" widthClass="w-40">
+        </app-input-field>
+        } @else if(col.field === 'total') {
+        {{ item.total | number:'1.2-2' }}
+        } @else {
+        {{ item[col.field] }}
+        }
+      </td>
+      }
+    </tr>
+    }
+  </tbody>
+</table>

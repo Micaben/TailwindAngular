@@ -7,7 +7,8 @@ router.get('/productos', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT * FROM productos'
+      `SELECT p.codigo, p.descripcion, l.descripcion as linea, s.descripcion as sublinea, p.unidad_medida
+       FROM productos p left join linea l on l.codigo=p.linea left join sublinea s on s.codigo=p.sublinea`
     );
     res.json(result.rows);
 
@@ -18,6 +19,24 @@ router.get('/productos', async (req, res) => {
     });
   }
 
+});
+
+router.get('/productos/consultastock', async (req, res) => {
+
+  try {
+    const result = await pool.query(
+      `SELECT p.codigo, p.descripcion, p.unidad_medida, c.descripcion as color, p.peso, s.stock_disponible
+       FROM productos p left join stock_productos s on p.codigo=s.producto
+       left join color c on c.codigo=p.color`
+    );
+    res.json(result.rows);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Error productos'
+    });
+  }
 });
 
 router.post('/productos', async (req, res) => {
@@ -94,7 +113,7 @@ router.put('/productos/toggle-estado/:id', async (req, res) => {
 });
 
 router.put('/productos/:id', async (req, res) => {
-  const  id  = Number(req.params.id);
+  const id = Number(req.params.id);
   const { naturaleza, linea, sublinea, codigo, descripcion, unidad_medida, color, peso, codigo_barras, numero_serie, numero_lote, codigo_sunat, codigo_gtin, principio, marca, procedencia, fecha_vencimiento, proveedor, estado } = req.body;
   try {
     await pool.query(

@@ -12,7 +12,7 @@ export class FooterComponent {
     @Input() showNewButton: boolean = true;
     @Input() closeText: string = 'Cerrar';
     @Input() saveText: string = 'Guardar';
-
+    @Input() loading = false;
     // OUTPUTS
     @Output() close = new EventEmitter<void>();
     @Output() create = new EventEmitter<void>();

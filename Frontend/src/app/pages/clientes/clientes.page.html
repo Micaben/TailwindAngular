@@ -1,0 +1,9 @@
+<app-crud-table [columns]="tableColumns" [title]="'Clientes'" [data]="filteredItems()" (search)="setSearch($event)"
+  (create)="openCreate()" (edit)="openEdit($event)">
+</app-crud-table>
+
+<app-clientes-form-model [state]="state()" [submitted]="submitted()" (create)="openCreate()" (save)="save($event)"
+  (close)="closeModal()" [tipoDocumentoOptions]="tipoDocumentoOptions" [tipoPersonaOptions]="tipoPersonaOptions"
+  [monedaOptions]="monedaOptions" [vendedorOptions]="vendedorOptions" [condicionVentaOptions]="condicionVentaOptions">
+</app-clientes-form-model>
+

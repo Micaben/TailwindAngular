@@ -7,7 +7,7 @@ router.get('/proveedor', async (req, res) => {
     const result = await pool.query('SELECT * FROM proveedores order by ruc asc');
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: 'Error proveedores' });
+    res.status(500).json({ message: 'Error cargando' });
   }
 });
 
@@ -62,7 +62,7 @@ router.put('/proveedor/:id', async (req, res) => {
     );
 
     res.json({
-      message: 'Producto actualizado'
+      message: 'Registro actualizado'
     });
   } catch (error) {
     console.error(error);

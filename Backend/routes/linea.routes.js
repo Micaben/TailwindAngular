@@ -51,11 +51,7 @@ router.put('/linea/:id', async (req, res) => {
 
   try {
     await pool.query(
-      `
-      UPDATE linea
-      SET descripcion = $1
-      WHERE id = $2
-      `,
+      ` UPDATE linea SET descripcion = $1  WHERE id = $2`,
       [descripcion, id]
     );
 
@@ -68,6 +64,5 @@ router.put('/linea/:id', async (req, res) => {
       message: 'Error actualizando'
     });
   }
-
 });
 module.exports = router;

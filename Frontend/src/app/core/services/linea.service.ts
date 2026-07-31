@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Modelobase } from '../../core/models/modelobase.model';
-import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
+import { BaseCrudService } from '../../shared/components/base/services/base_crud.service';
+import { API } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,5 @@ import { BaseCrudService } from '../../shared/components/base_crud_component/bas
 export class LineaService
   extends BaseCrudService<Modelobase> {
 
-  protected override endpoint =
-    'http://localhost:3000/linea';
+  protected override endpoint = API.linea;
 }

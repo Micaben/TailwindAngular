@@ -1,0 +1,3 @@
+<app-crud-table [title]="'Clientes'" [columns]="tableColumns" [data]="clienteFiltered" [mode]="'select'"
+    (search)="searchClientes($event)" (select)="selectCliente($event)">
+</app-crud-table>

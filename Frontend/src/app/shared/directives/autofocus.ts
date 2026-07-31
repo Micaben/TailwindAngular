@@ -1,18 +1,35 @@
-import {  Directive,  ElementRef,  AfterViewInit} from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  AfterViewInit,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 
 @Directive({
   selector: '[appAutoFocusFirst]',
   standalone: true
 })
 export class AutoFocusFirstDirective
-  implements AfterViewInit {
+  implements AfterViewInit, OnChanges {
 
-  constructor(private el: ElementRef) { }
+  @Input() focusTrigger: any;
 
-  ngAfterViewInit(): void {
+  constructor(private el: ElementRef) {}
 
+  ngAfterViewInit() {
+    this.focusFirst();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['focusTrigger']) {
+      this.focusFirst();
+    }
+  }
+
+  private focusFirst() {
     setTimeout(() => {
-
       const controls =
         this.el.nativeElement.querySelectorAll(
           'input, select, textarea'
@@ -25,10 +42,7 @@ export class AutoFocusFirstDirective
           control.offsetParent !== null
       ) as HTMLElement;
 
-      if (firstAvailable) {
-        firstAvailable.focus();
-      }
-
-    }, 0);
+      firstAvailable?.focus();
+    });
   }
 }

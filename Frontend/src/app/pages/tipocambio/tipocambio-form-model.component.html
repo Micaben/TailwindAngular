@@ -1,0 +1,44 @@
+@if (state?.isOpen) {
+<app-modal [isOpen]="state.isOpen" (close)="close.emit()" className="w-full max-w-4xl p-4">
+  <div appAutoFocusFirst [focusTrigger]="focusCounter"
+    class="no-scrollbar relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
+    <div class="px-2">
+      <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+        Tipo de Cambio
+      </h4>
+
+      <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+        Ingresa o cambia los datos para tener la información actualizada.
+      </p>
+
+      <form class="flex flex-col flex-1 overflow-hidden" #form="ngForm" (ngSubmit)="save.emit(form)">
+        <div class="space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="md:col-span-1">
+              <label appLabel>Fecha</label>
+              <app-input-field type="date" [ngModel]="selectedSafe.fecha" (ngModelChange)="update('fecha', $event)" name="fecha"
+                 [submitted]="submitted" [required]="true" >
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel>Compra</label>
+              <app-input-field [step]="0.01" [decimalOnly]="true" [ngModel]="selectedSafe.compra" (ngModelChange)="update('compra', $event)"
+                [minLength]="2" [maxLength]="5" name="compra" [submitted]="submitted" [required]="true">
+              </app-input-field>
+            </div>
+            <div class="md:col-span-1">
+              <label appLabel>Venta</label>
+              <app-input-field [step]="0.01" [decimalOnly]="true" [ngModel]="selectedSafe.venta" (ngModelChange)="update('venta', $event)"
+                name="venta" [submitted]="submitted" [required]="true">
+              </app-input-field>
+            </div>            
+          </div>
+        </div>
+        <app-modal-footer [showNewButton]="true" closeText="Cerrar" saveText="Guardar"  (create)="onCreate()"
+          (close)="close.emit()">
+        </app-modal-footer>
+      </form>
+    </div>
+  </div>
+</app-modal>
+}

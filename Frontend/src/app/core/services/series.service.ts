@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Serie } from '../../shared/components/series/serie.model';
-import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
+import { Series } from '../../pages/series/series.model';
+import { BaseCrudService } from '../../shared/components/base/services/base_crud.service';
+import { API } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeriesService
-  extends BaseCrudService<Serie> {
+  extends BaseCrudService<Series> {
 
-  protected override endpoint =
-    'http://localhost:3000/series';
+  protected override endpoint = API.series;
 
 }

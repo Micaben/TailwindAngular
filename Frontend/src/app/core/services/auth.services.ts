@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { LoginRequest, LoginResponse } from '../models/auth.model';
+import { API } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root'
@@ -10,20 +12,18 @@ export class AuthService {
 
   private TOKEN_KEY = 'token';
   private USER_KEY = 'user';
-  private API_URL = 'http://localhost:3000';
-
   constructor(private http: HttpClient) { }
 
   // LOGIN
-  login(data: any): Observable<any> {
-
-    return this.http.post<any>(`${this.API_URL}/login`, data).pipe(
-
+  login(data: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(
+      API.login,
+      data
+    ).pipe(
       tap(res => {
         localStorage.setItem(this.TOKEN_KEY, res.token);
         localStorage.setItem(this.USER_KEY, JSON.stringify(res.user));
       })
-
     );
   }
 
@@ -41,9 +41,17 @@ export class AuthService {
     return null;
   }
 
-  // está logueado?
+  // verificar si esta logueado?
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
+  logout() {
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USER_KEY);
+  }
+
+  getUserName() {
+    return this.getUser()?.nombre;
+  }
 }

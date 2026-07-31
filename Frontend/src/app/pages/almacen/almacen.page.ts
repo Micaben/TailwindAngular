@@ -1,11 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CrudTableComponent } from '../../shared/components/tabla/crud-table.component';
+import { CrudTableComponent } from '../../shared/components/tables/crud-table/crud-table.component';
 import { AlmacenesService } from '../../core/services/almacenes.services';
-import { Almacen } from '../../shared/components/almacenes/almacen.model'
-import { ALMACENES_TABLE_COLUMNS } from '../../shared/components/tabla/almacenes_table_config';
-import { BaseCrudComponent } from '../../shared/components/base_crud_component/base_crud.component';
-import { AlmacenFormModalComponent } from '../../shared/components/almacenes/almacen-form-modal.component';
-import { AutoFocusFirstDirective } from '../../shared/directives/autofocus';
+import { Almacen } from './almacen.model'
+import { ALMACENES_TABLE_COLUMNS } from './almacenes_table_config';
+import { BaseCrudComponent } from '../../shared/components/base/components/base_crud.component';
+import { AlmacenFormModelComponent } from './almacen-form-model.component';
 
 @Component({
   selector: 'app-almacen-page',
@@ -13,8 +12,8 @@ import { AutoFocusFirstDirective } from '../../shared/directives/autofocus';
   templateUrl: './almacen.page.html',
   imports: [
     CrudTableComponent,
-    AlmacenFormModalComponent,
-    AutoFocusFirstDirective
+    AlmacenFormModelComponent,
+
   ]
 })
 export class AlmacenPage extends BaseCrudComponent<Almacen> {

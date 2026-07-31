@@ -1,0 +1,23 @@
+<div class="flex flex-wrap gap-3">
+
+  <app-button (click)="new.emit()" startIcon="plus"> <!-- [disabled]="loading" PARA DESABILITAR EL BTON CUANDO ESTE GUARDANDO-->
+    Nuevo
+  </app-button>
+
+  <app-button (click)="search.emit()" startIcon="search">
+    Buscar
+  </app-button>
+
+  <app-button (click)="save.emit()" startIcon="check"  [loading]="loading" >
+    Guardar
+  </app-button>
+
+  <app-button (click)="print.emit()" startIcon="print">
+    Imprimir
+  </app-button>
+
+  <app-button (click)="print.emit()" startIcon="close">
+    Anular
+  </app-button>
+
+</div>

@@ -29,7 +29,9 @@ import { FormsModule } from '@angular/forms';
         [placeholder]="placeholder"
         [value]="value"
         [disabled]="disabled"
+        [readonly]="readonly"
         [step]="step"
+        [min]="min"
         [attr.pattern]="pattern"
         [attr.maxlength]="maxLength"
         [attr.minlength]="minLength"
@@ -41,7 +43,7 @@ import { FormsModule } from '@angular/forms';
         [class.border-gray-300]="!shouldShowError"       
       />
 
-      @if (shouldShowError) {
+      @if (shouldShowError  && !grouped) {
         <p class="text-xs text-red-500 mt-1">
           {{ errorMessage }}
         </p>
@@ -58,7 +60,9 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   @Input() placeholder?: string = '';
   @Input() min?: string;
   @Input() max?: string;
+  @Input() grouped = false;
   @Input() step?: number;
+  @Input() widthClass = 'w-full';
   @Input() disabled: boolean = false;
   @Input() success: boolean = false;
   @Input() error: boolean = false;
@@ -72,6 +76,9 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   @Input() decimalOnly = false;
   @Input() minLength?: number;
   @Input() icon?: string;
+  @Input() readonly: boolean = false;
+  @Input() autocomplete?: string;
+  @Input() tabindex?: number;
   @Input() onlyNumbers: boolean = false;
   touched = false;
   onChange: any = () => { };
@@ -86,11 +93,11 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
       return { required: true };
     }
 
-    if (this.minLength && value?.length < this.minLength) {
+    if (this.minLength && value && value.length < this.minLength) {
       return {
         minlength: {
           requiredLength: this.minLength,
-          actualLength: value?.length || 0
+          actualLength: value?.length
         }
       };
     }
@@ -118,14 +125,20 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
 
   onValidatorChange: any = () => { };
   writeValue(value: any): void {
-    this.value = value;
+    this.value = value ?? '';
     this.touched = false;
   }
 
-  openPicker(event: any) {
-    if (event.target.showPicker) {
-      event.target.showPicker();
+  openPicker(event: Event) {
+    if (
+      this.readonly ||
+      this.disabled ||
+      this.type !== 'date'
+    ) {
+      return;
     }
+    const input = event.target as HTMLInputElement;
+    input.showPicker?.();
   }
 
   registerOnChange(fn: any): void {
@@ -145,7 +158,13 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   }
 
   get inputClasses(): string {
-    let inputClasses = `h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 ${this.className}`;
+    let inputClasses = this.grouped
+      ? `h-11 ${this.widthClass} border-0 rounded-none shadow-none
+       appearance-none px-4 py-2.5 text-sm
+       focus:outline-hidden focus:ring-0 ${this.className}`
+      : `h-11 ${this.widthClass} rounded-lg border appearance-none px-4 py-2.5
+       text-sm shadow-theme-xs
+       focus:outline-hidden focus:ring-3 ${this.className}`;
     if (this.disabled) {
       inputClasses += ` text-gray-500 border-gray-300 opacity-40 bg-gray-100 cursor-not-allowed dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700 opacity-40`;
     } else if (this.error) {
@@ -186,13 +205,23 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
 
     this.value = value;
     (event.target as HTMLInputElement).value = value;
-    this.onChange(value);
 
-    if (this.type === 'number' && value !== '') {
-      this.onChange(Number(value));
+    if (this.type === 'number') {
+
+      if (
+        value === '' ||
+        value.endsWith('.')
+      ) {
+        this.onChange(value);
+      } else {
+        this.onChange(Number(value));
+      }
+
     } else {
       this.onChange(value);
     }
+
+
   }
 
   onBlur() {
@@ -207,6 +236,7 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
 
     const hasMinLengthError =
       this.minLength !== undefined &&
+      value !== '' &&
       value.length < this.minLength;
 
     const hasMaxLengthError =
@@ -240,7 +270,7 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
       return 'Este campo es obligatorio';
     }
 
-    if (this.minLength && this.value?.length < this.minLength) {
+    if (this.minLength && this.value && this.value.length < this.minLength) {
       return `Debe tener mínimo ${this.minLength} caracteres`;
     }
 

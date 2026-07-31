@@ -1,0 +1,3 @@
+<app-crud-table [title]="'Productos'" [columns]="tableColumns" [data]="productosFiltered" [mode]="'select'"
+    (search)="searchProductos($event)"  (select)="selectProducto($event)">
+</app-crud-table>

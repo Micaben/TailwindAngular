@@ -1,0 +1,32 @@
+<app-ingresos-form-model [state]="state()" [submitted]="submitted()" [selected]="selected()"
+    (serieChange)="onSerieChange($event)" [serieOptions]="serieOptions" [monedaOptions]="monedaOptions"
+    [almacenOptions]="almacenOptions" [tipoOperacionOptions]="tipoOperacionOptions"
+    [documentoReferenciaOptions]="documentoReferenciaOptions" [subtotal]="subtotal" [igv]="igv" [total]="total">
+
+    <div toolbar>
+        <app-document-toolbar [state]="state()" (create)="openCreate()" (new)="nuevoDocumento()" (save)="guardarDocumento()"
+            (search)="buscarDocumento()" (print)="imprimirDocumento()" [loading]="loadingGuardar">
+        </app-document-toolbar>
+    </div>
+
+    <div detail-table class="overflow-x-auto">
+        <app-detail-table [columns]="detailColumns" [data]="detalleItems" (remove)="deleteDetail($event)"
+            (searchProduct)="openProductosModal($event)" (cantidadChange)="updateCantidad($event)"
+            (precioChange)="updatePrecio($event)" (addRow)="agregarProducto()">
+        </app-detail-table>
+    </div>
+</app-ingresos-form-model>
+
+@if(showProductosModal){
+<app-modal [isOpen]="showProductosModal" (close)="showProductosModal = false" className="max-w-5xl mx-4">
+    <div class="max-h-[75vh] overflow-y-auto p-6">
+        <app-productos-selector (close)="showProductosModal = false" (select)="selectProducto($event)">
+        </app-productos-selector>
+    </div>
+</app-modal>
+}
+
+<app-document-search [isOpen]="showBuscarModal" [title]="'Buscar ingresos'" [columns]="searchColumns"
+    [data]="documentos" (buscar)="buscarIngresos($event)" (select)="abrirDocumento($event)"
+    (close)="showBuscarModal=false">
+</app-document-search>

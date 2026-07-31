@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Tipocambio } from '../../shared/components/tipocambio/tipocambio.model';
-import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
+import { Tipocambio } from '../../pages/tipocambio/tipocambio.model';
+import { BaseCrudService } from '../../shared/components/base/services/base_crud.service';
+import { Observable } from 'rxjs';
+import { API } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +10,22 @@ import { BaseCrudService } from '../../shared/components/base_crud_component/bas
 export class TipocambioService
   extends BaseCrudService<Tipocambio> {
 
-  protected override endpoint =
-    'http://localhost:3000/tipocambio';
+  protected override endpoint = API.tipocambio;
+
+  getByPeriodo(
+    mes?: string,
+    anio?: string
+  ): Observable<Tipocambio[]> {
+
+    return this.http.get<Tipocambio[]>(
+      this.endpoint,
+      {
+        params: {
+          mes: mes ?? '',
+          anio: anio ?? ''
+        }
+      }
+    );
+
+  }
 }

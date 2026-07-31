@@ -9,12 +9,12 @@
     <!-- BOTONES DERECHA -->
     <div class="flex gap-3 justify-end">
         <!-- CERRAR -->
-        <app-button type="button" variant="outline" startIcon="close" (click)="onClose()">
+        <app-button type="button" variant="outline" startIcon="close" (click)="onClose()" [disabled]="loading">
             {{ closeText }}
         </app-button>
 
         <!-- GUARDAR -->
-        <app-button type="submit" variant="primary" startIcon="check">
+        <app-button type="submit" variant="primary"  startIcon="check" [loading]="loading">
             {{ saveText }}
         </app-button>
     </div>

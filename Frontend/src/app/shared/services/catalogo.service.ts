@@ -4,7 +4,7 @@ import { AlmacenesService } from '../../core/services/almacenes.services';
 import { DocumentosService } from '../../core/services/documentos.service';
 import { ProveedoresService } from '../../core/services/proveedores.service';
 import { IngresosService } from '../../core/services/ingresos.service';
-import { mapOptions } from '../services/select.utils';
+import { mapOptions } from '../utils/select.utils';
 import { Option } from '../../core/models/option.model';
 
 @Injectable({
@@ -53,7 +53,7 @@ export class CatalogosService {
     // =========================
     // TIPO OPERACION
     // =========================
-    async obtenerTipoOperacion(): Promise<Option[]> {
+   /* async obtenerTipoOperacion(): Promise<Option[]> {
         const data =
             await this.ingresosService.obtenerTipooperacion();
         return mapOptions(
@@ -61,12 +61,12 @@ export class CatalogosService {
             'codigo',
             'descripcion'
         );
-    }
+    }*/
 
     // =========================
     // SERIES
     // =========================
-    async obtenerSeries(): Promise<Option[]> {
+    /*async obtenerSeries(): Promise<Option[]> {
         const data =
             await this.ingresosService.obtenerSerie();
         return mapOptions(
@@ -76,20 +76,6 @@ export class CatalogosService {
             ['ultimo']
         );
     }
-
-    // =========================
-    // PROVEEDORES
-    // =========================
-    async obtenerProveedores(): Promise<Option[]> {
-        const data =
-            await this.proveedoresService.obtenerProveedor();
-        return mapOptions(
-            data,
-            'ruc',
-            'razon_social',
-            ['ruc']
-        );
-    }
-
+*/
     
 }

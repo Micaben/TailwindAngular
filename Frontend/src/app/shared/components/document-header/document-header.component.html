@@ -1,0 +1,12 @@
+<div class="grid grid-cols-14 gap-5">
+
+  @for(field of fields(); track field.key){
+
+    <app-dynamic-field
+      [field]="field"
+      [model]="model">
+    </app-dynamic-field>
+
+  }
+
+</div>

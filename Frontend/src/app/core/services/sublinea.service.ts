@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Sublinea } from '../../shared/components/sublinea/sublinea.model';
-import { BaseCrudService } from '../../shared/components/base_crud_component/base_crud.service';
+import { Sublinea } from '../../pages/sublinea/sublinea.model';
+import { BaseCrudService } from '../../shared/components/base/services/base_crud.service';
+import { API } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,5 @@ import { BaseCrudService } from '../../shared/components/base_crud_component/bas
 export class SublineaService
   extends BaseCrudService<Sublinea> {
 
-  protected override endpoint =
-    'http://localhost:3000/sublinea';
+  protected override endpoint = API.sublinea;
 }

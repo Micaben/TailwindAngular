@@ -1,0 +1,8 @@
+<app-crud-table [columns]="tableColumns" [title]="'Productos'" [data]="filteredItems()" (search)="setSearch($event)" 
+ (create)="openCreate()" (edit)="openEdit($event)">
+</app-crud-table>
+
+<app-productos-form-model [state]="state()" [submitted]="submitted()" (create)="openCreate()" (save)="save($event)"
+  (close)="closeModal()" [naturalezaOptions]="naturalezaOptions" [lineaOptions]="lineaOptions" [sublineaOptions]="sublineaOptions" [proveedorOptions]="proveedorOptions"
+  [marcaOptions]="marcaOptions" [colorOptions]="colorOptions" [unidadmedidaOptions]="unidadmedidaOptions" (lineaChanged)="onLineaChange($event)">
+  </app-productos-form-model>>

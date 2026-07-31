@@ -1,0 +1,164 @@
+<div class="rounded-2xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+  <!-- Toolbar -->
+  <div class="p-5 border-b border-gray-200">
+    <ng-content select="[toolbar]"></ng-content>
+  </div>
+  <form class="flex flex-col" #form="ngForm" (ngSubmit)="save.emit(form)">
+    <!-- BODY -->
+    <div class="p-5 lg:p-8 space-y-6">
+
+      <!-- FORMULARIO -->
+      <div appAutoFocusFirst class="no-scrollbar relative w-full max-w-6xl  grid grid-cols-1 md:grid-cols-14 gap-5">
+        <div class="md:col-span-2">
+          <label appLabel> Serie </label>
+          <app-select-field [options]="serieOptions" [ngModel]="selectedSafe.serie" [disabled]="state.modo === 'editar'"
+            (ngModelChange)="onSerieChange($event)" name="serie" [required]="true" #serie="ngModel" [control]="serie">
+          </app-select-field>
+        </div>
+        <div class="md:col-span-2">
+          <label appLabel> Numero</label>
+          <app-input-field [ngModel]="selectedSafe.numero" (ngModelChange)="update('numero', $event)" name="numero"
+            [disabled]="state.modo === 'editar'" [submitted]="submitted" [required]="true" pattern="^[0-9]*$"
+            [onlyNumbers]="true">
+          </app-input-field>
+        </div>
+        <div class="md:col-span-2">
+          <label appLabel> Fecha</label>
+          <app-input-field type="date" [(ngModel)]="selected.fecha" name="fecha"
+            (ngModelChange)="update('fecha', ($event))">
+          </app-input-field>
+        </div>
+        <div class="md:col-span-4">
+          <label appLabel> Tipo de Operación </label>
+          <app-select-field [options]="tipoOperacionOptions" [ngModel]="selectedSafe.tipo_operacion"
+            (ngModelChange)="update('tipo_operacion', $event)" name="tipo_operacion" [required]="true"
+            #tipo_operacion="ngModel" [control]="tipo_operacion">
+          </app-select-field>
+        </div>
+        <div class="md:col-span-2">
+          <label appLabel> O/Compra</label>
+          <app-input-field [ngModel]="selectedSafe.ocompra" (ngModelChange)="update('ocompra', $event)" name="ocompra"
+            [submitted]="submitted">
+          </app-input-field>
+        </div>
+        <div class="md:col-span-2">
+          <label appLabel> Moneda </label>
+          <app-select-field [options]="monedaOptions" [ngModel]="selectedSafe.moneda"
+            (ngModelChange)="update('moneda', $event)" name="moneda" [required]="true" #moneda="ngModel"
+            [control]="moneda">
+          </app-select-field>
+        </div>
+        <div class="md:col-span-3">
+          <label appLabel> RUC </label>
+          <div class="flex w-full overflow-hidden rounded-lg border shadow-theme-xs
+         focus-within:ring-3" [class.border-red-500]="proveedorInput.shouldShowError"
+            [class.border-gray-300]="!proveedorInput.shouldShowError"
+            [class.focus-within:border-red-500]="proveedorInput.shouldShowError"
+            [class.focus-within:ring-red-500/20]="proveedorInput.shouldShowError"
+            [class.focus-within:border-brand-300]="!proveedorInput.shouldShowError"
+            [class.focus-within:ring-brand-500/20]="!proveedorInput.shouldShowError">
+
+            <div class="flex-3">
+              <app-input-field #proveedorInput [grouped]="true" [ngModel]="selectedSafe.ruc" name="ruc"
+                (ngModelChange)="update('ruc', $event)" [required]="true" [submitted]="submitted" [onlyNumbers]="true"
+                [maxLength]="11" [readonly]="true">
+              </app-input-field>
+            </div>
+
+            <button type="button" class="h-11 px-4 bg-gray-50 hover:bg-gray-100
+           border-l border-gray-300
+           flex items-center justify-center" (click)="openClienteModal()">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            </button>
+          </div>
+
+          @if (proveedorInput.shouldShowError) {
+          <p class="text-xs text-red-500 mt-1">
+            {{ proveedorInput.errorMessage }}
+          </p>
+          }
+        </div>
+        <div class="md:col-span-6 relative">
+          <label appLabel> Razón Social</label>
+          <app-input-field [ngModel]="selectedSafe.razon_social" (ngModelChange)="update('razon_social', $event)"
+            name="razon_social" [submitted]="submitted" [required]="true" [readonly]="true">
+          </app-input-field>
+        </div>
+        <div class="md:col-span-2">
+          <label appLabel> Fecha de Compra </label>
+          <app-input-field type="date" [(ngModel)]="selected.fecha_compra" name="fecha_compra">
+          </app-input-field>
+        </div>
+        <div class="md:col-span-2">
+          <label appLabel> Guia de Remisión </label>
+          <app-input-field [ngModel]="selectedSafe.guia_remision" (ngModelChange)="update('guia_remision', $event)"
+            name="guia_remision" [submitted]="submitted">
+          </app-input-field>
+        </div>
+        <div class="md:col-span-3">
+          <label appLabel> Documento de Referencia </label>
+          <app-select-field [options]="documentoReferenciaOptions" [ngModel]="selectedSafe.documento_referencia"
+            (ngModelChange)="update('documento_referencia', $event)" name="documento_referencia"
+            #documento_referencia="ngModel" [control]="documento_referencia">
+          </app-select-field>
+        </div>
+        <div class="md:col-span-2">
+          <label appLabel> Serie y Numero </label>
+          <app-input-field [ngModel]="selectedSafe.serie_numero" (ngModelChange)="update('serie_numero', $event)"
+            name="serie_numero" [submitted]="submitted">
+          </app-input-field>
+        </div>
+        <div class="md:col-span-4">
+          <label appLabel> Almacen </label>
+          <app-select-field [options]="almacenOptions" [ngModel]="selectedSafe.almacen"
+            (ngModelChange)="update('almacen', $event)" name="almacen" [required]="true" #almacen="ngModel"
+            [control]="almacen">
+          </app-select-field>
+        </div>
+        <div class="md:col-span-5">
+          <label appLabel> Referencia </label>
+          <app-input-field [ngModel]="selectedSafe.referencia" (ngModelChange)="update('referencia', $event)"
+            name="referencia" [submitted]="submitted"></app-input-field>
+        </div>
+      </div>
+      
+       <!-- TABLA -->
+      <div class="p-5">
+        <ng-content select="[detail-table]"></ng-content>
+      </div>
+
+      <div class="p-5 flex justify-end">
+        <div class="w-72">
+          <div class="flex justify-between border-b py-1">
+            <span>Subtotal</span>
+            <span>{{ subtotal | number:'1.2-2' }}</span>
+          </div>
+          <div class="flex justify-between border-b py-1">
+            <span>IGV</span>
+            <span>{{ igv | number:'1.2-2' }}</span>
+          </div>
+          <div class="flex justify-between font-bold text-lg py-2">
+            <span>Total</span>
+            <span>{{ total | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </form>
+</div>
+
+@if(showClienteModal){
+<app-modal [isOpen]="showClienteModal" (close)="showClienteModal = false" className="max-w-4xl mx-4">
+  <div class="max-h-[75vh] overflow-y-auto p-6">
+    <app-proveedor-selector [isOpen]="showClienteModal" (close)="showClienteModal = false"
+      (select)="selectProveedor($event)">
+    </app-proveedor-selector>
+  </div>
+</app-modal>
+}
+

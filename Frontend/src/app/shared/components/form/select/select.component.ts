@@ -3,7 +3,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel, NG_VALIDATORS, Valida
 import { Option } from '../../../../core/models/option.model';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-select-field',
   standalone: true,

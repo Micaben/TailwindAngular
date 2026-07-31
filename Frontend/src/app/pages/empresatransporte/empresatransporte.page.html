@@ -1,0 +1,7 @@
+<app-crud-table [columns]="tableColumns" [title]="'Empresa de Transporte'" [data]="filteredItems()" (search)="setSearch($event)" (create)="openCreate()"
+  (edit)="openEdit($event)">
+</app-crud-table>
+
+<app-empresatransporte-form-model [state]="state()" [submitted]="submitted()" (create)="openCreate()" (save)="save($event)"
+  (close)="closeModal()">
+</app-empresatransporte-form-model>

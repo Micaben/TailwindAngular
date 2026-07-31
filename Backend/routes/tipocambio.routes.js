@@ -4,10 +4,25 @@ const pool = require('../db');
 
 router.get('/tipocambio', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM tipocambio order by fecha asc');
+
+    const mes = req.query.mes || null;
+    const anio = req.query.anio || null;
+    const result = await pool.query(
+      `SELECT * FROM tipocambio WHERE
+        ($1::int IS NULL OR EXTRACT(MONTH FROM fecha) = $1::int)
+        AND
+        ($2::int IS NULL OR EXTRACT(YEAR FROM fecha) = $2::int)
+      ORDER BY fecha asc`,
+      [mes, anio]
+    );
+
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: 'Error tipo de cambio' });
+    console.error(error);
+
+    res.status(500).json({
+      message: 'Error tipo de cambio'
+    });
   }
 });
 
@@ -47,15 +62,11 @@ router.post('/tipocambio', async (req, res) => {
 
 router.put('/tipocambio/:id', async (req, res) => {
   const { id } = req.params;
-  const {fecha, compra, venta } = req.body;
+  const { fecha, compra, venta } = req.body;
 
   try {
     await pool.query(
-      `
-      UPDATE tipocambio
-      SET fecha = $1, compra= $2, venta= $3
-      WHERE id = $4
-      `,
+      ` UPDATE tipocambio SET fecha = $1, compra= $2, venta= $3  WHERE id = $4`,
       [fecha, compra, venta, id]
     );
 

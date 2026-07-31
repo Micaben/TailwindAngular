@@ -1,0 +1,7 @@
+<app-crud-table [columns]="tableColumns" [title]="'Transportista'" [data]="filteredItems()" (search)="setSearch($event)" (create)="openCreate()"
+  (edit)="openEdit($event)">
+</app-crud-table>
+
+<app-transportista-form-model [state]="state()" [submitted]="submitted()" [empresa_transporteOptions]="empresa_transporteOptions" [tipoDocumentoOptions]="tipoDocumentoOptions" (create)="openCreate()" (save)="save($event)"
+  (close)="closeModal()">
+</app-transportista-form-model>
