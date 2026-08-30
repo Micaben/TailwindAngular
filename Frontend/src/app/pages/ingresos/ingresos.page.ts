@@ -1,7 +1,7 @@
 import { Component, inject, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { finalize } from 'rxjs';
 import { IngresosService } from '../ingresos/ingresos.service';
-import { Ingresos } from '../../pages/ingresos/ingresos.model'
+import { Ingresos } from '../../pages/ingresos/ingresos.model';
 import { BaseCrudComponent } from '../../shared/components/base/components/base_crud.component';
 import { IngresosFormModelComponent } from '../../pages/ingresos/ingresos-form-model.component';
 import { DETALLE_TABLE_COLUMNS } from './detalle_table_config';
@@ -64,7 +64,7 @@ export class IngresosPage extends BaseCrudComponent<Ingresos> {
         tipo_operacion: '01',
       }
     }));
-   
+
     this.loadOptions();
   }
 
@@ -233,31 +233,25 @@ export class IngresosPage extends BaseCrudComponent<Ingresos> {
     this.showProductosModal = true;
   }
 
-selectProducto(producto: Productos) {
-
+  selectProducto(producto: Productos) {
     const detalle = {
-        codigo: producto.codigo,
-        descripcion: producto.descripcion,
-        unidad_medida: producto.unidad_medida,
-        cantidad: 1,
-        precio: producto.precio,
-        total: producto.precio
+      codigo: producto.codigo,
+      descripcion: producto.descripcion,
+      unidad_medida: producto.unidad_medida,
+      cantidad: 1,
+      precio: producto.precio,
+      total: producto.precio
     };
 
     if (this.selectedRowIndex >= 0) {
-
-        this.detalleItems[this.selectedRowIndex] = detalle;
-
+      this.detalleItems[this.selectedRowIndex] = detalle;
     } else {
-
-        this.detalleItems.push(detalle);
-
+      this.detalleItems.push(detalle);
     }
 
     this.detalleItems = [...this.detalleItems];
-
     this.showProductosModal = false;
-}
+  }
 
   selectBuscard(buscar: Productos) {
     this.showBuscarModal = false;
@@ -276,12 +270,9 @@ selectProducto(producto: Productos) {
   }
 
   agregarProducto() {
-
     this.selectedRowIndex = -1;
-
     this.showProductosModal = true;
-
-}
+  }
 
   reemplazarProducto(index: number, producto: Productos) {
     this.detalleItems[index] = {

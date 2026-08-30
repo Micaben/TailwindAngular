@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { API } from '../../../app/core/config/api.config';
-import { Ingresos } from '../../pages/ingresos/ingresos.model';
+import { Recetas } from '../../pages/recetas/recetas.model';
 import { BaseCrudService } from '../../shared/components/base/services/base_crud.service';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/internal/Observable';
   providedIn: 'root'
 })
 
-export class IngresosService extends BaseCrudService<Ingresos> {
+export class RecetasService extends BaseCrudService<Recetas> {
 
   protected override endpoint = API.ingresos;
   private endpointSerie  = API.ingresosSerie;
@@ -18,9 +18,9 @@ export class IngresosService extends BaseCrudService<Ingresos> {
     mes?: string,
     anio?: string,
     texto?: string
-  ): Observable<Ingresos[]> {
+  ): Observable<Recetas[]> {
 
-    return this.http.get<Ingresos[]>(
+    return this.http.get<Recetas[]>(
       this.endpoint,
       {
         params: {

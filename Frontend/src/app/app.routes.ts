@@ -27,6 +27,7 @@ import { SignInComponent } from './pages/auth-pages/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/auth-pages/sign-up/sign-up.component';
 import { CalenderComponent } from './pages/calender/calender.component';
 import { AuthGuard } from './core/guards/auth.guard'
+import { RecetasPage } from './pages/recetas/recetas.page';
 
 export const routes: Routes = [
   {
@@ -128,6 +129,11 @@ export const routes: Routes = [
         path: 'ingresos',
         component: IngresosPage,
         title: 'Angular Ingresos Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path: 'recetas',
+        component: RecetasPage,
+        title: 'Angular Recetas Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
         path: 'dashboard',

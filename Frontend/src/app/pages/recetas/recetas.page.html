@@ -1,0 +1,15 @@
+<app-recetas-form-model [state]="state()" [submitted]="submitted()" [selected]="selected()"
+     [medidas]="detalleItems" (serieChange)="onSerieChange($event)" [serieOptions]="serieOptions" [monedaOptions]="monedaOptions"
+>
+    <div toolbar>
+        <app-document-toolbar [state]="state()" (create)="openCreate()" (new)="nuevoDocumento()" (save)="guardarDocumento()"
+            (search)="buscarDocumento()" (print)="imprimirDocumento()" [loading]="loadingGuardar">
+        </app-document-toolbar>
+    </div>
+
+</app-recetas-form-model>
+
+<app-document-search [isOpen]="showBuscarModal" [title]="'Buscar ingresos'" [columns]="searchColumns"
+    [data]="documentos" (buscar)="buscarIngresos($event)" (select)="abrirDocumento($event)"
+    (close)="showBuscarModal=false">
+</app-document-search>
