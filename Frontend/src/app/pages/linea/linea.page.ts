@@ -16,9 +16,8 @@ import { LineaFormModelComponent } from './linea-form-model.component';
 
   ]
 })
+
 export class LineaPage extends BaseCrudComponent<Modelobase> {
-
   protected override service = inject(LineaService);
-
   readonly tableColumns = LINEA_TABLE_COLUMNS;
 }

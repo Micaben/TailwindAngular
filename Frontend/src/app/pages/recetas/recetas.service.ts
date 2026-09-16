@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class RecetasService extends BaseCrudService<Recetas> {
 
   protected override endpoint = API.ingresos;
-  private endpointSerie  = API.ingresosSerie;
+  private endpointSerie  = API.recetasSerie;
   private endpointAbrir = API.ingresos;
 
   getByPeriodo(

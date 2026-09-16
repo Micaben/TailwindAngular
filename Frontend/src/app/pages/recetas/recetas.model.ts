@@ -1,5 +1,7 @@
 export interface Recetas {
   id?: number;
+  serie: string;
+  numero: string;
   fecha?: string;
   tipo_receta?: string;
   cliente_id?: number;
@@ -7,7 +9,8 @@ export interface Recetas {
   profesional_id?: number;
   profesional_nombre?: string;
   observaciones?: string;
-
+base_prisma?: string;
+distancia_pupilar?: number | null;
   detalles?: DetalleReceta[];
 }
 
@@ -22,5 +25,8 @@ export interface DetalleReceta {
   adicion: number | null;
   prisma: number | null;
   altura: number | null;
+  base_prisma: string;
+  agudeza_visual_lejos: string;
+  agudeza_visual_cerca: string;
   distancia_pupilar: number | null;
 }

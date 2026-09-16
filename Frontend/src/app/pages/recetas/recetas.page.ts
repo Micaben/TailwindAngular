@@ -60,7 +60,7 @@ export class RecetasPage extends BaseCrudComponent<Recetas> {
 
   loadOptions(): void {
     forkJoin({
-      serie: this.optionsService.getOptions(API.ingresosSerie, 'serie', 'serie'),
+      serie: this.optionsService.getOptions(API.recetasSerie, 'serie', 'serie'),
       monedas: this.optionsService.getOptions(API.moneda),
     }).subscribe({
       next: ({ serie, monedas }) => {
@@ -190,12 +190,16 @@ export class RecetasPage extends BaseCrudComponent<Recetas> {
         // detalle
         this.detalleItems = res.detalle.map(
           (item: any) => ({
-            codigo: item.codigo,
-            descripcion: item.descripcion,
-            unidad_medida: item.unidad_medida,
-            cantidad: item.cantidad,
-            precio: item.precio,
-            total: item.cantidad * item.precio
+            ojo: item.ojo,
+            esfera: item.esfera,
+            cilindro: item.cilindro,
+            eje: item.eje,
+            adicion: item.adicion,
+            prisma: item.prisma,
+            base_prisma: item.base_prisma ?? '',
+            altura: item.altura,
+            agudeza_visual_lejos: item.agudeza_visual_lejos ?? '',
+            agudeza_visual_cerca: item.agudeza_visual_cerca ?? ''
           })
         );
       });
@@ -206,6 +210,14 @@ export class RecetasPage extends BaseCrudComponent<Recetas> {
   }
 
   onSerieChange(serie: string): void {
+    this.updateField('serie', serie);
+    const siguiente = SiguienteNumeroSerie(
+      serie,
+      this.serieOptions
+    );
+    if (siguiente) {
+      this.updateField('numero', siguiente);
+    }
   }
 
   selectBuscard(buscar: Productos) {
@@ -233,8 +245,11 @@ export class RecetasPage extends BaseCrudComponent<Recetas> {
       eje: null,
       adicion: null,
       prisma: null,
+      base_prisma: '',
       altura: null,
-      distancia_pupilar: null
+      distancia_pupilar: null,
+      agudeza_visual_lejos: '',
+      agudeza_visual_cerca: ''
     };
   }
 }

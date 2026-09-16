@@ -32,5 +32,6 @@ export const API = {
   proveedores: `${environment.apiUrl}/proveedor`,
   ubigeo: `${environment.apiUrl}/ubigeo`,
   ingresosSerie: `${environment.apiUrl}/ingresos/serie`,
+  recetasSerie: `${environment.apiUrl}/recetas/serie`,
   ingresos: `${environment.apiUrl}/ingresos`,
 };

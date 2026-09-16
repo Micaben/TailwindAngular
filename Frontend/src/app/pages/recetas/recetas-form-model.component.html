@@ -29,10 +29,10 @@
           </app-input-field>
         </div>
         <div class="md:col-span-2">
-          <label appLabel> Moneda </label>
-          <app-select-field [options]="monedaOptions" [ngModel]="selectedSafe.moneda"
-            (ngModelChange)="update('moneda', $event)" name="moneda" [required]="true" #moneda="ngModel"
-            [control]="moneda">
+          <label appLabel> Tipo receta </label>
+          <app-select-field [options]="monedaOptions" [ngModel]="selectedSafe.tipoReceta"
+            (ngModelChange)="update('tipoReceta', $event)" name="tipoReceta" [required]="true" #tipoReceta="ngModel"
+            [control]="tipoReceta">
           </app-select-field>
         </div>
         <div class="md:col-span-4">
@@ -90,100 +90,258 @@
       </div>
 
       <!-- TABLA -->
-      <table class="w-full table-fixed border-collapse">
+      <div class="mt-6 overflow-x-auto rounded-lg border border-gray-200">
+        <table class="w-full min-w-[1100px] border-collapse text-sm">
+          <!-- ===================================================== -->
+          <!-- HEADER -->
+          <!-- ===================================================== -->
+          <thead>
+            <!-- OD / OI -->
+            <tr class="bg-gray-100">
+              <th rowspan="2" class="border border-gray-300 px-3 py-2 text-left font-semibold text-gray-700">
+                Graduación
+              </th>
+              <th colspan="6"
+                class="border border-gray-300 bg-blue-50 px-3 py-2 text-center font-semibold text-blue-700">
+                OD - Ojo Derecho
+              </th>
+              <th colspan="6"
+                class="border border-gray-300 bg-pink-50 px-3 py-2 text-center font-semibold text-pink-700">
+                OI - Ojo Izquierdo
+              </th>
+            </tr>
 
-        <thead>
-          <tr>
+            <!-- Columnas -->
+            <tr class="bg-gray-50">
+              <!-- OD -->
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Esfera
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Cilindro
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Eje
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                ADD
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Prisma
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Base
+              </th>
 
-             <th class="w-16 px-2 py-2 text-center">
-              Ojo
-            </th>
-             <th class="w-16 px-2 py-2 text-center">
-              Esfera
-            </th>
-             <th class="w-16 px-2 py-2 text-center">
-              Cilindro
-            </th>
-             <th class="w-16 px-2 py-2 text-center">
-              Eje
-            </th>
-             <th class="w-16 px-2 py-2 text-center">
-              Adición
-            </th>
-             <th class="w-16 px-2 py-2 text-center">
-              Prisma
-            </th>
-             <th class="w-16 px-2 py-2 text-center">
-              Altura
-            </th>
-             <th class="w-16 px-2 py-2 text-center">
-              D.P.
-            </th>
-          </tr>
-        </thead>
+              <!-- OI -->
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Esfera
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Cilindro
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Eje
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                ADD
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Prisma
+              </th>
+              <th class="border border-gray-300 px-2 py-2 text-center">
+                Base
+              </th>
+            </tr>
+          </thead>
 
-        <tbody>
-          @for (item of medidas; track $index) {
-          <tr>
-            <!-- OJO -->
-            <td class="px-3 py-2 text-center font-semibold">
-              {{ item.ojo }}
-            </td>
+          <!-- ===================================================== -->
+          <!-- CUERPO -->
+          <!-- ===================================================== -->
 
-            <!-- ESFERA -->
-           <td class="px-3 py-2 text-center">
-              <app-input-field type="text" [decimalOnly]="true" [ngModel]="item.esfera" name="esfera_{{ $index }}"
-                [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(item, 'esfera', $event)"
-                widthClass="w-24">
-              </app-input-field>
-            </td>
+          <tbody>
+            <tr>
+              <td class="border border-gray-300 bg-gray-50 px-3 py-2 font-medium text-gray-700">
+                Valores
+              </td>
 
-            <!-- CILINDRO -->
-            <td class="px-3 py-2 text-center">
-              <app-input-field type="text" [decimalOnly]="true" [ngModel]="item.cilindro" name="cilindro_{{ $index }}"
-                [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(item, 'cilindro', $event)"
-                widthClass="w-24">
-              </app-input-field>
-            </td>
+              <!-- ================================================= -->
+              <!-- OD -->
+              <!-- ================================================= -->
 
-            <!-- EJE -->
-            <td class="px-3 py-2 text-center">
-              <app-input-field type="text" [decimalOnly]="true" [ngModel]="item.eje" name="eje_{{ $index }}"
-                [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(item, 'eje', $event)" widthClass="w-24">
-              </app-input-field>
-            </td>
+              @let od = medidas[0];
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="text" [decimalOnly]="true" [ngModel]="od?.esfera" name="od_esfera"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(od, 'esfera', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
 
-            <!-- ADICIÓN -->
-            <td class="px-3 py-2 text-center">
-              <app-input-field type="text" [decimalOnly]="true" [ngModel]="item.adicion" name="adicion_{{ $index }}"
-                [ngModelOptions]="{ standalone: true }"   (ngModelChange)="updateDetalle(item, 'adicion', $event)" widthClass="w-24">
-              </app-input-field>
-            </td>
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="text" [decimalOnly]="true" [ngModel]="od?.cilindro" name="od_cilindro"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(od, 'cilindro', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
 
-            <!-- PRISMA -->
-            <td class="px-3 py-2 text-center">
-              <app-input-field type="text" [decimalOnly]="true" [ngModel]="item.prisma" name="prisma_{{ $index }}"
-                [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(item, 'prisma', $event)" widthClass="w-24">
-              </app-input-field>
-            </td>
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="number" [ngModel]="od?.eje" name="od_eje" [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="updateDetalle(od, 'eje', $event)" widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="text" [decimalOnly]="true" [ngModel]="od?.adicion" name="od_adicion"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(od, 'adicion', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="text" [decimalOnly]="true" [ngModel]="od?.prisma" name="od_prisma"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(od, 'prisma', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td class="border border-gray-300 p-1">
+                <app-select-field [options]="basePrismaOptions" [ngModel]="od?.base_prisma"
+                  (ngModelChange)="updateDetalle(od, 'base_prisma', $event)" name="od_base_prisma">
+                </app-select-field>
+              </td>
+
+              <!-- ================================================= -->
+              <!-- OI -->
+              <!-- ================================================= -->
+
+              @let oi = medidas[1];
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="text" [decimalOnly]="true" [ngModel]="oi?.esfera" name="oi_esfera"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(oi, 'esfera', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="text" [decimalOnly]="true" [ngModel]="oi?.cilindro" name="oi_cilindro"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(oi, 'cilindro', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="number" [ngModel]="oi?.eje" name="oi_eje" [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="updateDetalle(oi, 'eje', $event)" widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="text" [decimalOnly]="true" [ngModel]="oi?.adicion" name="oi_adicion"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(oi, 'adicion', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td class="border border-gray-300 p-1">
+                <app-input-field type="text" [decimalOnly]="true" [ngModel]="oi?.prisma" name="oi_prisma"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(oi, 'prisma', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td class="border border-gray-300 p-1">
+
+                <app-select-field [options]="basePrismaOptions" [ngModel]="oi?.base_prisma"
+                  (ngModelChange)="updateDetalle(oi, 'base_prisma', $event)" name="oi_base_prisma">
+                </app-select-field>
+
+              </td>
+            </tr>
+
+            <!-- ===================================================== -->
+            <!-- MEDIDAS PARA LENTES -->
+            <!-- ===================================================== -->
+
+            <tr>
+              <td colspan="13" class="border border-gray-300 bg-gray-100 px-3 py-2 font-semibold text-gray-700">
+                Medidas para lentes
+              </td>
+            </tr>
 
             <!-- ALTURA -->
-            <td class="px-3 py-2 text-center">
-              <app-input-field type="text" [decimalOnly]="true" [ngModel]="item.altura" name="altura_{{ $index }}"
-                [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(item, 'altura', $event)" widthClass="w-24">
-              </app-input-field>
-            </td>
+            <tr>
+              <td class="border border-gray-300 bg-gray-50 px-3 py-2 font-medium">
+                Altura
+              </td>
+              <td colspan="6" class="border border-gray-300 p-1">
+                <app-input-field type="number" [ngModel]="od?.altura" name="od_altura"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(od, 'altura', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
 
-            <!-- DISTANCIA PUPILAR -->
-            <td class="px-3 py-2 text-center">
-              <app-input-field type="text" [decimalOnly]="true" [ngModel]="item.distancia_pupilar" name="distancia_pupilar_{{ $index }}"
-                [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(item, 'distancia_pupilar', $event)" widthClass="w-24">
-              </app-input-field>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
+              <td colspan="6" class="border border-gray-300 p-1">
+                <app-input-field type="number" [ngModel]="oi?.altura" name="oi_altura"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDetalle(oi, 'altura', $event)"
+                  widthClass="w-full">
+                </app-input-field>
+              </td>
+            </tr>
+            <!-- ===================================================== -->
+            <!-- AGUDEZA VISUAL -->
+            <!-- ===================================================== -->
+
+            <tr>
+              <td colspan="13" class="border border-gray-300 bg-gray-100 px-3 py-2 font-semibold text-gray-700">
+                Agudeza visual
+              </td>
+            </tr>
+
+            <!-- LEJOS -->
+            <tr>
+              <td class="border border-gray-300 bg-gray-50 px-3 py-2 font-medium">
+                Lejos
+              </td>
+
+              <td colspan="6" class="border border-gray-300 p-1">
+                <app-input-field type="text" [ngModel]="od?.agudeza_visual_lejos" name="od_av_lejos"
+                  [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="updateDetalle(od, 'agudeza_visual_lejos', $event)" widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td colspan="6" class="border border-gray-300 p-1">
+                <app-input-field type="text" [ngModel]="oi?.agudeza_visual_lejos" name="oi_av_lejos"
+                  [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="updateDetalle(oi, 'agudeza_visual_lejos', $event)" widthClass="w-full">
+                </app-input-field>
+              </td>
+
+            </tr>
+
+            <!-- CERCA -->
+            <tr>
+              <td class="border border-gray-300 bg-gray-50 px-3 py-2 font-medium">
+                Cerca
+              </td>
+
+              <td colspan="6" class="border border-gray-300 p-1">
+                <app-input-field type="text" [ngModel]="od?.agudeza_visual_cerca" name="od_av_cerca"
+                  [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="updateDetalle(od, 'agudeza_visual_cerca', $event)" widthClass="w-full">
+                </app-input-field>
+              </td>
+
+              <td colspan="6" class="border border-gray-300 p-1">
+                <app-input-field type="text" [ngModel]="oi?.agudeza_visual_cerca" name="oi_av_cerca"
+                  [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="updateDetalle(oi, 'agudeza_visual_cerca', $event)" widthClass="w-full">
+                </app-input-field>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </form>
 </div>

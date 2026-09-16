@@ -109,4 +109,12 @@ export class RecetasFormModelComponent extends BaseDocumentForm {
   onProveedorChange(ruc: string) {
     this.update('proveedor', ruc);
   }
+
+  basePrismaOptions: Option[] = [
+  { value: '', label: '-' },
+  { value: 'BI', label: 'BI - Base Interna' },
+  { value: 'BO', label: 'BO - Base Externa' },
+  { value: 'BU', label: 'BU - Base Superior' },
+  { value: 'BD', label: 'BD - Base Inferior' }
+];
 }

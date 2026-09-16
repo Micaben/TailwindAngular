@@ -15,5 +15,4 @@ export const RECETAS_TABLE_COLUMNS = [
     header: 'Especialista',
     field: 'cilindro'
   },
-  
 ];

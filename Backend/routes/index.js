@@ -19,6 +19,7 @@ module.exports = (app) => {
   app.use('/api', require('./series.routes'));
   app.use('/api', require('./ubigeo.routes'));
   app.use('/api', require('./ingresos.routes'));
+  app.use('/api', require('./recetas.routes'));
   app.use('/api', require('./color.routes'));
   // Archivo tablas.routes
   app.use('/api', require('./tablas.routes'));
